@@ -200,10 +200,10 @@
 		wrench_floor_bolts(user, 0)
 		power_change()
 		return
-	else if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))
-		if(allowed(user))
+	else if(W?.get_id_card())
+		if(check_access(W))
 			locked = !locked
-			to_chat(user, "The tape holder is now [locked ? "locked." : "unlocked."]")
+			to_chat(user, "The tape holder is now [locked ? "locked" : "unlocked"].")
 		else
 			to_chat(user, SPAN_WARNING("Access denied."))
 		return

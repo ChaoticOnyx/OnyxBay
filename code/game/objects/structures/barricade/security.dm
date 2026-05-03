@@ -64,7 +64,7 @@
 
 
 /obj/structure/barricade/security/proc/_toggle(mob/user)
-	if(!allowed(user))
+	if(!check_access(user))
 		return
 
 	locked = !locked

@@ -11,18 +11,18 @@
 		return chest.attackby(W,user)
 
 	// Lock or unlock the access panel.
-	if(W.get_id_card())
+	if(W?.get_id_card())
 		if(subverted)
 			locked = 0
 			to_chat(user, "<span class='danger'>It looks like the locking system has been shorted out.</span>")
 			return
 
-		if((!req_access || !req_access.len) && (!req_one_access || !req_one_access.len))
-			locked = 0
+		if(!length(req_access) && !length(req_one_access))
+			locked = FALSE
 			to_chat(user, "<span class='danger'>\The [src] doesn't seem to have a locking mechanism.</span>")
 			return
 
-		if(security_check_enabled && !src.allowed(user))
+		if(security_check_enabled && !check_access(user))
 			to_chat(user, "<span class='danger'>Access denied.</span>")
 			return
 
@@ -193,10 +193,11 @@
 	..()
 
 /obj/item/rig/emag_act(remaining_charges, mob/user)
-	if(!subverted)
-		req_access.Cut()
-		req_one_access.Cut()
-		locked = 0
-		subverted = 1
-		to_chat(user, "<span class='danger'>You short out the access protocol for the suit.</span>")
-		return 1
+	if(subverted)
+		return 0
+	req_access = null
+	req_one_access = null
+	locked = FALSE
+	subverted = TRUE
+	to_chat(user, "<span class='danger'>You short out the access protocol for the suit.</span>")
+	return 1

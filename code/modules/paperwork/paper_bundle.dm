@@ -10,7 +10,7 @@
 	throw_range = 2
 	throw_speed = 2
 	layer = ABOVE_OBJ_LAYER
-	attack_verb = list("bapped")
+	attack_verb = "bapped"
 	var/page = 1    // current page
 	var/list/pages = list()  // Ordered list of pages as they are to be displayed. Can be different order than src.contents.
 

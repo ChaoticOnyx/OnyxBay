@@ -41,8 +41,8 @@
 		airtank.temperature = -25 CELSIUS
 	else
 		airtank.temperature = 0 CELSIUS
-	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
-	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
+	airtank.adjust_gas("oxygen", MOLES_O2_STANDARD, 0)
+	airtank.adjust_gas("nitrogen", MOLES_N2_STANDARD)
 	update_icon()
 
 /obj/structure/closet/body_bag/cryobag/Destroy()

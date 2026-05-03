@@ -4,7 +4,7 @@
 	icon_state = "syndicate"
 	item_state = "syndicate"
 	desc = "A crimson helmet sporting clean lines and durable plating. Engineered to look menacing."
-	armor = list(melee = 70, bullet = 80, laser = 100, energy = 35, bomb = 30, bio = 100)
+	armor_values = alist(melee = 70, bullet = 80, laser = 100, energy = 35, bomb = 30, bio = 100)
 	siemens_coefficient = 0.3
 	rad_resist_type = /datum/rad_resist/space_gear
 
@@ -15,7 +15,7 @@
 	desc = "A crimson spacesuit sporting clean lines and durable plating. Robust, reliable, and slightly suspicious."
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword,/obj/item/handcuffs,/obj/item/tank/emergency)
-	armor = list(melee = 70, bullet = 80, laser = 100, energy = 35, bomb = 30, bio = 100)
+	armor_values = alist(melee = 70, bullet = 80, laser = 100, energy = 35, bomb = 30, bio = 100)
 	siemens_coefficient = 0.3
 	rad_resist_type = /datum/rad_resist/space_gear
 
@@ -105,7 +105,7 @@
 /obj/item/clothing/head/helmet/space/syndicate/black/med
 	name = "black medical space helmet"
 	icon_state = "syndicate-helm-black-med"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-med")
+	item_state_slots = alist(slot_head_str = "syndicate-helm-black-med")
 
 /obj/item/clothing/suit/space/syndicate/black/med
 	name = "black medical space suit"
@@ -116,7 +116,7 @@
 /obj/item/clothing/head/helmet/space/syndicate/black/orange
 	name = "black and orange space helmet"
 	icon_state = "syndicate-helm-black-orange"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-orange")
+	item_state_slots = alist(slot_head_str = "syndicate-helm-black-orange")
 
 /obj/item/clothing/suit/space/syndicate/black/orange
 	name = "black and orange space suit"
@@ -138,7 +138,7 @@
 /obj/item/clothing/head/helmet/space/syndicate/black/engie
 	name = "black engineering space helmet"
 	icon_state = "syndicate-helm-black-engie"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-engie")
+	item_state_slots = alist(slot_head_str = "syndicate-helm-black-engie")
 
 /obj/item/clothing/suit/space/syndicate/black/engie
 	name = "black engineering space suit"

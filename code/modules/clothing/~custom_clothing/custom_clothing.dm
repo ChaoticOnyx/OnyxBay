@@ -18,7 +18,7 @@
 	desc = "A military trenchcoat with a leather belt and long, custom collar. Looks kinda old, but is kept in a good shape."
 	icon_state = "dalek_coat"
 	item_state = "dalek_coat"
-	armor = list(melee = 45, bullet = 35, laser = 35, energy = 10, bomb = 10, bio = 0)
+	armor_values = alist(melee = 45, bullet = 35, laser = 35, energy = 10, bomb = 10, bio = 0)
 
 /obj/item/clothing/suit/armor/hos/jensen/fieldcoat/mob_can_equip(mob/user)
 	.=..()
@@ -34,7 +34,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|FACE|EYES //face shield
 	visor_body_parts_covered = FACE|EYES
-	armor = list(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 35, bio = 5)
+	armor_values = alist(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 35, bio = 5)
 	siemens_coefficient = 0.6
 	action_button_name = "Toggle Visor"
 
@@ -46,7 +46,7 @@
 	desc = "A synthetic armor vest with a large webbing and additional ballistic plates. Has a name badge on the frontal plate, that reads 'Sgt. Bauer'"
 	icon_state = "policevest"
 	item_state = "policevest"
-	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0)
+	armor_values = alist(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0)
 	allowed = list(
 		/obj/item/gun/energy,
 		/obj/item/device/radio,
@@ -70,7 +70,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD
 	visor_body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2)
+	armor_values = alist(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2)
 	siemens_coefficient = 1
 
 //Schutze88
@@ -79,14 +79,14 @@
 	name = "ancient cap"
 	desc = "An ancient cap, how did it survived to these days?"
 	icon_state = "capger"
-	armor = list(melee = 25, bullet = 10, laser = 10,energy = 10, bomb = 10, bio = 0)
+	armor_values = alist(melee = 25, bullet = 10, laser = 10,energy = 10, bomb = 10, bio = 0)
 
 /obj/item/clothing/suit/armor/hos/german
 	name = "ancient trenchcoat"
 	desc = "An ancient trenchcoat, how did it survived to these days? There's a label on the neck that reads 'Hergestellt von Hugo Boss'"
 	icon_state = "trenchcoatger"
 	item_state = "trenchcoatger"
-	armor = list(melee = 35, bullet = 15, laser = 15, energy = 10, bomb = 10, bio = 0)
+	armor_values = alist(melee = 35, bullet = 15, laser = 15, energy = 10, bomb = 10, bio = 0)
 
 /obj/item/clothing/suit/armor/hos/german/mob_can_equip(mob/user)
 	.=..()
@@ -110,7 +110,7 @@
 	desc = "A loose, unbelted trenchcoat of military style. Has a \"MILITA\" writen on chest."
 	icon_state = "hostrench"
 	item_state = "hostrench"
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0)
+	armor_values = alist(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0)
 
 // Item below belong to i-dont-fucking-know-who
 // Please, sign it ASAP
@@ -119,7 +119,7 @@
     name = "comfy greatcoat"
     desc = "A greatcoat that is holding small pieces of dirt and such. It feels underarmored, yet you're absolutely sure that it will keep out the cold."
     icon_state = "redcoat"
-    armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+    armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/suit/storage/toggle/det_trench/warfare/mob_can_equip(mob/user)
 	.=..()
@@ -150,7 +150,7 @@
 	desc = "A synthetic armor vest with a large webbing and additional ballistic plates. Instead of a label, there's a small picture of a bearded man beating someone down in a maintenance area."
 	icon_state = "policevest_dark"
 	item_state = "policevest_dark"
-	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0)
+	armor_values = alist(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0)
 	allowed = list(
 		/obj/item/gun/energy,
 		/obj/item/device/radio,
@@ -178,7 +178,7 @@
 	desc = "A strange helmet with a clown face on it. It looks like it was made by an unknown party."
 	icon_state = "clown_syndie"
 	item_state = "clown_syndie"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndie_clown",
 		slot_r_hand_str = "syndie_clown",
 	)
@@ -188,7 +188,7 @@
 	desc = "A suit that protects you against the void. It has a clown face on it."
 	icon_state = "rig-syndie-clown"
 	item_state = "rig-syndie-clown"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndie_clown",
 		slot_r_hand_str = "syndie_clown",
 	)
@@ -290,7 +290,7 @@
 	desc = "An armored coat with desert camo pattern."
 	icon_state = "hazardcoat"
 	//item_state = "armor"
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 40, bio = 10)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 40, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
@@ -365,4 +365,4 @@
 	item_state = "fieldcoat_light"
 
 	body_parts_covered = UPPER_TORSO | LOWER_TORSO | ARMS | LEGS
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 5, bomb = 5, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 5, bomb = 5, bio = 0)

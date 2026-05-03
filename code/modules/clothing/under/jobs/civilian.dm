@@ -218,7 +218,7 @@
 	desc = "It's the official jumpsuit of the janitor. It has minor protection from biohazards."
 	icon_state = "janitor"
 	item_state = "janitor"
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
 /obj/item/clothing/under/rank/janitor/skirt
 	name = "janitor's jumpskirt"

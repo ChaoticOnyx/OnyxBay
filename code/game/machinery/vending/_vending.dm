@@ -189,10 +189,8 @@
 	return
 
 /obj/machinery/vending/proc/pay(obj/item/W, mob/user)
-	if(!W)
+	if(!istype(W))
 		return FALSE
-
-	var/obj/item/card/id/I = W.get_id_card()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
 		var/paid = 0
@@ -201,7 +199,8 @@
 			to_chat(user, SPAN("warning", "\The [src] is busy at the moment!"))
 			return
 
-		if(I) // For IDs and PDAs and wallets with IDs
+		var/obj/item/card/id/I = W.get_id_card()
+		if(istype(I)) // For IDs and PDAs and wallets with IDs
 			paid = pay_with_card(I, W)
 		else if(istype(W, /obj/item/spacecash/ewallet))
 			var/obj/item/spacecash/ewallet/C = W
@@ -535,7 +534,7 @@
 			if(!vend_ready || currently_vending)
 				return TRUE
 
-			if((!allowed(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
+			if((!check_access(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
 				to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 				flick("[base_icon]-deny", src)
 				return TRUE
@@ -577,7 +576,7 @@
 			return TRUE
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
-	if((!allowed(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
+	if((!check_access(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
 		to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return

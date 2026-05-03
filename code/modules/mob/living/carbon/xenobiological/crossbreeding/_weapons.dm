@@ -14,16 +14,16 @@
 			attack_verb = list("slashed", "sliced", "cut")
 		if(BURN)
 			hitsound = 'sound/weapons/sear.ogg'
-			attack_verb = list("burns", "singes", "heats")
+			attack_verb = list("burnt", "singed", "heated")
 		if(TOX)
 			hitsound = 'sound/effects/pierce.ogg'
-			attack_verb = list("poisons", "doses", "toxifies")
+			attack_verb = list("poisoned", "dosed", "toxified")
 		if(OXY)
 			hitsound = 'sound/effects/space_wind.ogg'
-			attack_verb = list("suffocates", "winds", "vacuums")
+			attack_verb = list("suffocated", "winded", "vacuumed")
 		if(CLONE)
 			hitsound = 'sound/effects/geiger/geiger_very_high_1.ogg'
-			attack_verb = list("irradiates", "mutates", "maligns")
+			attack_verb = list("irradiated", "mutated", "maligned")
 	return ..()
 
 //Adamantine shield - Chilling Adamantine
@@ -33,7 +33,7 @@
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "adamshield"
 	w_class = ITEM_SIZE_HUGE
-	armor = alist(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 0, bomb = 30, bio = 0)
 	slot_flags = SLOT_BACK
 	mod_weight = 2.0
 	mod_reach = 1.5
@@ -43,7 +43,7 @@
 	force = 15.0
 	throw_range = 1 //How far do you think you're gonna throw a solid crystalline shield...?
 	throw_speed = 2
-	attack_verb = list("bashes", "pounds", "slams")
+	attack_verb = list("bashed", "pounded", "slammed")
 
 /obj/item/shield/adamantineshield/Initialize(mapload)
 	. = ..()

@@ -125,21 +125,19 @@ SUBSYSTEM_DEF(overlays)
 
 /**
 * Shared behavior for CutOverlays & CutUnderlays. Do not use directly.
-* null: nothing changed, do nothing
-* FALSE: update should be queued
-* TRUE: update should be queued, cache should be nulled
+* FALSE: nothing changed, do nothing
+* TRUE: update should be queued
 */
-/atom/proc/CutCacheBehavior(sources, cache)
+/atom/proc/CutCacheBehavior(sources, list/cache)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/initial_length = length(cache)
 	if(!initial_length)
-		return
-	cache -= sources
-	var/after_length = length(cache)
-	if(!after_length)
-		return TRUE
-	if(initial_length > after_length)
 		return FALSE
+	LAZYREMOVE(cache, sources)
+	var/after_length = length(cache)
+	if(!after_length || initial_length > after_length)
+		return TRUE
+	return FALSE
 
 
 /// Enqueues the atom for an overlay update if not already queued
@@ -158,12 +156,12 @@ SUBSYSTEM_DEF(overlays)
 	if(QDELING(src))
 		overlays.Cut()
 		return
-	if(length(atom_protected_overlay_cache))
-		if(length(atom_overlay_cache))
+	if(LAZYLEN(atom_protected_overlay_cache))
+		if(LAZYLEN(atom_overlay_cache))
 			overlays = atom_protected_overlay_cache + atom_overlay_cache
 		else
 			overlays = atom_protected_overlay_cache
-	else if(length(atom_overlay_cache))
+	else if(LAZYLEN(atom_overlay_cache))
 		overlays = atom_overlay_cache
 	else
 		overlays.Cut()
@@ -205,14 +203,9 @@ SUBSYSTEM_DEF(overlays)
 	if(!length(sources))
 		return
 	if(cache_target & ATOM_ICON_CACHE_PROTECTED)
-		if(atom_protected_overlay_cache)
-			atom_protected_overlay_cache += sources
-		else
-			atom_protected_overlay_cache = sources
-	else if(atom_overlay_cache)
-		atom_overlay_cache += sources
+		LAZYADD(atom_protected_overlay_cache, sources)
 	else
-		atom_overlay_cache = sources
+		LAZYADD(atom_overlay_cache, sources)
 	QueueOverlayUpdate()
 
 
@@ -234,14 +227,10 @@ SUBSYSTEM_DEF(overlays)
 		var/outcome = CutCacheBehavior(sources, atom_protected_overlay_cache)
 		if(!isnull(outcome))
 			update = TRUE
-			if(outcome == TRUE)
-				atom_protected_overlay_cache = null
 	if(cache_target & ATOM_ICON_CACHE_NORMAL)
 		var/outcome = CutCacheBehavior(sources, atom_overlay_cache)
 		if(!isnull(outcome))
 			update = TRUE
-			if(outcome == TRUE)
-				atom_overlay_cache = null
 	if(update)
 		QueueOverlayUpdate()
 
@@ -266,9 +255,9 @@ SUBSYSTEM_DEF(overlays)
 		ClearOverlays(cache_target)
 	if(!istype(other))
 		return
-	if(cache_target & ATOM_ICON_CACHE_PROTECTED)
+	if((cache_target & ATOM_ICON_CACHE_PROTECTED) && LAZYLEN(other.atom_protected_overlay_cache))
 		AddOverlays(other.atom_protected_overlay_cache, ATOM_ICON_CACHE_PROTECTED)
-	if(cache_target & ATOM_ICON_CACHE_NORMAL)
+	if((cache_target & ATOM_ICON_CACHE_NORMAL) && LAZYLEN(other.atom_overlay_cache))
 		AddOverlays(other.atom_overlay_cache, ATOM_ICON_CACHE_NORMAL)
 
 
@@ -300,7 +289,7 @@ SUBSYSTEM_DEF(overlays)
 		overlays.Cut()
 	if(!istype(other))
 		return
-	if(cache_target & ATOM_ICON_CACHE_PROTECTED)
+	if((cache_target & ATOM_ICON_CACHE_PROTECTED) && LAZYLEN(other.atom_protected_overlay_cache))
 		overlays |= other.atom_protected_overlay_cache
-	if(cache_target & ATOM_ICON_CACHE_NORMAL)
+	if((cache_target & ATOM_ICON_CACHE_NORMAL) && LAZYLEN(other.atom_overlay_cache))
 		overlays |= other.atom_overlay_cache

@@ -5,14 +5,14 @@
 	icon_state = "datadisk0"
 	item_state = "card-id"
 	w_class = ITEM_SIZE_SMALL
-	req_access = access_ce
+	req_access = list(access_ce)
 	var/subject = "some strange, incomprehensible design"
 	var/locked = 1
 
 /obj/item/disk/secret_project/science
 	desc = "A special disk for storing massive amounts of data. It is marked as classified, and has an ID card slot on top. \
 	This one has a NanoTrasen label on it."
-	req_access = access_rd
+	req_access = list(access_rd)
 
 /obj/item/disk/secret_project/Initialize()
 	. = ..()

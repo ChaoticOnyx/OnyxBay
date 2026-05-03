@@ -156,7 +156,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		else
 			species_restricted = list(target_species)
 
-	if (sprite_sheets_obj && (target_species in sprite_sheets_obj))
+	if(sprite_sheets_obj?[target_species])
 		icon = sprite_sheets_obj[target_species]
 	else
 		icon = initial(icon)
@@ -174,7 +174,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		else
 			species_restricted = list(target_species)
 
-	if (sprite_sheets_obj && (target_species in sprite_sheets_obj))
+	if(sprite_sheets_obj?[target_species])
 		icon = sprite_sheets_obj[target_species]
 	else
 		icon = initial(icon)
@@ -221,12 +221,13 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	// If a BP is specified (or nonspecified) in 'coverage' but not in 'body_parts_covered'
 	// i.e. something like pauldrons providing protection for arms without actually covering them for non-combat logic
 	// then the former takes priority
-	if(islist(coverage))
-		for(var/entry in coverage)
-			if(entry & affecting.body_part)
-				return list(armor[type], coverage[entry])
+	if(armor_values?[type])
+		if(islist(coverage))
+			for(var/entry in coverage)
+				if(entry & affecting.body_part)
+					return list(armor_values[type], coverage[entry])
 
-	else if(body_parts_covered & affecting.body_part)
-		return list(armor[type], coverage)
+		else if(body_parts_covered & affecting.body_part)
+			return list(armor_values[type], coverage)
 
 	return

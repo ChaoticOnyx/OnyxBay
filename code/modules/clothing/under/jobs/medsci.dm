@@ -6,7 +6,7 @@
 	desc = "It's a jumpsuit worn by those with the know-how to achieve the position of \"Research Director\". Its fabric provides minor protection from biological contaminants."
 	icon_state = "director"
 	item_state = "director"
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
 /obj/item/clothing/under/rank/research_director/rdalt
 	name = "head researcher uniform"
@@ -34,7 +34,7 @@
 	icon_state = "science"
 	item_state = "science"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 
 /obj/item/clothing/under/rank/scientist/skirt
 	name = "scientist's jumpskirt"
@@ -80,7 +80,7 @@
 	icon_state = "cmo"
 	item_state = "cmo"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
 /obj/item/clothing/under/rank/chief_medical_officer/skirt
 	name = "chief medical officer's jumpskirt"
@@ -102,7 +102,7 @@
 	icon_state = "genetics"
 	item_state = "genetics"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
 /obj/item/clothing/under/rank/geneticist/skirt
 	name = "geneticist's jumpskirt"
@@ -122,7 +122,7 @@
 	icon_state = "virology"
 	item_state = "virology"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
 /obj/item/clothing/under/rank/virologist/skirt
 	name = "virologist's jumpskirt"
@@ -142,7 +142,7 @@
 	icon_state = "chemistry"
 	item_state = "chemistry"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
 /obj/item/clothing/under/rank/chemist/skirt
 	name = "chemist's jumpskirt"
@@ -162,7 +162,7 @@
 	icon_state = "nursesuit"
 	item_state = "nursesuit"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/rank/nurse
@@ -171,7 +171,7 @@
 	icon_state = "nurse"
 	item_state = "nurse"
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/rank/medical
@@ -180,7 +180,7 @@
 	icon_state = "medical"
 	item_state = "medical"
 	permeability_coefficient = 0.5
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 30)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 30)
 
 /obj/item/clothing/under/rank/medical/skirt
 	name = "medical doctor's jumpskirt"

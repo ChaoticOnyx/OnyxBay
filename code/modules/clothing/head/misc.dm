@@ -4,18 +4,18 @@
 	name = "\improper CentComm. hat"
 	desc = "It's good to be emperor."
 	icon_state = "centcom_hat"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "centhat",
 		slot_r_hand_str = "centhat",
 		)
 	siemens_coefficient = 0.9
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 75, bullet = 90, laser = 90, energy = 25, bomb = 35, bio = 0) //The emperor must be protected
+	armor_values = alist(melee = 75, bullet = 90, laser = 90, energy = 25, bomb = 35, bio = 0) //The emperor must be protected
 
 /obj/item/clothing/head/centcom/hat/cheap
 	name = "centcomm. hat"
 	desc = "It's good to be rich and do nothing."
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/hairflower
 	name = "hair flower pin"
@@ -49,7 +49,7 @@
 	desc = "A powdered wig."
 	icon_state = "pwig"
 	item_state = "pwig"
-	armor = list(melee = 5, bullet = 5, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/warfarecap
     name = "red peaked cap"
@@ -63,14 +63,14 @@
 	item_state = "tophat"
 	siemens_coefficient = 0.9
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/redcoat
 	name = "redcoat's hat"
 	desc = "<i>'I guess it's a redhead.'</i>"
 	icon_state = "redcoat"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/mailman
 	name = "mail cap"
@@ -85,7 +85,7 @@
 	permeability_coefficient = 0.01
 	siemens_coefficient = 0.9
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/hasturhood
 	name = "hastur's hood"
@@ -104,7 +104,7 @@
 /obj/item/clothing/head/syndicatefake
 	name = "red space-helmet replica"
 	desc = "A plastic replica of a bloodthirsty syndicate's space helmet, you'll look just like a real murderous criminal operative in this! This is a toy, it is not made for use in space!"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndicate-helm-black-red",
 		slot_r_hand_str = "syndicate-helm-black-red",
 		)
@@ -112,7 +112,7 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 2.0
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/cueball
 	name = "cueball helmet"
@@ -129,7 +129,7 @@
 	item_state = "cardborg_h"
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 6, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 6, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/cardborg/Initialize()
 	. = ..()
@@ -165,33 +165,33 @@
 	name = "flat cap"
 	desc = "A working man's cap."
 	icon_state = "flat_cap"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "det_hat",
 		slot_r_hand_str = "det_hat",
 		)
 	siemens_coefficient = 0.9
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/pirate
 	name = "pirate hat"
 	desc = "Yarr."
 	icon_state = "pirate"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/hgpiratecap
 	name = "pirate hat"
 	desc = "Yarr."
 	icon_state = "hgpiratecap"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/bandana
 	name = "pirate bandana"
 	desc = "Yarr."
 	icon_state = "bandana"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/bandana/green
 	name = "green bandana"
@@ -209,7 +209,7 @@
 	desc = "Gentleman, elite aboard!"
 	icon_state = "bowler"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 //stylish bs12 hats
 
@@ -218,37 +218,37 @@
 	desc = "For the gentleman of distinction."
 	icon_state = "bowler_hat"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/beaverhat
 	name = "beaver hat"
 	desc = "Soft felt makes this hat both comfortable and elegant."
 	icon_state = "beaver_hat"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/boaterhat
 	name = "boater hat"
 	desc = "The ultimate in summer fashion."
 	icon_state = "boater_hat"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/fedora
 	name = "fedora"
 	desc = "A sharp, stylish hat."
 	icon_state = "fedora"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/feathertrilby
 	name = "feather trilby"
 	desc = "A sharp, stylish hat with a feather."
 	icon_state = "feather_trilby"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/fez
 	name = "fez"
 	desc = "You should wear a fez. Fezzes are cool."
 	icon_state = "fez"
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 //end bs12 hats
 
@@ -259,33 +259,33 @@
 	item_state = "witch"
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 2.0
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/chicken
 	name = "chicken suit head"
 	desc = "Bkaw!"
 	icon_state = "chickenhead"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "chickensuit",
 		slot_r_hand_str = "chickensuit",
 		)
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/bearpelt
 	name = "bear pelt hat"
 	desc = "Fuzzy."
 	icon_state = "bearpelt"
 	siemens_coefficient = 0.7
-	armor = list(melee = 30, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 30, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/xenos
 	name = "xenos helmet"
 	desc = "A helmet made out of chitinous alien hide."
 	icon_state = "xenos"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "xenos_helm",
 		slot_r_hand_str = "xenos_helm",
 		)
@@ -293,33 +293,33 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 2.0
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 20, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/philosopher_wig
 	name = "natural philosopher's wig"
 	desc = "A stylish monstrosity unearthed from Earth's Renaissance period. With this most distinguish'd wig, you'll be ready for your next soiree!"
 	icon_state = "philosopher_wig"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "pwig",
 		slot_r_hand_str = "pwig",
 		)
 	flags_inv = BLOCKHAIR
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 5, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/hijab
 	name = "hijab"
 	desc = "A veil which is wrapped to cover the head and chest."
 	icon_state = "hijab"
 	flags_inv = BLOCKHAIR
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 15, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 15, bio = 0)
 
 /obj/item/clothing/head/kippa
 	name = "kippa"
 	desc = "A small, brimless cap."
 	icon_state = "kippa"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/turban
 	name = "turban"
@@ -327,14 +327,14 @@
 	icon_state = "turban"
 	body_parts_covered = NO_BODYPARTS
 	flags_inv = BLOCKHEADHAIR //Shows beards!
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/cowboy_hat
 	name = "cowboy hat"
 	desc = "A wide-brimmed hat, in the prevalent style of America's frontier period. By SolGov law, you are required to wear this hat while watching True Grit."
 	icon_state = "cowboyhat"
 	item_state = "cowboyhat"
-	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/panama
 	name = "panama"
@@ -342,7 +342,7 @@
 	icon_state = "panama"
 	item_state = "panama"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/taqiyah
 	name = "taqiyah"
@@ -350,7 +350,7 @@
 	icon_state = "taqiyah"
 	item_state = "taqiyah"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/tank
 	name = "padded cap"
@@ -358,7 +358,7 @@
 	icon_state = "tank"
 	flags_inv = BLOCKHEADHAIR
 	color = "#5f5f5f"
-	armor = list(melee = 35, bullet = 10, laser = 10, energy = 5, bomb = 30, bio = 0)
+	armor_values = alist(melee = 35, bullet = 10, laser = 10, energy = 5, bomb = 30, bio = 0)
 
 /obj/item/clothing/head/tank/olive
 	color = "#727c58"
@@ -375,7 +375,7 @@
 	body_parts_covered = HEAD|FACE|EYES
 	visor_body_parts_covered = NO_BODYPARTS
 	flash_protection = FLASH_PROTECTION_MAJOR
-	armor = list(melee = 20, bullet = 10, laser = 10,energy = 5, bomb = 5, bio = 0)
+	armor_values = alist(melee = 20, bullet = 10, laser = 10,energy = 5, bomb = 5, bio = 0)
 
 /obj/item/clothing/head/rasta
 	name = "rasta hat"
@@ -388,28 +388,28 @@
 	desc = "You can practically taste the fiesta."
 	icon_state = "sombrero"
 	item_state = "sombrero"
-	armor = list(melee = 10, bullet = 10, laser = 5, energy = 0, bomb = 40, bio = 0)
+	armor_values = alist(melee = 10, bullet = 10, laser = 5, energy = 0, bomb = 40, bio = 0)
 
 /obj/item/clothing/head/samura_hat
 	name = "samurai hat"
 	desc = "Asian straw hat with cool stripes of fabric throughout the brim."
 	icon_state = "samura_hat"
 	item_state = "samura_hat"
-	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/agua_helmet
 	name = "head-worn aquarium"
 	desc = "Water with some fishes in the glass aquarium."
 	icon_state = "agua_helmet"
 	item_state = "agua_helmet"
-	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/crown
 	name = "crown"
 	desc = "Royal gold worthy of a true ruler of the world."
 	icon_state = "crown"
 	item_state = "crown"
-	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/antenna
 	name = "antenna"
@@ -434,7 +434,7 @@
 	desc = "A strange hood that reeks of dread."
 	icon_state = "necro_hood"
 	item_state = ""
-	armor = list(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
+	armor_values = alist(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
 	siemens_coefficient = 0.8
 	wizard_garb = TRUE
 	flags_inv = HIDEEARS|BLOCKHEADHAIR

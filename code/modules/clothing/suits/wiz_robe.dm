@@ -67,7 +67,7 @@
 	item_state = "wizard"
 	gas_transfer_coefficient = 0.01 // IT'S MAGICAL OKAY JEEZ +1 TO NOT DIE
 	permeability_coefficient = 0.01
-	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
+	armor_values = alist(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
 	allowed = list(/obj/item/teleportation_scroll)
 	siemens_coefficient = 0.8
 	wizard_garb = 1
@@ -122,7 +122,7 @@
 	desc = "A rather dull, blue robe meant to mimick real wizard robes."
 	icon_state = "wizard-fake"
 	item_state = "wizard-fake"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 1.0
 	wizard_garb = 0
 
@@ -131,7 +131,7 @@
 	desc = "Strange-looking hat-wear, makes you want to cast fireballs."
 	icon_state = "marisa"
 	item_state = "marisa"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 1.0
 	wizard_garb = 0
 
@@ -141,7 +141,7 @@
 	icon_state = "marisa"
 	item_state = "marisa"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 1.0
 	wizard_garb = 0
 
@@ -152,7 +152,7 @@
 	item_state = "necro_robe"
 	body_parts_covered = HEAD | UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS
 	flags_inv = HIDESHOES | HIDEJUMPSUIT | HIDETAIL
-	armor = list(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
+	armor_values = alist(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
 	allowed = list(/obj/item/teleportation_scroll)
 	siemens_coefficient = 0.8
 	wizard_garb = TRUE

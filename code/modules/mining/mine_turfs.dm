@@ -14,7 +14,7 @@ var/list/mining_floors = list()
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
-	initial_gas = null
+	initial_gas = /decl/initial_gas_mix/empty
 	opacity = 1
 	density = 1
 	blocks_air = 1
@@ -476,7 +476,7 @@ var/list/mining_floors = list()
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
-	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	initial_gas = /decl/initial_gas_mix/air
 	opacity = 1
 	density = 1
 	blocks_air = 1
@@ -534,7 +534,7 @@ var/list/mining_floors = list()
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
-	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	initial_gas = /decl/initial_gas_mix/air
 	opacity = 1
 	density = 1
 	blocks_air = 1
@@ -556,7 +556,7 @@ var/list/mining_floors = list()
 	base_icon_state = "asteroid"
 
 	initial_flooring = null
-	initial_gas = null
+	initial_gas = /decl/initial_gas_mix/empty
 	temperature = TCMB
 	var/dug = 0       //0 = has not yet been dug, 1 = has already been dug
 	var/overlay_detail
@@ -712,11 +712,11 @@ var/list/mining_floors = list()
 							ore.Move(OB)
 
 /turf/simulated/floor/asteroid/air
-	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	initial_gas = /decl/initial_gas_mix/air
 
 // Contains extra CO2 for better breathing.
 /turf/simulated/floor/asteroid/air/prison
-	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+	initial_gas = /decl/initial_gas_mix/air/asteroid
 	temperature = 30 CELSIUS
 
 /turf/simulated/floor/asteroid/swamp_dirt
@@ -731,7 +731,7 @@ var/list/mining_floors = list()
 
 	footstep_sound = SFX_FOOTSTEP_GRASS
 	temperature = 30 CELSIUS
-	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+	initial_gas = /decl/initial_gas_mix/air/asteroid
 
 /turf/simulated/floor/asteroid/swamp_dirt/Initialize()
 	. = ..()
@@ -758,4 +758,4 @@ var/list/mining_floors = list()
 	icon_state = "swamp"
 	footstep_sound = SFX_FOOTSTEP_WATER
 	temperature = 30 CELSIUS
-	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+	initial_gas = /decl/initial_gas_mix/air/asteroid

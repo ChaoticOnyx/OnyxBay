@@ -1,9 +1,9 @@
 /obj/item/clothing/gloves/color
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "white"
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "lgloves",
 		slot_r_hand_str = "lgloves",
 		)
@@ -24,7 +24,7 @@
 	name = "rainbow gloves"
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "rainbow"
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/gloves/color/long_evening_gloves
 	name = "long evening gloves"

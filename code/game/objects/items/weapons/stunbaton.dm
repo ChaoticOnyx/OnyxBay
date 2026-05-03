@@ -15,7 +15,7 @@
 	mod_reach = 1.25
 	mod_handy = 1.45
 	origin_tech = list(TECH_COMBAT = 2)
-	attack_verb = list("beaten")
+	attack_verb = "beaten"
 	var/stunforce = 6
 	var/agonyforce = 75
 	var/status = 0		//whether the thing is on or not
@@ -271,5 +271,5 @@
 	stunforce = 4
 	agonyforce = 60	//same force as a stunbaton, but uses way more charge.
 	hitcost = 25
-	attack_verb = list("poked")
+	attack_verb = "poked"
 	slot_flags = null

@@ -84,7 +84,7 @@ var/list/tape_roll_applications = list()
 /obj/item/tape/engineering
 	name = "engineering tape"
 	desc = "A length of engineering tape. Better not cross it."
-	req_one_access = list(access_engine,access_atmospherics)
+	req_one_access = list(access_engine, access_atmospherics)
 	color = COLOR_ORANGE
 
 /obj/item/taperoll/atmos
@@ -96,7 +96,7 @@ var/list/tape_roll_applications = list()
 /obj/item/tape/atmos
 	name = "atmospherics tape"
 	desc = "A length of atmospherics tape. Better not cross it."
-	req_one_access = list(access_engine,access_atmospherics)
+	req_one_access = list(access_engine, access_atmospherics)
 	color = COLOR_BLUE_LIGHT
 
 /obj/item/taperoll/research
@@ -296,7 +296,7 @@ var/list/tape_roll_applications = list()
 	if(!lifted && ismob(mover))
 		var/mob/M = mover
 		add_fingerprint(M)
-		if (!allowed(M))	//only select few learn art of not crumpling the tape
+		if (!check_access(M))	//only select few learn art of not crumpling the tape
 			to_chat(M, "<span class='warning'>You are not supposed to go past [src]...</span>")
 			if(M.a_intent == I_HELP)
 				return FALSE
@@ -307,7 +307,7 @@ var/list/tape_roll_applications = list()
 	breaktape(user)
 
 /obj/item/tape/attack_hand(mob/user as mob)
-	if (user.a_intent == I_HELP && src.allowed(user))
+	if (user.a_intent == I_HELP && check_access(user))
 		user.show_viewers("<span class='notice'>\The [user] lifts \the [src], allowing passage.</span>")
 		for(var/obj/item/tape/T in gettapeline())
 			T.lift(100) //~10 seconds

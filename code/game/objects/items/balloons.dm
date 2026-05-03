@@ -146,8 +146,8 @@
 		new_item_state = wielded ? wielded_item_state : initial(item_state)
 	else
 		new_item_state = "[base_item_state][wielded]"
-	item_state_slots[slot_l_hand_str] = new_item_state
-	item_state_slots[slot_r_hand_str] = new_item_state
+	A_LAZYSET(item_state_slots, slot_l_hand_str, new_item_state)
+	A_LAZYSET(item_state_slots, slot_r_hand_str, new_item_state)
 
 /obj/item/balloon/update_twohanding()
 	if(!wieldable)

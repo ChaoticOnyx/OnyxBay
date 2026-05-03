@@ -1,7 +1,7 @@
 /obj/item/clothing/glasses
 	name = "glasses"
 	icon = 'icons/obj/clothing/glasses.dmi'
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "glasses",
 		slot_r_hand_str = "glasses"
 		)
@@ -66,7 +66,7 @@
 	name = "eyepatch"
 	desc = "Yarr."
 	icon_state = "eyepatch"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "blindfold", // Looks kinda close ngl
 		slot_r_hand_str = "blindfold"
 		)
@@ -94,7 +94,7 @@
 	name = "monocle"
 	desc = "Such a dapper eyepiece!"
 	icon_state = "monocle"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "headset",
 		slot_r_hand_str = "headset"
 		)
@@ -142,7 +142,7 @@
 	name = "sunglasses"
 	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Enhanced shielding blocks many flashes."
 	icon_state = "sun"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "sunglasses",
 		slot_r_hand_str = "sunglasses"
 		)
@@ -164,7 +164,7 @@
 	name = "blindfold"
 	desc = "Covers the eyes, preventing sight."
 	icon_state = "blindfold"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "blindfold",
 		slot_r_hand_str = "blindfold"
 		)
@@ -179,7 +179,7 @@
 	desc = "It's a robust DIY blindfold!"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "tape_cross"
-	item_state_slots = list()
+	item_state_slots = null
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/clothing/glasses/sunglasses/prescription
@@ -194,7 +194,7 @@
 	name = "welding goggles"
 	desc = "Protects the eyes from welders, approved by the mad scientist association."
 	icon_state = "welding-g"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "welding-g",
 		slot_r_hand_str = "welding-g"
 		)
@@ -251,7 +251,7 @@
 	action_button_name = "Toggle Goggles"
 	toggleable = TRUE
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0)
 	siemens_coefficient = 0.6
 	electric = TRUE
 

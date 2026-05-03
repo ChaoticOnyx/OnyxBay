@@ -45,7 +45,7 @@
 	item_flags = 0
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
 	down_gas_transfer_coefficient = 1
 	down_body_parts_covered = null
 	down_icon_state = "steriledown"
@@ -168,7 +168,7 @@
 	body_parts_covered = FACE|EYES
 	action_button_name = "Toggle MUI"
 	origin_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 5)
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0) //Well it's made of some sort of plastic.
+	armor_values = alist(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0) //Well it's made of some sort of plastic.
 	use_alt_layer = TRUE
 	can_use_alt_layer = TRUE
 
@@ -229,7 +229,7 @@
 	flags_inv = HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	rad_resist_type = /datum/rad_resist/mask_rubber
 
 /datum/rad_resist/mask_rubber
@@ -311,7 +311,7 @@
 	item_state = "bandblack"
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
-	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15)
 	use_alt_layer = TRUE
 	can_use_alt_layer = TRUE
 
@@ -402,7 +402,7 @@
 	icon_state = "skullmask"
 	item_state = "skullmask"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 	can_use_alt_layer = TRUE
 

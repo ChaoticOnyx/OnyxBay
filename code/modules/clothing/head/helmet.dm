@@ -7,7 +7,7 @@
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD|EYES
-	armor = list(melee = 70, bullet = 90, laser = 70, energy = 25, bomb = 35, bio = 0)
+	armor_values = alist(melee = 70, bullet = 90, laser = 70, energy = 25, bomb = 35, bio = 0)
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -56,7 +56,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|FACE|EYES //face shield
 	visor_body_parts_covered = FACE|EYES
-	armor = list(melee = 140, bullet = 55, laser = 50, energy = 25, bomb = 35, bio = 5)
+	armor_values = alist(melee = 140, bullet = 55, laser = 50, energy = 25, bomb = 35, bio = 5)
 	siemens_coefficient = 0.5
 	action_button_name = "Toggle Visor"
 	coverage = 1.0
@@ -68,7 +68,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 55, bullet = 50, laser = 160, energy = 60, bomb = 35, bio = 2)
+	armor_values = alist(melee = 55, bullet = 50, laser = 160, energy = 60, bomb = 35, bio = 2)
 	siemens_coefficient = 0
 	coverage = 0.9
 
@@ -79,7 +79,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 60, bullet = 160, laser = 40, energy = 5, bomb = 35, bio = 2)
+	armor_values = alist(melee = 60, bullet = 160, laser = 40, energy = 5, bomb = 35, bio = 2)
 	siemens_coefficient = 0.6
 	coverage = 0.9
 
@@ -102,7 +102,7 @@
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
 	flags_inv = HIDEFACE|BLOCKHAIR
-	armor = list(melee = 110, bullet = 140, laser = 130, energy = 25, bomb = 35, bio = 0)
+	armor_values = alist(melee = 110, bullet = 140, laser = 130, energy = 25, bomb = 35, bio = 0)
 	siemens_coefficient = 0.5
 	coverage = 1.0
 
@@ -115,11 +115,11 @@
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
 	valid_accessory_slots = null
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndicate-helm-green",
 		slot_r_hand_str = "syndicate-helm-green",
 		)
-	armor = list(melee = 100, bullet = 130, laser = 120, energy = 40, bomb = 20, bio = 0)
+	armor_values = alist(melee = 100, bullet = 130, laser = 120, energy = 40, bomb = 20, bio = 0)
 	siemens_coefficient = 0.5
 	coverage = 0.9
 
@@ -148,7 +148,7 @@
 	icon_state = "swat"
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 50)
+	armor_values = alist(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 50)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.3
@@ -159,7 +159,7 @@
 	desc = "A helmet with optical and cranial augments coupled to it."
 	icon_state = "v62"
 	valid_accessory_slots = null
-	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10)
+	armor_values = alist(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10)
 	flags_inv = HIDEEARS|HIDEEYES
 	body_parts_covered = HEAD|EYES|BLOCKHEADHAIR
 	visor_body_parts_covered = NO_BODYPARTS
@@ -174,7 +174,7 @@
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
 	siemens_coefficient = 0.4
-	armor = list(melee = 100, bullet = 130, laser = 120, energy = 50, bomb = 50, bio = 50)
+	armor_values = alist(melee = 100, bullet = 130, laser = 120, energy = 50, bomb = 50, bio = 50)
 	coverage = 0.95
 
 /obj/item/clothing/head/helmet/thunderdome
@@ -184,7 +184,7 @@
 	body_parts_covered = HEAD
 	visor_body_parts_covered = NO_BODYPARTS
 	valid_accessory_slots = null
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10)
+	armor_values = alist(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 1

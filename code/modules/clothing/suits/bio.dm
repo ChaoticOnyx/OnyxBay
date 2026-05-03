@@ -2,13 +2,13 @@
 /obj/item/clothing/head/bio_hood
 	name = "bio hood"
 	icon_state = "bio"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "bio_hood",
 		slot_r_hand_str = "bio_hood",
 		)
 	desc = "A hood that protects the head and face from biological comtaminants."
 	permeability_coefficient = 0
-	armor = list(melee = 5, bullet = 2.5, laser = 2.5,energy = 0, bomb = 0, bio = 100)
+	armor_values = alist(melee = 5, bullet = 2.5, laser = 2.5,energy = 0, bomb = 0, bio = 100)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD|FACE|EYES
@@ -19,7 +19,7 @@
 	name = "bio suit"
 	desc = "A suit that protects against biological contamination."
 	icon_state = "bio"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "bio_suit",
 		slot_r_hand_str = "bio_suit",
 	)
@@ -28,7 +28,7 @@
 	permeability_coefficient = 0
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/tank/emergency,/obj/item/pen,/obj/item/device/flashlight/pen,/obj/item/device/healthanalyzer,/obj/item/device/ano_scanner,/obj/item/clothing/head/bio_hood,/obj/item/clothing/mask/gas,/obj/item/device/antibody_scanner)
-	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100)
+	armor_values = alist(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	siemens_coefficient = 0.9
@@ -41,7 +41,7 @@
 
 /obj/item/clothing/suit/bio_suit/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1.0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)
 
 //Standard biosuit, orange stripe
 /obj/item/clothing/head/bio_hood/general

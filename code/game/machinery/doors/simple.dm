@@ -246,11 +246,14 @@
 /obj/machinery/door/unpowered/simple/resin/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_RESIN, complexity)
 
-/obj/machinery/door/unpowered/simple/resin/allowed(mob/M)
-	if(istype(M, /mob/living/carbon/larva/xenomorph))
+/obj/machinery/door/unpowered/simple/resin/check_access(atom/movable/AM)
+	if(istype(AM, /obj/item))
+		AM = AM.loc
+
+	if(istype(AM, /mob/living/carbon/larva/xenomorph))
 		return TRUE
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
 		if(H.internal_organs_by_name[BP_HIVE])
 			return TRUE
 	return FALSE
@@ -272,7 +275,7 @@
 	if(operating)
 		return
 
-	if(allowed(user))
+	if(check_access(user))
 		if(density)
 			open()
 		else

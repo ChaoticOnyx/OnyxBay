@@ -8,7 +8,7 @@
 	heat_protection = FEET
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "bl_shoes",
 		slot_r_hand_str = "bl_shoes",
 		)
@@ -18,7 +18,7 @@
 	desc = "A pair of brown shoes."
 	icon_state = "brown"
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "b_shoes",
 		slot_r_hand_str = "b_shoes",
 		)
@@ -44,7 +44,7 @@
 	desc = "Stylish red shoes."
 	icon_state = "red"
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "r_shoes",
 		slot_r_hand_str = "r_shoes",
 		)
@@ -54,7 +54,7 @@
 	icon_state = "white"
 	permeability_coefficient = 0.01
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "w_shoes",
 		slot_r_hand_str = "w_shoes",
 		)
@@ -64,7 +64,7 @@
 	desc = "A sturdy pair of leather shoes."
 	icon_state = "leather"
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "leather_shoes",
 		slot_r_hand_str = "leather_shoes",
 		)
@@ -74,7 +74,7 @@
 	desc = "Very gay shoes."
 	icon_state = "rain_bow"
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "r_shoes",
 		slot_r_hand_str = "r_shoes",
 		)
@@ -86,7 +86,7 @@
 	throwforce = 0
 	siemens_coefficient = 1  // prisoners shall be scared of tasers
 	desc = "A pair of flimsy, cheap shoes. The soles have been made of a soft rubber."
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "o_shoes",
 		slot_r_hand_str = "o_shoes",
 		)
@@ -99,9 +99,9 @@
 	if(!user.drop(cuffs, src))
 		return
 	chained = cuffs
-	slowdown_per_slot[slot_shoes] += 15
+	A_LAZYSET(slowdown_per_slot, slot_shoes, 15)
 	icon_state = "orange1"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "o_shoes1",
 		slot_r_hand_str = "o_shoes1",
 		)
@@ -113,9 +113,9 @@
 	user.pick_or_drop(chained)
 	chained.add_fingerprint(user)
 
-	slowdown_per_slot[slot_shoes] -= 15
+	A_LAZYSET(slowdown_per_slot, slot_shoes, 0)
 	icon_state = "orange"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "o_shoes",
 		slot_r_hand_str = "o_shoes",
 		)

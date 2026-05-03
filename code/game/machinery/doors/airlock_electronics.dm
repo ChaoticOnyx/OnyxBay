@@ -12,7 +12,7 @@
 
 	var/secure = 0 // if set, then wires will be randomized and bolts will drop if the door is broken
 	var/list/conf_access = list()
-	var/one_access = 0 // if set to 1, door would receive req_one_access instead of req_access
+	var/one_access = FALSE // if set to TRUE, door would receive req_one_access instead of req_access
 	var/last_configurator = null
 	var/locked = 1
 	var/lockable = 1
@@ -87,20 +87,20 @@
 			if(!lockable)
 				return TRUE
 
-			if(!req_access || istype(usr, /mob/living/silicon))
-				locked = 0
+			if(!length(req_access) || issilicon(usr))
+				locked = FALSE
 				last_configurator = usr.name
 				return TRUE
 
 			else
 				var/obj/item/card/id/I = usr.get_active_hand()
-				I = I ? I.get_id_card() : null
-				if(!istype(I, /obj/item/card/id))
+				I = I?.get_id_card()
+				if(!istype(I))
 					to_chat(usr, SPAN("warning", "[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?"))
 					return TRUE
 
-				if (check_access(I))
-					locked = 0
+				if(check_access(I))
+					locked = FALSE
 					last_configurator = I.registered_name
 				else
 					to_chat(usr, SPAN("warning", "[\src] flashes a red LED near the ID scanner, indicating your access has been denied."))
@@ -134,11 +134,11 @@
 	icon_state = "door_electronics_secure"
 	desc = "designed to be somewhat more resistant to hacking than standard electronics."
 	origin_tech = list(TECH_DATA = 2)
-	secure = 1
+	secure = TRUE
 
 /obj/item/airlock_electronics/brace
 	name = "airlock brace access circuit"
 	icon_state = "door_electronics_brace"
-	req_access = list()
-	locked = 0
-	lockable = 0
+	req_access = null
+	locked = FALSE
+	lockable = FALSE

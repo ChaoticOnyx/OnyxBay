@@ -14,7 +14,7 @@
 	idle_power_usage = 50 WATTS
 	active_power_usage = 200 WATTS
 	interact_offline = 1
-	req_access = list()
+	req_access = null
 
 	var/mob/living/carbon/human/occupant = null
 	var/obj/item/clothing/suit/space/suit = null
@@ -389,7 +389,7 @@
 	if(isbroken)
 		to_chat(user, SPAN("warning", "The unit doesn't seem to be operational."))
 		return
-	if(!allowed(user))
+	if(!check_access(user))
 		to_chat(user, FEEDBACK_ACCESS_DENIED)
 		return
 	if(occupant && safetieson)
@@ -904,7 +904,7 @@
 	departments = list("Engineering","Mining","Medical","Security","Atmos","^%###^%$")
 	emagged = 1
 	safeties = 0
-	req_access = list()
+	req_access = null
 	updateUsrDialog()
 	return 1
 
@@ -928,7 +928,7 @@
 
 	else if(locked)
 		dat += "<br><font color='red'><B>The [model_text ? "[model_text] " : ""]suit cycler is currently locked. Please contact your system administrator.</b></font>"
-		if(allowed(user))
+		if(check_access(user))
 			dat += "<br><a href='?src=\ref[src];toggle_lock=1'>\[unlock unit\]</a>"
 	else
 		dat += "<h1>Suit cycler</h1>"
@@ -997,7 +997,7 @@
 
 	else if(href_list["toggle_lock"])
 
-		if(allowed(usr))
+		if(check_access(usr))
 			locked = !locked
 			to_chat(usr, "You [locked ? "lock" : "unlock"] [src].")
 			playsound(src.loc, locked ? 'sound/effects/suitcycler/close1.ogg' : 'sound/effects/suitcycler/open1.ogg', 70, 1)
@@ -1128,7 +1128,7 @@
 			if(suit)
 				suit.SetName("engineering voidsuit")
 				suit.icon_state = "eng_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "eng_voidsuit",
 					slot_r_hand_str = "eng_voidsuit",
 				)
@@ -1140,7 +1140,7 @@
 			if(suit)
 				suit.SetName("mining voidsuit")
 				suit.icon_state = "mining_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "mining_voidsuit",
 					slot_r_hand_str = "mining_voidsuit",
 				)
@@ -1152,7 +1152,7 @@
 			if(suit)
 				suit.SetName("excavation voidsuit")
 				suit.icon_state = "excavation_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "excavation_voidsuit",
 					slot_r_hand_str = "excavation_voidsuit",
 				)
@@ -1164,7 +1164,7 @@
 			if(suit)
 				suit.SetName("medical voidsuit")
 				suit.icon_state = "medical_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "medical_voidsuit",
 					slot_r_hand_str = "medical_voidsuit",
 				)
@@ -1176,7 +1176,7 @@
 			if(suit)
 				suit.SetName("security voidsuit")
 				suit.icon_state = "sec_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "sec_voidsuit",
 					slot_r_hand_str = "sec_voidsuit",
 				)
@@ -1188,7 +1188,7 @@
 			if(suit)
 				suit.SetName("atmospherics voidsuit")
 				suit.icon_state = "atmos_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "atmos_voidsuit",
 					slot_r_hand_str = "atmos_voidsuit",
 				)
@@ -1209,7 +1209,7 @@
 			if(suit)
 				suit.SetName("blood-red voidsuit")
 				suit.icon_state = "syndie_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "syndie_voidsuit",
 					slot_r_hand_str = "syndie_voidsuit",
 				)

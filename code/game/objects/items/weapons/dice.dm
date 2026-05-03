@@ -8,7 +8,7 @@
 	mod_reach = 0.1
 	mod_handy = 0.1
 	var/sides = 6
-	attack_verb = list("diced")
+	attack_verb = "diced"
 
 /obj/item/dice/New()
 	..()

@@ -6,7 +6,7 @@ GLOBAL_DATUM_INIT(tgui_machinery_state, /datum/ui_state/machinery, new)
 	if(src_object.stat & ( BROKEN | NOPOWER ))
 		return UI_CLOSE
 
-	if(!src_object.allowed(user))
+	if(!src_object.check_access(user))
 		return UI_UPDATE
 
 	return user.tgui_default_can_use_topic(src_object)

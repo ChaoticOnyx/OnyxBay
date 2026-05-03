@@ -15,13 +15,13 @@
 	name = "welding helmet"
 	desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye."
 	icon_state = "welding"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "welding",
 		slot_r_hand_str = "welding",
 		)
 	matter = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
 	var/up = 0
-	armor = list(melee = 70, bullet = 90, laser = 70, energy = 25, bomb = 35, bio = 0)
+	armor_values = alist(melee = 70, bullet = 90, laser = 70, energy = 25, bomb = 35, bio = 0)
 	coverage = 1.0
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
@@ -155,7 +155,7 @@
 	item_state = "cake0"
 	var/onfire = 0
 	body_parts_covered = HEAD
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 40, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 40, bomb = 0, bio = 0)
 	siemens_coefficient = 0.2 // A fancy man's taser absorber
 
 /obj/item/clothing/head/cakehat/think()
@@ -204,7 +204,7 @@
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 30, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 30, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/ushanka/attack_self(mob/user as mob)
 	if(icon_state == initial(icon_state))
@@ -232,7 +232,7 @@
 	brightness_on = 2
 	light_overlay = "helmet_light"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 35, bullet = 15, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 35, bullet = 15, laser = 10, energy = 0, bomb = 0, bio = 0)
 
 /*
  * Kitty ears
@@ -243,7 +243,7 @@
 	icon_state = "kitty"
 	slot_flags = SLOT_HEAD | SLOT_EARS
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = -30, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0) // Take an oxygen tank to the head and die. Please.
+	armor_values = alist(melee = -30, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0) // Take an oxygen tank to the head and die. Please.
 	siemens_coefficient = 1.5
 	item_icons = list()
 
@@ -265,7 +265,7 @@
 	icon_state = "richard"
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 /*
  * Tinfoil hat
  */
@@ -274,7 +274,7 @@
 	desc = "Big brother is watching you!"
 	icon_state = "foilhat"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
 	rad_resist_type = /datum/rad_resist/tinfoil
 
 /datum/rad_resist/tinfoil

@@ -307,10 +307,10 @@
 			anchored = 1
 
 
-	else if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))
-		if(src.allowed(user))
-			src.locked = !src.locked
-			to_chat(user, "The controls are now [src.locked ? "locked." : "unlocked."]")
+	else if(W?.get_id_card())
+		if(check_access(W))
+			locked = !locked
+			to_chat(user, "The controls are now [locked ? "locked" : "unlocked"].")
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 	else
