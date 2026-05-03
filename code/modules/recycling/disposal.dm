@@ -534,10 +534,10 @@
 		sleep(1)		// was 1
 		if(!loc) return // check if we got GC'd
 
-		if(hasmob && prob(3))
+		if(hasmob && prob(5))
 			for(var/mob/living/H in src)
-				if(!istype(H,/mob/living/silicon/robot/drone)) //Drones use the mailing code to move through the disposal system,
-					H.take_overall_damage(20, 0, 0, "Blunt Trauma", FALSE)//horribly maim any living creature jumping down disposals.  c'est la vie
+				if(!istype(H, /mob/living/silicon/robot/drone)) // Drones use the mailing code to move through the disposal system,
+					H.take_overall_damage(80, 0, 0, "Blunt Trauma")// horribly maim any living creature jumping down disposals.  c'est la vie
 
 		var/obj/structure/disposalpipe/curr = loc
 		last = curr
@@ -1185,7 +1185,7 @@
 		..()
 
 /obj/machinery/disposal_switch/attack_hand(mob/user)
-	if(!allowed(user))
+	if(!check_access(user))
 		to_chat(user, "<span class='warning'>Access denied.</span>")
 		return
 	on = !on

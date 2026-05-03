@@ -5,7 +5,7 @@
 	item_state = "syndicate"
 	worn_state = "syndicate"
 	has_sensor = 0
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/syndicate/combat
@@ -15,7 +15,7 @@
 	item_state = "combat"
 	worn_state = "combat"
 	has_sensor = SUIT_HAS_SENSORS
-	armor = list(melee = 20, bullet = 20, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 10, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/syndicate/tacticool
 	name = "\improper Tacticool turtleneck"
@@ -23,6 +23,6 @@
 	icon_state = "tactifool"
 	item_state = "tactifool"
 	worn_state = "tactifool"
-	armor = list(melee = 5, bullet = -20, laser = 5, energy = 0, bomb = 0, bio = 0) // Getting shot despite being tacticool hurts on a different level
+	armor_values = alist(melee = 5, bullet = -20, laser = 5, energy = 0, bomb = 0, bio = 0) // Getting shot despite being tacticool hurts on a different level
 	siemens_coefficient = 1
 	has_sensor = SUIT_HAS_SENSORS

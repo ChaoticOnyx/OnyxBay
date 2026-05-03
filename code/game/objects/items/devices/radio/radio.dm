@@ -135,8 +135,7 @@
 	return user.has_internal_radio_channel_access(internal_channels[freq])
 
 /mob/proc/has_internal_radio_channel_access(list/req_one_accesses)
-	var/obj/item/card/id/I = get_id_card()
-	return has_access(list(), req_one_accesses, I ? I.GetAccess() : list())
+	return has_access(null, req_one_accesses, GetAccess())
 
 /mob/observer/ghost/has_internal_radio_channel_access(list/req_one_accesses)
 	return can_admin_interact()

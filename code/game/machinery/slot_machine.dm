@@ -124,6 +124,14 @@
 	current_player = ""
 	update_icon()
 
+/obj/machinery/slot_machine/emag_act(remaining_charges, mob/user)
+	if(emagged)
+		return NO_EMAG_ACT
+	emagged = TRUE
+	visible_message(SPAN("danger", "\The [src] makes a strange buzzing sound."))
+	playsound(src, SFX_SPARK, 100, TRUE)
+	return 1
+
 /obj/machinery/slot_machine/attackby(obj/item/W, mob/user)
 	if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
 		if(wrench_floor_bolts(user))

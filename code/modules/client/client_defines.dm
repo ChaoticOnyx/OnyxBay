@@ -96,3 +96,9 @@
 
 	/// Movement dir of the most recently pressed movement key. Used in cardinal-only movement mode.
 	var/last_move_dir_pressed
+
+	/// Full-auto guns broke clicking and now we have to invent workarounds. What a life.
+	var/mouse_down_last_time = 0
+	var/mouse_click_last_time = 0
+	var/mouse_click_opportunity_window = 2 // Must be enough for most users.
+	var/atom/mouse_down_atom = null

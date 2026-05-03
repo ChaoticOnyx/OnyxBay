@@ -506,8 +506,6 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = EMOTE_CHECK_CONSCIOUS
-
 	sound = SFX_SNORE
 
 	statpanel_proc = /mob/proc/snore_emote

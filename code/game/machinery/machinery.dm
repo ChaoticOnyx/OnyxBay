@@ -296,8 +296,12 @@ Class Procs:
 
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
-	if(user)
-		user.set_machine(src)
+	if(!user)
+		return
+
+	user.set_machine(src)
+	if(clicksound && iscarbon(user))
+		playsound(src, clicksound, clickvol)
 
 /obj/machinery/CouldNotUseTopic(mob/user)
 	if(user)
@@ -463,11 +467,6 @@ Class Procs:
 		return TRUE
 
 	if(clicksound && istype(usr, /mob/living/carbon))
-		playsound(src, clicksound, clickvol)
-
-/obj/machinery/CouldUseTopic(mob/user)
-	..()
-	if(clicksound && istype(user, /mob/living/carbon))
 		playsound(src, clicksound, clickvol)
 
 /obj/machinery/proc/get_parts_infotext()

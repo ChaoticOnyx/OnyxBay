@@ -443,7 +443,7 @@
 /obj/machinery/button/crematorium/attack_hand(mob/user as mob)
 	if(..())
 		return
-	if(src.allowed(user))
+	if(check_access(user))
 		for(var/obj/structure/crematorium/C in world)
 			if(C.id == id)
 				if(!C.cremating)

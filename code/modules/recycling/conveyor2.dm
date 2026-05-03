@@ -203,7 +203,7 @@
 
 // attack with hand, switch position
 /obj/machinery/conveyor_switch/attack_hand(mob/user)
-	if(!allowed(user))
+	if(!check_access(user))
 		playsound(src.loc, 'sound/signals/error32.ogg', 50)
 		to_chat(user, "<span class='warning'>Access denied.</span>")
 		return

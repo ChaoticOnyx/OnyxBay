@@ -12,8 +12,8 @@
 
 	var/open_turf_type // Which open turf type to use by default above this turf in a multiz context. Overridden by area.
 
-	// Initial air contents (in moles)
-	var/list/initial_gas
+	// Initial gas contents, must be a path of a /decl/initial_gas_mix child. Will become a reference automatically during New(). ~NoSieve
+	var/decl/initial_gas_mix/initial_gas = /decl/initial_gas_mix/empty
 
 	//Properties for airtight tiles (/wall)
 	var/thermal_conductivity = 0.05
@@ -82,8 +82,16 @@
 	beta_particle_resist = 50 KILO ELECTRONVOLT
 	hawking_resist = 81 MILLI ELECTRONVOLT
 
+/turf/New(newloc) // TODO: Get rid of New's in turfs or at least make them organized
+	if(!ispath(initial_gas)) // I fukken HOPE it's safe to do this BEFORE everything
+		initial_gas = /decl/initial_gas_mix/empty
+	initial_gas = decls_repository.get_decl(initial_gas)
+
+	..(newloc)
+
 /turf/Initialize(mapload, ...)
 	. = ..()
+
 	if(dynamic_lighting)
 		luminosity = 0
 	else

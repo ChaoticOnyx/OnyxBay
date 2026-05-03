@@ -22,7 +22,7 @@
 	throwforce = 5.0
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 75)
-	attack_verb = list("stabbed")
+	attack_verb = "stabbed"
 	lock_picking_level = 5
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	tool_behaviour = TOOL_SCREWDRIVER

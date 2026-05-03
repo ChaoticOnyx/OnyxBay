@@ -17,7 +17,7 @@
 	layer = ABOVE_OBJ_LAYER
 	slot_flags = SLOT_HEAD
 	body_parts_covered = HEAD
-	attack_verb = list("bapped")
+	attack_verb = "bapped"
 	base_icon_state = "paper"
 	var/crumpled_state = "scrap"
 

@@ -146,7 +146,7 @@
 	if(..())
 		return
 
-	if(!src.allowed(user))
+	if(!check_access(user))
 		to_chat(user, "<span class='warning'>Access denied.</span>")
 		return
 

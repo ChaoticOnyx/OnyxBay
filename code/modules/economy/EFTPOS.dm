@@ -89,8 +89,8 @@
 	queue_icon_update()
 
 /obj/item/device/eftpos/attackby(obj/item/O, user)
-	var/obj/item/card/id/id_card = O.get_id_card()
-	if (istype(id_card))
+	var/obj/item/card/id/id_card = O?.get_id_card()
+	if(istype(id_card))
 		if (input_mode == IM_SUM && payment_amount > 0)
 			attempt_id_payment(id_card)
 			return

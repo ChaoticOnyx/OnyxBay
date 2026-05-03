@@ -240,7 +240,7 @@
 
 /obj/item/storage/belt/waistpack/big/New()
 	..()
-	slowdown_per_slot[slot_belt] = 1
+	A_LAZYSET(slowdown_per_slot, slot_belt, 1)
 
 /obj/item/storage/belt/mining
 	name = "explorer's belt"

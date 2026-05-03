@@ -97,8 +97,8 @@
 	if(inoperable(MAINT))
 		return ..()
 
-	if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))
-		if(allowed(usr))
+	if(W?.get_id_card())
+		if(check_access(W))
 			if(emagged)
 				show_splash_text(user, "Control panel is unresponsive")
 			else

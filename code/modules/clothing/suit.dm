@@ -12,7 +12,7 @@
 	siemens_coefficient = 0.9
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/tank/emergency)
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	slot_flags = SLOT_OCLOTHING
 	coverage = 1.0
 
@@ -36,7 +36,7 @@
 
 	var/image/ret = .
 
-	if(item_state_slots && item_state_slots[slot])
+	if(item_state_slots?[slot])
 		ret.icon_state = item_state_slots[slot]
 	else
 		ret.icon_state = icon_state

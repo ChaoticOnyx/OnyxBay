@@ -142,7 +142,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	if(istype(W, /obj/item/card/id))
 		if(!emagged)
 			if(!registered_owner)
-				if(allowed(user))
+				if(check_access(user))
 					var/obj/item/card/id/id = W
 					GLOB.registered_weapons += src
 					registered_owner = id.registered_name
@@ -164,7 +164,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	if(issilicon(usr))
 		return
 
-	if(allowed(usr))
+	if(check_access(usr))
 		usr.visible_message("[usr] presses the reset button on \the [src], resetting its registration.", "You press the reset button on \the [src], resetting its registration.")
 		registered_owner = null
 		GLOB.registered_weapons -= src

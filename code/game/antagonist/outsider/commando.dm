@@ -35,7 +35,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 	player.equip_to_slot_or_del(new /obj/item/ammo_magazine/box/c45(player), slot_in_backpack)
 	player.equip_to_slot_or_del(new /obj/item/rig/syndi(player), slot_back)
 	player.equip_to_slot_or_del(new /obj/item/gun/energy/pulse_rifle(player), slot_r_hand)
-	player.equip_to_slot_or_del(new /obj/item/melee/energy/sword/one_hand(player), slot_l_hand)
+	player.equip_to_slot_or_del(new /obj/item/melee/energy/sword/saber/green(player), slot_l_hand)
 
 	create_id("Commando", player)
 	create_radio(SYND_FREQ, player)

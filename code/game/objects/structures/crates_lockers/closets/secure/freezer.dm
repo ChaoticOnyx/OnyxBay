@@ -9,7 +9,7 @@
 	)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/mining
-	req_access = list()
+	req_access = null
 
 /obj/structure/closet/secure_closet/freezer/meat
 	name = "meat fridge"

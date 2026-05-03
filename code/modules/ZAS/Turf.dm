@@ -237,7 +237,7 @@ var/global/obj/effect/zasdbg/mark/zasdbgovl_mark = new
 		return zone.air
 
 	// Exterior turf global atmosphere
-	if((!air && isnull(initial_gas)) || (external_atmosphere_participation && is_outside()))
+	if((!air && !length(initial_gas.gases)) || (external_atmosphere_participation && is_outside()))
 		return get_external_air()
 
 	// Base behavior
@@ -263,8 +263,7 @@ var/global/obj/effect/zasdbg/mark/zasdbgovl_mark = new
 /turf/proc/make_air()
 	air = new /datum/gas_mixture
 	air.temperature = temperature
-	if(initial_gas)
-		air.gas = initial_gas.Copy()
+	air.gas = initial_gas.gases.Copy()
 	air.update_values()
 	return air
 

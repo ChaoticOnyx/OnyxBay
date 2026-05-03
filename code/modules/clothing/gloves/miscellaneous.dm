@@ -2,7 +2,7 @@
 	name = "captain's gloves"
 	desc = "Regal blue gloves, with a nice gold trim. Swanky."
 	icon_state = "captain"
-	armor = list(melee = 70, bullet = 60, laser = 50, energy = 60, bomb = 0, bio = 30)
+	armor_values = alist(melee = 70, bullet = 60, laser = 50, energy = 60, bomb = 0, bio = 30)
 	siemens_coefficient = 0 // These are ELITE
 
 /obj/item/clothing/gloves/insulated
@@ -12,12 +12,12 @@
 	icon_state = "white"
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
-	armor = list(melee = 20, bullet = 5, laser = 10, energy = 70, bomb = 0, bio = 30)
+	armor_values = alist(melee = 20, bullet = 5, laser = 10, energy = 70, bomb = 0, bio = 30)
 
 	drop_sound = SFX_DROP_RUBBER
 	pickup_sound = SFX_PICKUP_RUBBER
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "ygloves",
 		slot_r_hand_str = "ygloves",
 		)
@@ -39,7 +39,7 @@
 	item_state = "black"
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
+	armor_values = alist(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -52,7 +52,7 @@
 	icon_state = "black"
 	siemens_coefficient = 0.5
 	permeability_coefficient = 0.05
-	armor = list(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 0, bio = 0)
+	armor_values = alist(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 0, bio = 0)
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -78,7 +78,7 @@
 	force = 5
 	siemens_coefficient = 0.3
 	permeability_coefficient = 0.05
-	armor = list(melee = 80, bullet = 80, laser = 80, energy = 25, bomb = 50, bio = 30)
+	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 25, bomb = 50, bio = 30)
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -99,7 +99,7 @@
 	item_state = "sec_black"
 	siemens_coefficient = 0.5
 	permeability_coefficient = 0.05
-	armor = list(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 0, bio = 0)
+	armor_values = alist(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 0, bio = 0)
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -137,12 +137,12 @@
 	icon_state = "white"
 	siemens_coefficient = 1.1 //thin latex gloves, much more conductive than fabric gloves (basically a capacitor for AC)
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 95)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 95)
 
 	drop_sound = SFX_DROP_RUBBER
 	pickup_sound = SFX_PICKUP_RUBBER
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "lgloves",
 		slot_r_hand_str = "lgloves",
 		)
@@ -163,7 +163,7 @@
 	desc = "These brown duty gloves are made from a durable synthetic."
 	icon_state = "work"
 	siemens_coefficient = 0.50
-	armor = list(melee = 50, bullet = 40, laser = 60, energy = 45, bomb = 0, bio = 0)
+	armor_values = alist(melee = 50, bullet = 40, laser = 60, energy = 45, bomb = 0, bio = 0)
 
 /obj/item/clothing/gloves/duty/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
@@ -175,7 +175,7 @@
 	force = 5
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
-	armor = list(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 20, bio = 0)
+	armor_values = alist(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 20, bio = 0)
 
 /obj/item/clothing/gloves/guards
 	name = "arm guards"
@@ -185,4 +185,4 @@
 	w_class = ITEM_SIZE_NORMAL
 	siemens_coefficient = 0.7
 	permeability_coefficient = 0.03
-	armor = list(melee = 70, bullet = 40, laser = 60, energy = 25, bomb = 0, bio = 0)
+	armor_values = alist(melee = 70, bullet = 40, laser = 60, energy = 25, bomb = 0, bio = 0)

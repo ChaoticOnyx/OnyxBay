@@ -163,7 +163,7 @@
 	for(var/limb_tag in list(BP_L_LEG, BP_L_FOOT))	// Left leg processing
 		var/obj/item/organ/external/E = external_organs_by_name[limb_tag]
 
-		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
+		if(!E || (E.status & ORGAN_DISFIGURED) || (E.status & ORGAN_CUT_AWAY) || istype(E,/obj/item/organ/external/stump))
 			stance_d_l += 5
 
 		else if(E.is_malfunctioning())
@@ -192,7 +192,7 @@
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
 		var/obj/item/organ/external/E = external_organs_by_name[limb_tag]
 
-		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
+		if(!E || (E.status & ORGAN_DISFIGURED) || (E.status & ORGAN_CUT_AWAY) || istype(E,/obj/item/organ/external/stump))
 			stance_d_r += 5
 
 		else if(E.is_malfunctioning())

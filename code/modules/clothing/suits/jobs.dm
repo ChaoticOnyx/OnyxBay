@@ -109,7 +109,7 @@
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 50, bullet = 60, laser = 40, energy = 20, bomb = 25, bio = 0)
+	armor_values = alist(melee = 50, bullet = 60, laser = 40, energy = 20, bomb = 25, bio = 0)
 	coverage = 0.8
 
 /obj/item/clothing/suit/storage/toggle/det_trench/grey
@@ -120,7 +120,7 @@
 
 /obj/item/clothing/suit/storage/toggle/det_trench/ft
 	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. This one wouldn't block much of anything."
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/suit/storage/civ_trench
 	name = "brown trenchcoat"
@@ -131,7 +131,7 @@
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 20, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
 	coverage = 0.8
 
 /obj/item/clothing/suit/storage/civ_trench/grey
@@ -151,7 +151,7 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 	blood_overlay_type = "armorblood"
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/device/taperecorder)
-	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0)
 	coverage = 0.8
 
 /obj/item/clothing/suit/storage/toggle/forensics/red
@@ -190,7 +190,7 @@
 	/obj/item/clothing/mask/gas, /obj/item/taperoll/engineering)
 	body_parts_covered = UPPER_TORSO
 	coverage = 0.5
-	armor = list(melee = 10, bullet = 10, laser = 50, energy = 10, bomb = 0, bio = 0) // Reflective stripes go brrr
+	armor_values = alist(melee = 10, bullet = 10, laser = 50, energy = 10, bomb = 0, bio = 0) // Reflective stripes go brrr
 
 /obj/item/clothing/suit/storage/hazardvest/blue
 	name = "blue hazard vest"
@@ -247,7 +247,7 @@
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank, /obj/item/device/geiger, /obj/item/crowbar, \
 	/obj/item/device/analyzer, /obj/item/reagent_containers/vessel/flask, /obj/item/storage/pill_bottle)
 	body_parts_covered = UPPER_TORSO|ARMS
-	armor = list(melee = 30, bullet = 20, laser = 40, energy = 10, bomb = 0, bio = 50)
+	armor_values = alist(melee = 30, bullet = 20, laser = 40, energy = 10, bomb = 0, bio = 50)
 	coverage = 0.8
 	siemens_coefficient = 0.6
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
@@ -287,4 +287,4 @@
 	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank/emergency,/obj/item/scalpel,/obj/item/retractor,/obj/item/hemostat, \
 	/obj/item/cautery,/obj/item/bonegel,/obj/item/FixOVein)
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 50)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 50)

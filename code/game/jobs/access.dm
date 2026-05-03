@@ -1,45 +1,52 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
-/obj/var/list/req_access = list()
-/obj/var/list/req_one_access = list()
-
-//returns 1 if this mob has sufficient access to use this object
-/obj/proc/allowed(mob/M)
-	if(isanimal(M))
-		return FALSE
-	//check if it doesn't require any access at all
-	if(src.check_access(null))
-		return TRUE
-	if(!istype(M))
-		return FALSE
-	return check_access_list(M.GetAccess())
+// These are kinda-lazy-lists now, to prevent pointless memory allocation.
+// Make sure to handle them properly, especially in the map editor.
+/obj/var/list/req_access = null // If set, we need to have all of the listed accesses.
+/obj/var/list/req_one_access = null // If set, we need to have at least one of the listed acesses. Has lower priority than 'req_access".
 
 /atom/movable/proc/GetAccess()
 	var/obj/item/card/id/id = get_id_card()
-	return id ? id.GetAccess() : list()
+	return id?.GetAccess()
 
 /atom/movable/proc/get_id_card()
 	return null
 
-/obj/proc/check_access(obj/item/I)
-	return check_access_list(I ? I.GetAccess() : list())
+/obj/proc/check_access(atom/movable/AM)
+	// Check if it doesn't require any access at all
+	if(!length(req_access) && !length(req_one_access))
+		return TRUE
+	if(istype(AM))
+		return check_access_list(AM.GetAccess())
+	return FALSE
 
-/obj/proc/check_access_list(list/L)
-	if(!req_access)		req_access = list()
-	if(!req_one_access)	req_one_access = list()
-	if(!istype(L, /list))	return 0
-	return has_access(req_access, req_one_access, L)
+/obj/proc/check_access_list(accesses)
+	if(islist(accesses)) // Proper check.
+		return has_access(req_access, req_one_access, accesses)
+	if(isnum(accesses)) // Only checking a singular access value.
+		return has_access(req_access, req_one_access, list(accesses))
+	if(isnull(accesses)) // Probably, should not happen, but is still viable.
+		return has_access(req_access, req_one_access, null)
+	return FALSE // The argument is of a wrong type.
 
 /proc/has_access(list/req_access, list/req_one_access, list/accesses)
-	for(var/req in req_access)
-		if(!(req in accesses)) //doesn't have this access
-			return 0
-	if(islist(req_one_access) && length(req_one_access))
+	if(!length(req_access) && !length(req_one_access))
+		return TRUE // No access required.
+	else if(!length(accesses)) // An empty list or null.
+		return FALSE // Some access is required, and we have none.
+
+	if(islist(req_access))
+		for(var/req in req_access)
+			if(!(req in accesses))
+				return FALSE // We don't have at least one of the required accesses.
+
+	if(islist(req_one_access))
 		for(var/req in req_one_access)
-			if(req in accesses) //has an access from the single access list
-				return 1
-		return 0
-	return 1
+			if(req in accesses)
+				return TRUE // We have at least one of the require-one accesses.
+		return FALSE // We have none of the require-one accesses.
+
+	return TRUE // We passed the req_access check and there was no req_one_access.
 
 /proc/get_centcom_access(job)
 	switch(job)
@@ -200,7 +207,7 @@
 
 /mob/observer/ghost/get_id_card()
 	if(!is_admin(src))
-		return
+		return null
 
 	if(!ghost_all_access)
 		ghost_all_access = new()
@@ -213,7 +220,7 @@
 /mob/living/carbon/human/get_id_card()
 	for(var/item_slot in HUMAN_ID_CARDS)
 		var/obj/item/I = item_slot
-		var/obj/item/card/id = I ? I.get_id_card() : null
+		var/obj/item/card/id = I?.get_id_card()
 		if(id)
 			return id
 
@@ -227,7 +234,7 @@
 
 /mob/living/silicon/get_id_card()
 	if(stat || (ckey && !client))
-		return // Unconscious, dead or once possessed but now client-less silicons are not considered to have id access.
+		return null // Unconscious, dead or once possessed but now client-less silicons are not considered to have id access.
 	return idcard
 
 /proc/FindNameFromID(mob/M, missing_id_name = "Unknown")

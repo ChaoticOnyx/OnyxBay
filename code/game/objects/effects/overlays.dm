@@ -42,6 +42,11 @@
 	plane = EFFECTS_ABOVE_LIGHTING_PLANE
 	layer = SUPERMATTER_WALL_LAYER
 
+/obj/effect/overlay/bluespacify/New()
+	..()
+	spawn(1 SECOND)
+		qdel_self()
+
 /obj/effect/overlay/wallrot
 	name = "wallrot"
 	desc = "Ick..."

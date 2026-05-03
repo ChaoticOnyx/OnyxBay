@@ -8,7 +8,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	max_w_class = ITEM_SIZE_SMALL
 	var/filled = FALSE
-	attack_verb = list("lunched")
+	attack_verb = "lunched"
 
 /obj/item/storage/lunchbox/New()
 	..()

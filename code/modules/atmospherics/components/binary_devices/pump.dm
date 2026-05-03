@@ -51,7 +51,7 @@ Thus, the two variables affect pump operation are set in New():
 	if(!Adjacent(user, src) && !issilicon(user))
 		return
 
-	if(!allowed(user))
+	if(!check_access(user))
 		return
 
 	show_splash_text(user, "toggled [use_power ? "off" : "on"]", "You toggle \the [src] [use_power ? "off" : "on"].")
@@ -65,7 +65,7 @@ Thus, the two variables affect pump operation are set in New():
 	if(!Adjacent(user, src) && !issilicon(user))
 		return
 
-	if(!allowed(user))
+	if(!check_access(user))
 		return
 
 	target_pressure = max_pressure_setting
@@ -206,8 +206,8 @@ Thus, the two variables affect pump operation are set in New():
 /obj/machinery/atmospherics/binary/pump/attack_hand(mob/user)
 	if(..())
 		return
-	src.add_fingerprint(user)
-	if(!src.allowed(user))
+	add_fingerprint(user)
+	if(!check_access(user))
 		to_chat(user, SPAN_WARNING("Access denied."))
 		return
 	user.set_machine(src)

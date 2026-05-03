@@ -38,8 +38,8 @@
 		return
 
 	H.visible_message(
-		SPAN_WARNING("[H] extends \his [holding.name] from \the [E]."),
-		SPAN_NOTICE("You extend your [holding.name] from \the [E].")
+		SPAN_WARNING("\A [holding] extends from [H]'s [E]."),
+		SPAN_NOTICE("\The [holding] extends from your [E].")
 	)
 	register_signal(holding, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/on_holding_unequipped), override = TRUE)
 
@@ -53,9 +53,10 @@
 	if(ismob(holding.loc))
 		var/mob/M = holding.loc
 		M.drop(holding, force = TRUE)
-		M.visible_message(
-			SPAN_WARNING("[M] retracts \his [holding.name] into \the [E]."),
-			SPAN_NOTICE("You retract your [holding.name] into \the [E].")
+
+	H.visible_message(
+		SPAN_WARNING("\A [holding] retracts into [H]'s [E]."),
+		SPAN_NOTICE("\The [holding] retracts into your [E].")
 		)
 	holding.forceMove(src)
 	unregister_signal(holding, SIGNAL_ITEM_UNEQUIPPED)

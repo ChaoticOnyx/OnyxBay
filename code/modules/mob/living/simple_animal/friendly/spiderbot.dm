@@ -11,7 +11,7 @@
 	var/obj/item/cell/cell = null
 	var/obj/machinery/camera/camera = null
 	var/obj/item/organ/internal/cerebrum/mmi/mmi = null
-	var/list/req_access = list(access_robotics) //Access needed to pop out the brain.
+	var/list/req_access = list(access_robotics) // Access needed to pop out the brain.
 	var/positronic
 
 	name = "spider-bot"

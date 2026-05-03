@@ -8,12 +8,12 @@
 	w_class = ITEM_SIZE_SMALL
 	gas_transfer_coefficient = 0.10
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 25)
+	armor_values = alist(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 25)
 	down_gas_transfer_coefficient = 1
 	down_item_flags = ITEM_FLAG_THICKMATERIAL
 	down_icon_state = "breathdown"
 	pull_mask = 1
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "breathmask",
 		slot_r_hand_str = "breathmask",
 		)
@@ -33,9 +33,9 @@
 	icon_state = "medical"
 	item_state = "medical"
 	permeability_coefficient = 0.01
-	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 35)
+	armor_values = alist(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 35)
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "m_mask",
 		slot_r_hand_str = "m_mask",
 		)
@@ -49,7 +49,7 @@
 	item_state = "medical"
 	permeability_coefficient = 0.01
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "m_mask",
 		slot_r_hand_str = "m_mask",
 		)

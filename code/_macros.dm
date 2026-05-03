@@ -122,6 +122,8 @@
 
 #define ishostile(A) istype(A, /mob/living/simple_animal/hostile)
 
+#define isalist(A) ("[A]" == "/alist")
+
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)

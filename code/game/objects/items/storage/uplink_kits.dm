@@ -203,7 +203,7 @@
 /obj/item/storage/box/syndie_kit/augment_energy_blade
 	name = "energy armblade augment kit"
 	startswith = list(
-		/obj/item/organ_module/active/simple/armblade/energy_blade,
+		/obj/item/organ_module/active/simple/armblade/energy_blade/syndie,
 		/obj/item/implanter/installer/disposable
 	)
 

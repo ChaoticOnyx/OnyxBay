@@ -63,7 +63,7 @@
 			return
 
 		usr.set_machine(src)
-		if(!src.allowed(usr) && !emagged)
+		if(!check_access(usr) && !emagged)
 			to_chat(usr, "<span class='warning'>ACCESS DENIED.</span>")
 			return
 

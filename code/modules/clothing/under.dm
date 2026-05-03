@@ -13,7 +13,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	coverage = 1.0
 
 	species_restricted = list("exclude", SPECIES_MONKEY)
@@ -40,9 +40,7 @@
 /obj/item/clothing/under/New()
 	..()
 	if(worn_state)
-		if(!item_state_slots)
-			item_state_slots = list()
-		item_state_slots[slot_w_uniform_str] = worn_state
+		A_LAZYSET(item_state_slots, slot_w_uniform_str, worn_state)
 	else
 		if(item_state)
 			worn_state = item_state
@@ -205,10 +203,10 @@
 	rolled_down = !rolled_down
 	if(rolled_down)
 		body_parts_covered &= LOWER_TORSO|LEGS|FEET
-		item_state_slots[slot_w_uniform_str] = "[worn_state]_d"
+		A_LAZYSET(item_state_slots, slot_w_uniform_str, "[worn_state]_d")
 	else
 		body_parts_covered = initial(body_parts_covered)
-		item_state_slots[slot_w_uniform_str] = "[worn_state]"
+		A_LAZYSET(item_state_slots, slot_w_uniform_str, worn_state)
 	update_clothing_icon()
 
 /obj/item/clothing/under/verb/rollsleeves()
@@ -232,11 +230,11 @@
 	rolled_sleeves = !rolled_sleeves
 	if(rolled_sleeves)
 		body_parts_covered &= ~(ARMS|HANDS)
-		item_state_slots[slot_w_uniform_str] = "[worn_state]_r"
+		A_LAZYSET(item_state_slots, slot_w_uniform_str, "[worn_state]_r")
 		to_chat(usr, "<span class='notice'>You roll up your [src]'s sleeves.</span>")
 	else
 		body_parts_covered = initial(body_parts_covered)
-		item_state_slots[slot_w_uniform_str] = "[worn_state]"
+		A_LAZYSET(item_state_slots, slot_w_uniform_str, worn_state)
 		to_chat(usr, "<span class='notice'>You roll down your [src]'s sleeves.</span>")
 	update_clothing_icon()
 

@@ -3,7 +3,7 @@
 	suit_type = "augmented suit"
 	desc = "Prepare for paperwork."
 	icon_state = "internalaffairs_rig"
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 	online_slowdown = 0
 	offline_slowdown = 0
@@ -11,8 +11,8 @@
 
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/briefcase, /obj/item/storage/secure/briefcase, /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 	glove_type = null
 	helm_type = null
@@ -42,7 +42,7 @@
 	suit_type = "industrial powersuit"
 	desc = "A heavy, powerful rig used by construction crews and mining corporations."
 	icon_state = "engineering_rig"
-	armor = list(melee = 75, bullet = 35, laser = 35, energy = 15, bomb = 50, bio = 100)
+	armor_values = alist(melee = 75, bullet = 35, laser = 35, energy = 15, bomb = 50, bio = 100)
 	online_slowdown = 2
 	offline_slowdown = 10
 	offline_vision_restriction = TINT_HEAVY
@@ -54,8 +54,8 @@
 
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/construction/rcd, /obj/item/gun/energy/kinetic_accelerator, /obj/item/shovel, /obj/item/ore_radar, /obj/item/resonator, /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 /obj/item/clothing/head/helmet/space/rig/industrial
 	brightness_on = 6
@@ -87,7 +87,7 @@
 	suit_type = "EVA powersuit"
 	desc = "A light rig for repairs and maintenance to the outside of habitats and vessels."
 	icon_state = "eva_rig"
-	armor = list(melee = 30, bullet = 10, laser = 20, energy = 25, bomb = 20, bio = 100)
+	armor_values = alist(melee = 30, bullet = 10, laser = 20, energy = 25, bomb = 20, bio = 100)
 	online_slowdown = 0
 	offline_slowdown = 1
 	offline_vision_restriction = TINT_HEAVY
@@ -99,8 +99,8 @@
 
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/construction/rcd, /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 /obj/item/clothing/head/helmet/space/rig/eva
 	light_overlay = "helmet_light_dual"
@@ -134,7 +134,7 @@
 	suit_type = "engineering powersuit"
 	desc = "An advanced powersuit that protects against hazardous, low pressure environments. Shines with a high polish. Appears compatible with the physiology of most species."
 	icon_state = "ce_rig"
-	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 45, bio = 100)
+	armor_values = alist(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 45, bio = 100)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	online_slowdown = 0
 	offline_slowdown = 0
@@ -147,8 +147,8 @@
 
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/pickaxe,/obj/item/construction/rcd, /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 /obj/item/rig/ce/equipped
 
@@ -189,7 +189,7 @@
 	suit_type = "hazmat powersuit"
 	desc = "An Anomalous Material Interaction powersuit, a prototype NanoTrasen design, protects the wearer against the strangest energies the universe can throw at it."
 	icon_state = "science_rig"
-	armor = list(melee = 70, bullet = 90, laser = 70, energy = 80, bomb = 90, bio = 100) // Basically a bombsuit but space-adapted
+	armor_values = alist(melee = 70, bullet = 90, laser = 70, energy = 80, bomb = 90, bio = 100) // Basically a bombsuit but space-adapted
 	online_slowdown = 1
 	offline_vision_restriction = TINT_HEAVY
 
@@ -200,8 +200,8 @@
 
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/healthanalyzer,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon, /obj/item/pickaxe/archaeologist/hand, /obj/item/storage/bag/fossils, /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 /obj/item/clothing/head/helmet/space/rig/hazmat
 	light_overlay = "helmet_light_dual"
@@ -233,7 +233,7 @@
 	suit_type = "medical powersuit"
 	desc = "A durable suit designed for medical rescue in high-risk areas. Although its armor plating is not that tough, it provides exceptional protection against radiation."
 	icon_state = "medical_rig"
-	armor = list(melee = 40, bullet = 30, laser = 40, energy = 40, bomb = 45, bio = 100)
+	armor_values = alist(melee = 40, bullet = 30, laser = 40, energy = 40, bomb = 45, bio = 100)
 	online_slowdown = 1
 	offline_vision_restriction = TINT_HEAVY
 
@@ -275,7 +275,7 @@
 	desc = "A NanoTrasen security powersuit designed for prolonged EVA in dangerous environments."
 	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
-	armor = list(melee = 90, bullet = 100, laser = 80, energy = 15, bomb = 70, bio = 100)
+	armor_values = alist(melee = 90, bullet = 100, laser = 80, energy = 15, bomb = 70, bio = 100)
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_BLIND
@@ -287,8 +287,8 @@
 
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/handcuffs,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton, /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 /obj/item/clothing/head/helmet/space/rig/hazard
 	light_overlay = "helmet_light_dual"
@@ -320,7 +320,7 @@
 	suit_type = "mining powersuit"
 	desc = "An heavy, durable powersuit used for excavation in extremely hazardous environments."
 	icon_state = "mining_rig"
-	armor = list(melee = 145, bullet = 100, laser = 95, energy = 35, bomb = 85, bio = 100)
+	armor_values = alist(melee = 145, bullet = 100, laser = 95, energy = 35, bomb = 85, bio = 100)
 	online_slowdown = 2
 	offline_slowdown = 10
 	offline_vision_restriction = TINT_HEAVY
@@ -344,8 +344,8 @@
 				   /obj/item/resonator,
 				   /obj/item/flag)
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 /obj/item/clothing/head/helmet/space/rig/mining
 	brightness_on = 6
