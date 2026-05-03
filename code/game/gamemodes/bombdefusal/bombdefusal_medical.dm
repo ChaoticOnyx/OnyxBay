@@ -63,6 +63,14 @@
 					E.implants -= I
 					qdel(I)
 
+	// Clear status modifiers (drugs, pain, debuffs that may add their own slowdowns).
+	// qdel'ing them runs their cleanup which removes any movespeed_modification they added,
+	// so the baseline species/walk/run modifiers stay intact.
+	for(var/datum/modifier/M in modifiers)
+		modifiers -= M
+		qdel(M)
+	update_movespeed()
+
 	update_canmove()
 
 // ===== ARENA MEDKIT =====

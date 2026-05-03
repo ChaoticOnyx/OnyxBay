@@ -75,6 +75,7 @@
 	shop_catalog += new /datum/bombdefusal_shop_item("7.62mm Magazine",     BOMBDEFUSAL_CAT_AMMO,    200,  /obj/item/ammo_magazine/a762, role = BOMBDEFUSAL_ROLE_RIFLEMAN)
 	shop_catalog += new /datum/bombdefusal_shop_item("5.56mm Ammo Box",    BOMBDEFUSAL_CAT_AMMO,    350,  /obj/item/ammo_magazine/box/a556, role = BOMBDEFUSAL_ROLE_SUPPORT)
 	shop_catalog += new /datum/bombdefusal_shop_item("12g Shotgun Shell",   BOMBDEFUSAL_CAT_AMMO,    25,   /obj/item/ammo_casing/shotgun/pellet, role = BOMBDEFUSAL_ROLE_SUPPORT)
+	shop_catalog += new /datum/bombdefusal_shop_item("14.5mm Round",        BOMBDEFUSAL_CAT_AMMO,    300,  /obj/item/ammo_casing/a145, role = BOMBDEFUSAL_ROLE_SUPPORT)
 	// Medical - Medic only
 	shop_catalog += new /datum/bombdefusal_shop_item("Arena Medkit",        BOMBDEFUSAL_CAT_MEDICAL, 1000, /obj/item/bombdefusal_medkit, role = BOMBDEFUSAL_ROLE_MEDIC)
 	shop_catalog += new /datum/bombdefusal_shop_item("Combat Defib",        BOMBDEFUSAL_CAT_MEDICAL, 2000, /obj/item/defibrillator/compact/combat/loaded, role = BOMBDEFUSAL_ROLE_MEDIC)
@@ -219,6 +220,29 @@
 	else if(istype(new_item, /obj/item/bombdefusal_injector))
 		var/obj/item/bombdefusal_injector/inj = new_item
 		inj.heal_amount = cfg_injector_heal
+
+	// Replace fire_sound with CS 1.6 weapon sounds for fun
+	if(istype(new_item, /obj/item/gun/projectile))
+		var/obj/item/gun/projectile/G = new_item
+		var/cs_sound = null
+		if(istype(G, /obj/item/gun/projectile/pistol/holdout))               cs_sound = 'sound/csgo/weapons/glock18-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/revolver/detective))      cs_sound = 'sound/csgo/weapons/deagle-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/pistol/secgun))           cs_sound = 'sound/csgo/weapons/usp1.wav'
+		else if(istype(G, /obj/item/gun/projectile/pistol/silenced))         cs_sound = 'sound/csgo/weapons/usp1.wav'
+		else if(istype(G, /obj/item/gun/projectile/pistol/colt/officer))     cs_sound = 'sound/csgo/weapons/p228-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/pistol/magnum_pistol))    cs_sound = 'sound/csgo/weapons/deagle-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/automatic/machine_pistol/mini_uzi)) cs_sound = 'sound/csgo/weapons/mac10-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/automatic/wt550))         cs_sound = 'sound/csgo/weapons/mp5-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/automatic/c20r))          cs_sound = 'sound/csgo/weapons/ump45-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/bolt_action))             cs_sound = 'sound/csgo/weapons/scout_fire-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/automatic/as75))          cs_sound = 'sound/csgo/weapons/m4a1-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/automatic/z8))            cs_sound = 'sound/csgo/weapons/ak47-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/shotgun/doublebarrel))    cs_sound = 'sound/csgo/weapons/m3-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/shotgun/pump/combat))     cs_sound = 'sound/csgo/weapons/xm1014-1.wav'
+		else if(istype(G, /obj/item/gun/projectile/heavysniper))             cs_sound = 'sound/csgo/weapons/awp1.wav'
+		else if(istype(G, /obj/item/gun/projectile/automatic/l6_saw))        cs_sound = 'sound/csgo/weapons/m249-1.wav'
+		if(cs_sound)
+			G.override_fire_sound = cs_sound
 
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user

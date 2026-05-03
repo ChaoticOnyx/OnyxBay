@@ -295,6 +295,26 @@
 	if(O)
 		O.equip(H)
 
+	// Verify pistol and knife landed in hands; force-spawn if missing
+	if(!istype(H.r_hand, /obj/item/gun/projectile/pistol/secgun))
+		// Drop whatever's there (if anything), force-equip a new pistol
+		if(H.r_hand)
+			H.drop(H.r_hand)
+			qdel(H.r_hand)
+		var/obj/item/gun/projectile/pistol/secgun/pistol = new(H)
+		H.put_in_r_hand(pistol)
+	if(!istype(H.l_hand, /obj/item/material/hatchet/tacknife))
+		if(H.l_hand)
+			H.drop(H.l_hand)
+			qdel(H.l_hand)
+		var/obj/item/material/hatchet/tacknife/knife = new(H)
+		H.put_in_l_hand(knife)
+
+	// Replace fire_sound on the starting pistol with CS 1.6 USP sound
+	for(var/obj/item/gun/projectile/G in list(H.r_hand, H.l_hand))
+		if(G)
+			G.override_fire_sound = 'sound/csgo/weapons/usp1.wav'
+
 // Give back pistol + ammo + knife without touching clothing or armor.
 // Called when a player respawns after dying in a non-first round.
 /datum/bombdefusal_match/proc/give_basic_kit(datum/bombdefusal_player_data/pd)
