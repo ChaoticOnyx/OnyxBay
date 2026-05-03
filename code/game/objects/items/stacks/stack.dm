@@ -57,7 +57,9 @@
 			. += "There is enough charge for <b>[get_amount()]</b>."
 
 	if(color)
-		. += "It's painted."
+		var/obj/item/stack/material/M = src
+		if(!istype(M) || !M.apply_colour)
+			. += "It's painted."
 
 	if(istype(src, /obj/item/stack/tile))
 		var/obj/item/stack/tile/T = src

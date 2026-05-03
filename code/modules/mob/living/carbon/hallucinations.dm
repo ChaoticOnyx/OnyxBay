@@ -391,7 +391,7 @@
 /datum/hallucination/spiderbabies/start()
 	if(istype(holder,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = holder
-		var/obj/O = pick(H.organs)
+		var/obj/O = pick(H.external_organs)
 		to_chat(H,"<span class='warning'>You feel something [pick("moving","squirming","skittering")] inside of your [O.name]!</span>")
 
 /datum/hallucination/virus
@@ -401,7 +401,7 @@
 /datum/hallucination/virus/start()
 	var/list/effects = list(STOMACH_EFFECT_WARNING, GUNCK_EFFECT_WARNING, SNEEZE_EFFECT_WARNING, DISORIENTATION_EFFECT_WARNING, STIMULANT_EFFECT_WARNING, HAIR_EFFECT_WARNING, CONFUSION_EFFECT_WARNING, IMMORTAL_AGING_EFFECT_WARNING)
 	if(istype(holder,/mob/living/carbon/human))
-		var/obj/item/organ/external/organ = pick(holder.organs)
+		var/obj/item/organ/external/organ = pick(holder.external_organs)
 		if(organ)
 			effects.Add(ITCH_EFFECT_WARNING(organ.name), IMMORTAL_RECOVER_EFFECT_WARNING(organ.name), IMMORTAL_HEALING_EFFECT_WARNING(organ.name), ORGANS_SHUTDOWN_EFFECT_WARNING(organ.name), GIBBINGTONS_EFFECT_WARNING(organ.name))
 	to_chat(holder, pick(effects))

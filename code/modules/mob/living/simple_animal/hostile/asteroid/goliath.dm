@@ -141,9 +141,10 @@
 	if(proximity_flag)
 		if(istype(target, /obj/item/clothing/suit/space) || istype(target, /obj/item/clothing/head/helmet/space))
 			var/obj/item/clothing/suit/space/C = target
-			var/list/current_armor = C.armor
-			if(current_armor["melee"] < 80)
-				current_armor["melee"] = min(current_armor["melee"] + 10, 80)
+			if(!isalist(C.armor_values))
+				C.armor_values = alist(melee = 0, bullet = 0, laser = 5, energy = 0, bomb = 0, bio = 0)
+			if(C.armor_values["melee"] < 80)
+				C.armor_values["melee"] = min(C.armor_values["melee"] + 10, 80)
 				if(istype(C))
 					C.breach_threshold = min(C.breach_threshold + 2, 24)
 				to_chat(user, "<span class='info'>You strengthen [target], improving its resistance against melee attacks.</span>")

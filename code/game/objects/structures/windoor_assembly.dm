@@ -238,11 +238,14 @@
 		windoor.set_dir(dir)
 		windoor.set_density(FALSE)
 
-		if(electronics.one_access)
-			windoor.req_access = null
-			windoor.req_one_access = electronics.conf_access
-		else
-			windoor.req_access = electronics.conf_access
+		windoor.req_access = null
+		windoor.req_one_access = null
+		if(length(electronics.conf_access))
+			if(electronics.one_access)
+				windoor.req_one_access = electronics.conf_access
+			else
+				windoor.req_access = electronics.conf_access
+
 		windoor.electronics = electronics
 		electronics.forceMove(windoor)
 	else

@@ -245,7 +245,7 @@
 	O.attack(src, user, user.zone_sel.selecting)
 
 /mob/living/simple_animal/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
-	visible_message(SPAN("danger", "\The [src] has been [O.attack_verb.len? pick(O.attack_verb) : "attacked"] with \the [O] by [user]!"))
+	visible_message(SPAN("danger", "\The [src] has been [pick(O.attack_verb)] with \the [O] by [user]!"))
 
 	if(O.force <= resistance)
 		visible_message(SPAN("danger", "[user] attacks \the [src] with \the [O], but it bounces off!"))

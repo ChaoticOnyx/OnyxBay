@@ -83,8 +83,8 @@
 	matter = list(MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
 
-	req_access = list()
-	req_one_access = list()
+	req_access = null
+	req_one_access = null
 
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
@@ -777,7 +777,7 @@
 		return FALSE
 
 /obj/structure/closet/proc/CanToggleLock(mob/user, obj/item/card/id/id_card)
-	return allowed(user) || (istype(id_card) && check_access_list(id_card.GetAccess()))
+	return check_access(user) || check_access(id_card)
 
 /obj/structure/closet/AltClick(mob/user)
 	if(!src.opened)
@@ -799,8 +799,8 @@
 			if(!locked)
 				open()
 			else
-				src.req_access = list()
-				src.req_access += pick(get_all_station_access())
+				req_access = list()
+				req_access += pick(get_all_station_access())
 	..()
 
 /obj/structure/closet/emag_act(remaining_charges, mob/user, obj/item/emag_source, visual_feedback = "", audible_feedback = "")

@@ -75,8 +75,8 @@
 
 /obj/item/material/twohanded/on_update_icon()
 	var/new_item_state = "[base_icon][wielded]"
-	item_state_slots[slot_l_hand_str] = new_item_state
-	item_state_slots[slot_r_hand_str] = new_item_state
+	A_LAZYSET(item_state_slots, slot_l_hand_str, new_item_state)
+	A_LAZYSET(item_state_slots, slot_r_hand_str, new_item_state)
 
 /*
  * Chainsaw by BWJes

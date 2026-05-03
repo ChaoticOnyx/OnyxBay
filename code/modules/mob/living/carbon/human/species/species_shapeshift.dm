@@ -74,7 +74,7 @@ var/list/wrapped_species_by_ref = list()
 		H.g_facial = H.g_skin
 		H.b_facial = H.b_skin
 
-	for(var/obj/item/organ/external/E in H.organs)
+	for(var/obj/item/organ/external/E in H.external_organs)
 		E.sync_colour_to_human(H)
 
 // Verbs follow.
@@ -180,7 +180,7 @@ var/list/wrapped_species_by_ref = list()
 		g_facial = g_skin
 		b_facial = b_skin
 
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		E.sync_colour_to_human(src)
 
 	regenerate_icons()

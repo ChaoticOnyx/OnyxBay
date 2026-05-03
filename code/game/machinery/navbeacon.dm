@@ -63,9 +63,9 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 
 	else if(I.get_id_card())
 		if(open)
-			if (src.allowed(user))
-				src.locked = !src.locked
-				to_chat(user, "Controls are now [src.locked ? "locked." : "unlocked."]")
+			if (check_access(user))
+				locked = !locked
+				to_chat(user, "Controls are now [locked ? "locked" : "unlocked"].")
 			else
 				to_chat(user, "<span class='warning'>Access denied.</span>")
 			updateDialog()

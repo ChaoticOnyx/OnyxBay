@@ -228,8 +228,8 @@
 			adjustToxLoss(damage)
 			update_health()
 
-			if(!full_prosthetic && !isundead(src) && organs.len)
-				var/obj/item/organ/external/O = pick(organs)
+			if(!full_prosthetic && !isundead(src) && length(external_organs))
+				var/obj/item/organ/external/O = pick(external_organs)
 				if(istype(O))
 					O.add_autopsy_data("Radiation Poisoning", damage)
 
@@ -346,7 +346,7 @@
 			var/temperature_gain = heat_gain/HUMAN_HEAT_CAPACITY
 			bodytemperature += temperature_gain //temperature_gain will often be negative
 
-	var/relative_density = (environment.total_moles/environment.volume) / (MOLES_CELLSTANDARD/CELL_VOLUME)
+	var/relative_density = (environment.total_moles/environment.volume) / (MOLES_CELL_STANDARD/CELL_VOLUME)
 	if(relative_density > 0.02) //don't bother if we are in vacuum or near-vacuum
 		var/loc_temp = environment.temperature
 
@@ -960,7 +960,7 @@
 	// Collect and apply the images all at once to avoid appearance churn.
 	var/no_damage = TRUE
 	var/list/health_images = list()
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		if(no_damage && (E.brute_dam || E.burn_dam))
 			no_damage = FALSE
 		health_images += E.get_damage_hud_image(painkiller_mult)
@@ -1310,9 +1310,9 @@
 	if(burn_temperature < 1)
 		return
 
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		if(!(E.body_part & protected_limbs) && prob(40))
-			E.take_external_damage(burn = round(species_heat_mod * log(10, (burn_temperature + 10)), 0.1), used_weapon = fire)
+			E.take_burn_damage(round(species_heat_mod * log(10, (burn_temperature + 10)), 0.1), "Burning")
 
 	var/list/cig_places = list(wear_mask, l_ear, r_ear, r_hand, l_hand)
 	for(var/obj/item/clothing/mask/smokable/cig in cig_places)

@@ -254,7 +254,7 @@
 	var/robotic_slab_type = /obj/item/stack/material/steel
 	var/slab_nutrition = victim.nutrition / 15
 
-	for(var/obj/item/organ/external/O in victim.organs)
+	for(var/obj/item/organ/external/O in victim.external_organs)
 		if(O.is_stump())
 			continue
 		var/obj/item/organ/external/chest/C = O

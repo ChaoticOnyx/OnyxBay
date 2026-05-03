@@ -235,7 +235,7 @@
 /obj/machinery/atmospherics/valve/digital/attack_hand(mob/user as mob)
 	if(!powered())
 		return
-	if(!src.allowed(user))
+	if(!check_access(user))
 		playsound(src.loc, 'sound/signals/error32.ogg', 50)
 		to_chat(user, "<span class='warning'>Access denied.</span>")
 		return

@@ -15,8 +15,8 @@
 	name = "oxygen tank"
 	desc = "A tank of oxygen."
 	icon_state = "oxygen"
-	distribute_pressure = ONE_ATMOSPHERE*O2STANDARD
-	starting_pressure = list("oxygen" = 6*ONE_ATMOSPHERE)
+	distribute_pressure = ONE_ATMOSPHERE * O2_STANDARD
+	starting_pressure = list("oxygen" = 6 * ONE_ATMOSPHERE)
 
 /obj/item/tank/oxygen/yellow
 	desc = "A tank of oxygen. This one is yellow."
@@ -34,7 +34,7 @@
 	desc = "A tank with an N2O/O2 gas mix."
 	icon_state = "anesthetic"
 	item_state = "an_tank"
-	starting_pressure = list("oxygen" = 3*ONE_ATMOSPHERE*O2STANDARD, "sleeping_agent" = 3*ONE_ATMOSPHERE*N2STANDARD)
+	starting_pressure = list("oxygen" = 3 * ONE_ATMOSPHERE * O2_STANDARD, "sleeping_agent" = 3 * ONE_ATMOSPHERE * N2_STANDARD)
 
 /*
  * Air
@@ -43,7 +43,7 @@
 	name = "air tank"
 	desc = "Mixed anyone?"
 	icon_state = "oxygen"
-	starting_pressure = list("oxygen" = 6*ONE_ATMOSPHERE*O2STANDARD, "nitrogen" = 6*ONE_ATMOSPHERE*N2STANDARD)
+	starting_pressure = list("oxygen" = 6 * ONE_ATMOSPHERE * O2_STANDARD, "nitrogen" = 6 * ONE_ATMOSPHERE * N2_STANDARD)
 
 /*
  * Plasma
@@ -85,7 +85,7 @@
 	mod_weight = 0.85
 	mod_reach = 0.7
 	mod_handy = 0.85
-	distribute_pressure = ONE_ATMOSPHERE*O2STANDARD
+	distribute_pressure = ONE_ATMOSPHERE * O2_STANDARD
 	volume = 2 //Tiny. Real life equivalents only have 21 breaths of oxygen in them. They're EMERGENCY tanks anyway -errorage (dangercon 2011)
 	flags_inv = null
 
@@ -116,7 +116,7 @@
 	desc = "An emergency air tank hastily painted red and issued to Vox crewmembers."
 	icon_state = "emergency_nitro"
 	gauge_icon = "indicator_emergency"
-	starting_pressure = list("nitrogen" = 3*ONE_ATMOSPHERE)
+	starting_pressure = list("nitrogen" = 3 * ONE_ATMOSPHERE)
 
 /obj/item/tank/emergency/nitrogen/double
 	name = "double emergency nitrogen tank"
@@ -131,5 +131,5 @@
 	name = "nitrogen tank"
 	desc = "A tank of nitrogen."
 	icon_state = "oxygen_fr"
-	distribute_pressure = ONE_ATMOSPHERE*O2STANDARD
-	starting_pressure = list("nitrogen" = 3*ONE_ATMOSPHERE)
+	distribute_pressure = ONE_ATMOSPHERE * O2_STANDARD
+	starting_pressure = list("nitrogen" = 3 * ONE_ATMOSPHERE)

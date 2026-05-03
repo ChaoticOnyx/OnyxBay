@@ -216,7 +216,7 @@
 	cabin_air = new
 	cabin_air.temperature = 20 CELSIUS
 	cabin_air.volume = 200
-	cabin_air.adjust_multi("oxygen", O2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature), "nitrogen", N2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature))
+	cabin_air.adjust_multi("oxygen", O2_STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature), "nitrogen", N2_STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature))
 	return cabin_air
 
 /obj/mecha/proc/add_radio()
@@ -785,7 +785,7 @@
 		return
 
 	var/obj/item/card/id/id_card = W.get_id_card()
-	if(id_card)
+	if(istype(id_card))
 		if(add_req_access || maint_access)
 			if(internals_access_allowed(usr))
 				output_maintenance_dialog(id_card, user)
@@ -2041,3 +2041,14 @@
 */
 /obj/mecha/fall_damage()
 	return 550
+
+/obj/mecha/handle_fall_effect(turf/landing)
+	if(istype(landing, /turf/simulated/open))
+		visible_message("\The [src] falls from the deck above through \the [landing]!", "You hear a whoosh of displaced air.")
+	else
+		visible_message("\The [src] falls from the deck above and slams into \the [landing]!", "You hear a loud metallic crash.")
+		playsound(landing, pick('sound/effects/metalhit.ogg', 'sound/effects/metalhit2.ogg'), 75)
+		if(fall_damage())
+			for(var/mob/living/M in landing.contents)
+				visible_message("\The [src] hits \the [M.name]!")
+				M.take_overall_damage(fall_damage())

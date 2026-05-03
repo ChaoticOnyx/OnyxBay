@@ -123,13 +123,13 @@ var/last_chew = 0
 	if(H.wear_mask) return
 	if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket)) return
 
-	var/obj/item/organ/external/O = H.organs_by_name[(H.active_hand == ACTIVE_HAND_LEFT ? BP_L_HAND : BP_R_HAND)]
+	var/obj/item/organ/external/O = H.external_organs_by_name[(H.active_hand == ACTIVE_HAND_LEFT ? BP_L_HAND : BP_R_HAND)]
 	if (!O) return
 
 	H.visible_message("<span class='warning'>\The [H] chews on \his [O.name]!</span>", "<span class='warning'>You chew on your [O.name]!</span>")
 	admin_attacker_log(H, "chewed on their [O.name]!")
 
-	O.take_external_damage(3,0, DAM_SHARP|DAM_EDGE ,"teeth marks")
+	O.take_cut_damage(5, "teeth marks")
 
 	last_chew = world.time
 

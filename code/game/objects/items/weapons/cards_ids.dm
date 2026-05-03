@@ -119,9 +119,11 @@ var/const/NO_EMAG_ACT = -50
 	icon_state = "card_id"
 	item_state = "card_id"
 
+	slot_flags = SLOT_ID
+	item_state_slots = alist(slot_wear_id_str = "id")
+
 	var/access = list()
 	var/registered_name = "Unknown" // The name registered_name on the card
-	slot_flags = SLOT_ID
 
 	var/age = "\[UNSET\]"
 	var/blood_type = "\[UNSET\]"

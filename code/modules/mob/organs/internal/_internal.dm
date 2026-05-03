@@ -46,7 +46,7 @@
 	if(owner)
 		owner.internal_organs -= src
 		owner.internal_organs_by_name -= organ_tag
-		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
+		var/obj/item/organ/external/E = owner.external_organs_by_name[parent_organ]
 		if(istype(E))
 			E.internal_organs -= src
 	return ..()
@@ -73,19 +73,20 @@
 /obj/item/organ/proc/cut_away(mob/living/user)
 	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
 	if(istype(parent)) //TODO ensure that we don't have to check this.
-		removed(user, 0)
-		parent.implants += src
+		removed(user, FALSE, TRUE)
 
 /obj/item/organ/internal/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(owner)
 		owner.internal_organs_by_name -= organ_tag
 		owner.internal_organs -= src
 
-		if(detach)
-			var/obj/item/organ/external/affected = owner.get_organ(parent_organ)
-			if(affected)
-				affected.internal_organs -= src
-				status |= ORGAN_CUT_AWAY
+	if(detach)
+		var/obj/item/organ/external/affected = owner?.get_organ(parent_organ)
+		if(istype(affected))
+			affected.internal_organs -= src
+			status |= ORGAN_CUT_AWAY
+			if(!drop_organ)
+				affected.implants |= src
 	..()
 
 /obj/item/organ/internal/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
@@ -111,9 +112,12 @@
 	return TRUE
 
 /obj/item/organ/internal/die()
-	..()
+	. = ..()
+	if(!.)
+		return FALSE
 	if((status & ORGAN_DEAD) && dead_icon)
 		icon_state = dead_icon
+	return TRUE
 
 /obj/item/organ/internal/remove_rejuv()
 	if(owner)
@@ -121,7 +125,7 @@
 		owner.internal_organs_by_name -= organ_tag
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
-		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
+		var/obj/item/organ/external/E = owner.external_organs_by_name[parent_organ]
 		if(istype(E)) E.internal_organs -= src
 	..()
 

@@ -20,7 +20,7 @@
 	name = "collectable alien monster helmet!"
 	desc = "Hiss hiss hiss!"
 	icon_state = "xenom"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "xenos_helm",
 		slot_r_hand_str = "xenos_helm",
 		)
@@ -50,7 +50,7 @@
 	name = "collectable captain's hat"
 	desc = "A Collectable Hat that'll make you look just like a real comdom!"
 	icon_state = "captain"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "caphat",
 		slot_r_hand_str = "caphat",
 		)
@@ -85,7 +85,7 @@
 	name = "collectable flat cap"
 	desc = "A Collectible farmer's Flat Cap!"
 	icon_state = "flat_cap"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "detective",
 		slot_r_hand_str = "detective",
 		)

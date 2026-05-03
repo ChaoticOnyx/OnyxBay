@@ -67,11 +67,10 @@ var/list/holder_mob_icon_cache = list()
 	return ..()
 
 /obj/item/holder/get_id_card()
-	return held_mob.get_id_card()
+	return held_mob?.get_id_card()
 
 /obj/item/holder/GetAccess()
-	var/obj/item/I = get_id_card()
-	return I ? I.GetAccess() : ..()
+	return held_mob?.GetAccess()
 
 /obj/item/holder/attack_self()
 	if(!held_mob.show_inv(usr))

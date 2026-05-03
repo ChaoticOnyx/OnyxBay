@@ -158,7 +158,7 @@
 	//next regrow lost limbs, approx 5 ticks each
 	if(prob(mend_prob))
 		for(var/limb_type in has_limbs)
-			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+			var/obj/item/organ/external/E = H.external_organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())
 				E.removed()
 				qdel(E)

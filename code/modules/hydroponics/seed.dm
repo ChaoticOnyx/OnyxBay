@@ -166,7 +166,7 @@
 
 	if(chems && chems.len && target.reagents)
 
-		var/obj/item/organ/external/affecting = pick(target.organs)
+		var/obj/item/organ/external/affecting = pick(target.external_organs)
 
 		for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
 			if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))

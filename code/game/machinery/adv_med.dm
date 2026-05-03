@@ -303,7 +303,7 @@
 	if(.)
 		return TRUE
 
-	if(!allowed(usr))
+	if(!check_access(usr))
 		to_chat(usr, SPAN("warning", "Access denied."))
 		return TRUE
 
@@ -492,7 +492,7 @@
 
 	data["external_organs"] = list()
 
-	for (var/obj/item/organ/external/E in H.organs)
+	for (var/obj/item/organ/external/E in H.external_organs)
 		var/organ_data = list(
 			"name" = capitalize(E.name), "status" = list(), "damage" = list()
 			)
@@ -637,7 +637,7 @@
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"
-	for(var/obj/item/organ/external/E in H.organs)
+	for(var/obj/item/organ/external/E in H.external_organs)
 		table += "<tr><td>[E.name]</td>"
 		if(E.is_stump())
 			table += "<td>N/A</td><td>Missing</td>"

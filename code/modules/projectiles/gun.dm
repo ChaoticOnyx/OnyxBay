@@ -154,11 +154,15 @@
 		autofiring_by = fire_by
 		if(!already_autofiring)
 			already_autofiring = TRUE
-			set_next_think_ctx("autofire_context", world.time + burst_delay)
+			set_next_think_ctx("autofire_context", world.time)
 	else
 		clear_autofire()
 
 /obj/item/gun/proc/clear_autofire()
+	if(already_autofiring)
+		next_fire_time = world.time + fire_delay // No Arc Raiders' Kettle gameplay, please
+		. = TRUE
+
 	autofiring_at = null
 	autofiring_by = null
 	already_autofiring = FALSE
@@ -190,12 +194,12 @@
 		var/mob/living/M = loc
 		if(istype(M))
 			if(M.can_wield_item(src) && is_held_twohanded(M))
-				item_state_slots[slot_l_hand_str] = wielded_item_state
-				item_state_slots[slot_r_hand_str] = wielded_item_state
+				A_LAZYSET(item_state_slots, slot_l_hand_str, wielded_item_state)
+				A_LAZYSET(item_state_slots, slot_r_hand_str, wielded_item_state)
 				improper_held_icon = TRUE
 			else
-				item_state_slots[slot_l_hand_str] = base_icon_state || initial(item_state)
-				item_state_slots[slot_r_hand_str] = base_icon_state || initial(item_state)
+				A_LAZYSET(item_state_slots, slot_l_hand_str, (base_icon_state || initial(item_state)))
+				A_LAZYSET(item_state_slots, slot_r_hand_str, (base_icon_state || initial(item_state)))
 				improper_held_icon = FALSE
 	update_held_icon()
 
@@ -255,7 +259,8 @@
 		O.emp_act(severity)
 
 /obj/item/gun/afterattack(atom/A, mob/living/user, adjacent, params)
-	if(adjacent) return //A is adjacent, is the user, or is on the user's person
+	if(adjacent)
+		return //A is adjacent, is the user, or is on the user's person
 
 	if(!user.aiming)
 		user.aiming = new(user)
@@ -265,6 +270,12 @@
 		return
 
 	Fire(A, user, params, target_zone = user.zone_sel?.selecting) //Otherwise, fire normally.
+
+/obj/item/gun/resolve_attackby(atom/A, mob/user, click_params)
+	if(user.a_intent != I_HURT || !user.Adjacent(A) || ismob(A) || ismob(A.loc))
+		return ..()
+	Fire(A, user, click_params, target_zone = user.zone_sel?.selecting)
+	return TRUE
 
 /obj/item/gun/attack(atom/A, mob/living/user, def_zone)
 	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT && !weapon_in_mouth)
@@ -364,7 +375,8 @@
 	if(heat_amount >= 100)
 		overheat()
 
-	next_fire_time = world.time + fire_delay
+	if(!autofire_enabled) // Let the autofire handling do its thing.
+		next_fire_time = world.time + fire_delay
 
 /obj/item/gun/proc/overheat()
 	on_overheat = TRUE
@@ -622,7 +634,7 @@
 			to_chat(user, SPAN_NOTICE("You need a better grab for this."))
 			return
 
-		var/obj/item/organ/external/head/head = target.organs_by_name[BP_HEAD]
+		var/obj/item/organ/external/head/head = target.external_organs_by_name[BP_HEAD]
 		if(!istype(head))
 			to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because you can't find their head."))
 			return

@@ -440,5 +440,5 @@
 	if(!target_zone)
 		return
 
-	var/obj/item/organ/O = target.organs_by_name[target_zone]
+	var/obj/item/organ/O = target.external_organs_by_name[target_zone]
 	return O ? O.name : target_zone

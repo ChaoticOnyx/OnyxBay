@@ -192,72 +192,79 @@
 	req_tech = list(TECH_COMBAT = 9, TECH_ILLEGAL = 5)
 	sort_string = "VADAU"
 
+/datum/design/item/augment/energy_blade
+	id = "augment_energy_blade"
+	build_path = /obj/item/organ_module/active/simple/armblade/energy_blade/nt
+	materials = list(MATERIAL_DURANIUM = 2500, MATERIAL_GOLD = 5000, MATERIAL_URANIUM = 2500, MATERIAL_DIAMOND = 5000)
+	req_tech = list(TECH_COMBAT = 10, TECH_ENGINEERING = 3, TECH_MATERIAL = 3, TECH_MAGNET = 3, TECH_ILLEGAL = 5)
+	sort_string = "VADAV"
+
 /datum/design/item/augment/cyborg_analyzer
 	id = "augment_cyborg_analyzer"
 	build_path = /obj/item/organ_module/active/simple/cyborg_analyzer
 	materials = list(MATERIAL_STEEL = 2000, MATERIAL_PLASTIC = 3000, MATERIAL_GOLD = 50)
 	req_tech = list(TECH_ENGINEERING = 4, TECH_BIO = 2, TECH_MATERIAL = 4)
-	sort_string = "VADAV"
+	sort_string = "VADAW"
 
 /datum/design/item/augment/drill
 	id = "augment_drill"
 	build_path = /obj/item/organ_module/active/simple/drill
 	materials = list(MATERIAL_STEEL = 8000, MATERIAL_PLASTIC = 2000, MATERIAL_PLASTEEL = 1000)
 	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2, TECH_BIO = 2)
-	sort_string = "VADAW"
+	sort_string = "VADAX"
 
 /datum/design/item/augment/gustatorial
 	id = "augment_gustatorial"
 	build_path = /obj/item/organ_module/active/gustatorial
 	materials = list(MATERIAL_GOLD = 250, MATERIAL_SILVER = 250, MATERIAL_PLATINUM = 250, MATERIAL_PLASTIC = 250)
 	req_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6)
-	sort_string = "VADAX"
+	sort_string = "VADAY"
 
 /datum/design/item/augment/nerve_dampeners
 	id = "augment_nerve_dampeners"
 	build_path = /obj/item/organ_module/active/nerve_dampeners
 	materials = list(MATERIAL_PLASTIC = 4000, MATERIAL_SILVER = 8000)
 	req_tech = list(TECH_BIO = 6, TECH_COMBAT = 7)
-	sort_string = "VADAY"
+	sort_string = "VADAZ"
 
 /datum/design/item/augment/cochlear
 	id = "augment_cochlear"
 	build_path = /obj/item/organ_module/cochlear
 	materials = list(MATERIAL_SILVER = 800, MATERIAL_PLASTIC = 500)
 	req_tech = list(TECH_BIO = 4, TECH_COMBAT = 4, TECH_ENGINEERING = 4)
-	sort_string = "VADAZ"
+	sort_string = "VADA0"
 
 /datum/design/item/augment/resuscitator_theranos
 	id = "augment_resuscitator_theranos"
 	build_path = /obj/item/organ_module/passive/resuscitator/theranos
 	materials = list(MATERIAL_URANIUM = 50, MATERIAL_GOLD = 500, MATERIAL_DIAMOND = 500, MATERIAL_PLASTEEL = 1000)
 	req_tech = list(TECH_BIO = 6, TECH_COMBAT = 6, TECH_ENGINEERING = 7, TECH_BLUESPACE = 4, TECH_PLASMA = 4)
-	sort_string = "VADA0"
+	sort_string = "VADA1"
 
 /datum/design/item/augment/actuator
 	id = "augment_actuator"
 	build_path = /obj/item/organ_module/actuators
 	materials = list(MATERIAL_PLASTIC = 2000, MATERIAL_STEEL = 2000, MATERIAL_GLASS = 2000)
 	req_tech = list(TECH_ENGINEERING = 2, TECH_MAGNET = 2)
-	sort_string = "VADA1"
+	sort_string = "VADA2"
 
 /datum/design/item/augment/processor
 	id = "augment_processor"
 	build_path = /obj/item/organ_module/processor
 	materials = list(MATERIAL_GOLD = 50, MATERIAL_PLASTEEL = 1000, MATERIAL_PLASTIC = 1000)
 	req_tech = list(TECH_BIO = 1, TECH_DATA = 1)
-	sort_string = "VADA2"
+	sort_string = "VADA3"
 
 /datum/design/item/augment/processor_advanced
 	id = "augment_processor_advanced"
 	build_path = /obj/item/organ_module/processor/advanced
 	materials = list(MATERIAL_GOLD = 150, MATERIAL_PLASTEEL = 3000, MATERIAL_PLASTIC = 3000, MATERIAL_GLASS = 1000)
 	req_tech = list(TECH_BIO = 3, TECH_DATA = 3)
-	sort_string = "VADA3"
+	sort_string = "VADA4"
 
 /datum/design/item/augment/processor_super
 	id = "augment_processor_super"
 	build_path = /obj/item/organ_module/processor/super
 	materials = list(MATERIAL_GOLD = 150, MATERIAL_PLASTEEL = 3000, MATERIAL_PLASTIC = 3000, MATERIAL_GLASS = 1000, MATERIAL_DIAMOND = 1500)
 	req_tech = list(TECH_BIO = 6, TECH_DATA = 6, TECH_BLUESPACE = 6)
-	sort_string = "VADA4"
+	sort_string = "VADA5"

@@ -93,7 +93,7 @@
 	if(species.can_understand(other))
 		return TRUE
 
-	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = external_organs_by_name[BP_HEAD]
 	if(istype(head))
 		var/obj/item/organ_module/active/translator/translator = locate() in head
 		if(language && translator?.toggled && (language.name in translator.languages))

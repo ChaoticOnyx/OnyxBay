@@ -5,7 +5,7 @@
 	icon_state = "chiefengineer"
 	item_state = "chief"
 	worn_state = "chief"
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 	siemens_coefficient = 0.6
 
 	rad_resist_type = /datum/rad_resist/under_engineer
@@ -32,7 +32,7 @@
 	icon_state = "engine"
 	item_state = "engine"
 	worn_state = "engine"
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.7
 
 	rad_resist_type = /datum/rad_resist/under_engineer
@@ -59,7 +59,7 @@
 	icon_state = "atmos"
 	item_state = "atmos_suit"
 	worn_state = "atmos"
-	armor = list(melee = 20, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
+	armor_values = alist(melee = 20, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 
 	rad_resist_type = /datum/rad_resist/under_engineer
 

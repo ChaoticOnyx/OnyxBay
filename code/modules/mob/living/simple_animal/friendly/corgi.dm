@@ -219,7 +219,7 @@
 //////////////////
 /mob/living/simple_animal/corgi/proc/get_hat_icon(obj/item/hat, offset_x, offset_y)
 	var/t_state = hat.icon_state
-	if(hat.item_state_slots && hat.item_state_slots[slot_head_str])
+	if(hat.item_state_slots?[slot_head_str])
 		t_state = hat.item_state_slots[slot_head_str]
 	else if(hat.item_state)
 		t_state = hat.item_state

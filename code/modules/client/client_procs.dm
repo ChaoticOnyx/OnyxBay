@@ -664,23 +664,67 @@
 	 */
 	mob?.reload_fullscreen()
 
+/client/Click(atom/A, location, control, params)
+	if(!mouse_down_last_time) // No multiple clicks per physical click (used by the Precision Assist and guns' instant shooting)
+		return 0
+
+	if(mouse_click_last_time == world.time) // No multiple clicks during a single tick (prevents things like autoclickers)
+		return 0
+
+	mouse_down_last_time = 0
+	mouse_click_last_time = world.time
+
+	// See code/modules/admin/callproc/callproc.dm
+	if(holder && holder.callproc && holder.callproc.waiting_for_click)
+		if(alert("Do you want to select \the [A] as the [length(holder.callproc.arguments)+1]\th argument?",, "Yes", "No") == "Yes")
+			holder.callproc.arguments += A
+
+		holder.callproc.waiting_for_click = 0
+		verbs -= /client/proc/cancel_callproc_select
+		holder.callproc.do_args()
+	else
+		return ..()
+
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()
-	var/mob/living/M = mob
-	if(istype(M))
+	if(isliving(mob))
+		var/mob/living/M = mob
 		M.OnMouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 
 /client/MouseUp(object, location, control, params)
+	if(isliving(mob))
+		var/mob/living/M = mob
+		if(M.OnMouseUp(object, location, control, params))
+			mouse_down_atom = null
+			mouse_down_last_time = 0
+			return
+
 	. = ..()
-	var/mob/living/M = mob
-	if(istype(M))
-		M.OnMouseUp(object, location, control, params)
+
+	// We simulate a normal click if:
+	// A - We release the mouse button over the same object we pressed it over;
+	// B - We release the mouse button over another object during the "opportunity window";
+	// The troublesome thing is, BYOND normally calls a regular Click() AFTER MouseUp(), so
+	// we have to prevent it by forbidding multiple clicks during a single tick. On one hand, it's
+	// not even a bad thing, and might prevent things like autoclickers from working normally.
+	// On the other, it might break something unexpectedly. ~NoSieve
+	if(object == mouse_down_atom || (object != mouse_down_atom && mouse_down_last_time + mouse_click_opportunity_window >= world.time))
+		Click(object, location, control, params)
+
+	mouse_down_atom = null
 
 /client/MouseDown(object, location, control, params)
+	mouse_down_last_time = world.time
+
+	if(isliving(mob))
+		var/mob/living/M = mob
+		if(M.OnMouseDown(object, location, control, params))
+			mouse_down_atom = null
+			return
+
 	. = ..()
-	var/mob/living/M = mob
-	if(istype(M) && !M.in_throw_mode)
-		M.OnMouseDown(object, location, control, params)
+
+	mouse_down_atom = object
 
 /client/proc/get_luck_for_type(luck_type)
 	switch(luck_type)
@@ -817,21 +861,6 @@
 					isnull(unbanned)
 					[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
 				"}, dbcon, list(id = id, ckeytext = src.ckey, server_id = config.general.server_id))
-
-/client/Click(atom/A)
-	//if(!user_acted(src))
-	//	return
-
-	if(holder && holder.callproc && holder.callproc.waiting_for_click)
-		if(alert("Do you want to select \the [A] as the [holder.callproc.arguments.len+1]\th argument?",, "Yes", "No") == "Yes")
-			holder.callproc.arguments += A
-
-		holder.callproc.waiting_for_click = 0
-		verbs -= /client/proc/cancel_callproc_select
-		holder.callproc.do_args()
-		return
-
-	return ..()
 
 /**
  * Updates the keybinds for special keys

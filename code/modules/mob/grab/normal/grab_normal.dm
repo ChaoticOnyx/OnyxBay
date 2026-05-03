@@ -288,7 +288,7 @@
 	var/obj/item/clothing/head/helmet = affecting.get_equipped_item(slot_head)
 	if(istype(helmet) && (helmet.body_parts_covered & HEAD) && (helmet.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE))
 		//we don't do an armor_check here because this is not an impact effect like a weapon swung with momentum, that either penetrates or glances off.
-		damage_mod = 1.0 - (helmet.armor["melee"]/100)
+		damage_mod = 1.0 - (A_LAZYACCESS(helmet.armor_values, "melee") / 100)
 
 	var/total_damage = 0
 	var/damage_flags = W.damage_flags()
@@ -319,7 +319,7 @@
 	if(!W.edge || !W.force || W.damtype != BRUTE)
 		return 0 //unsuitable weapon
 
-	var/obj/item/organ/external/head/head = affecting.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = affecting.external_organs_by_name[BP_HEAD]
 	if(head && head.deformities > 0)
 		return 0 //already smiling
 
@@ -427,7 +427,7 @@
 				to_chat(affecting, "<span class='warning'>You go blind!</span>")
 
 		var/obj/item/organ/external/E = affecting.get_organ(eyes.parent_organ)
-		E.take_external_damage(10)
+		E.take_pierce_damage(10)
 
 	user.visible_message("<span class='danger'>\The [user] stabs [affecting]'s eyes with \the [W]!</span>")
 	admin_attack_log(user, affecting, "Grab-stabbed the victim's eyes.", "Had their eyes grab-stabbed.", "stabbed the eyes, using a grab action, of")

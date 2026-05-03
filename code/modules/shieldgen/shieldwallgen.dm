@@ -6,7 +6,7 @@
 	icon_state = "Shield_Gen"
 	anchored = 0
 	density = 1
-	req_one_access = list(access_engine_equip,access_research)
+	req_one_access = list(access_engine_equip, access_research)
 	var/active = 0
 	var/power = 0
 	var/locked = 1
@@ -213,10 +213,10 @@
 			src.anchored = 0
 			return
 
-	if(istype(W, /obj/item/card/id)||istype(W, /obj/item/device/pda))
-		if (src.allowed(user))
-			src.locked = !src.locked
-			to_chat(user, "Controls are now [src.locked ? "locked." : "unlocked."]")
+	if(W?.get_id_card())
+		if(check_access(W))
+			locked = !locked
+			to_chat(user, "Controls are now [locked ? "locked" : "unlocked"].")
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		return

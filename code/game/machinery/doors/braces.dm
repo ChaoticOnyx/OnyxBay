@@ -61,20 +61,19 @@
 
 /obj/item/airlock_brace/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if (istype(W.get_id_card(), /obj/item/card/id))
+	if(W?.get_id_card())
 		if(!airlock)
 			attack_self(user)
 			return
 		else
-			var/obj/item/card/id/C = W.get_id_card()
 			update_access()
-			if(check_access(C))
-				to_chat(user, "You swipe \the [C] through \the [src].")
+			if(check_access(W))
+				to_chat(user, "You swipe \the [W] through \the [src].")
 				if(do_after(user, 10, airlock, luck_check_type = LUCK_CHECK_ENG))
 					to_chat(user, "\The [src] clicks a few times and detaches itself from \the [airlock]!")
 					unlock_brace(usr)
 			else
-				to_chat(user, "You swipe \the [C] through \the [src], but it does not react.")
+				to_chat(user, "You swipe \the [W] through \the [src], but it does not react.")
 		return
 
 	if (istype(W, /obj/item/crowbar/brace_jack))
@@ -135,9 +134,10 @@
 /obj/item/airlock_brace/proc/update_access()
 	if(!electronics)
 		return
+
+	req_access = null
+	req_one_access = null
 	if(electronics.one_access)
-		req_access = list()
 		req_one_access = electronics.conf_access
 	else
 		req_access = electronics.conf_access
-		req_one_access = list()

@@ -159,7 +159,7 @@
 		/obj/item/scalpel/laser3 = 100,
 		/obj/item/scalpel/laser2 = 100,
 		/obj/item/scalpel/laser1 = 100,
-		/obj/item/melee/energy/sword/one_hand = 50
+		/obj/item/melee/energy = 50
 		)
 
 	preop_sound = 'sound/surgery/cautery1.ogg'
@@ -289,12 +289,7 @@
 		"[user]'s hand slips, tearing blood vessals and causing massive bleeding in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, tearing blood vessels and causing massive bleeding in [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		10,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(10, tool)
 
 /**
  * Retracts skin around incision.
@@ -341,12 +336,7 @@
 		"[user]'s hand slips, tearing the edges of the incision on [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, tearing the edges of the incision on [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		12,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(12, tool)
 
 /**
  * Saws off bones, covering interal organs.
@@ -402,10 +392,5 @@
 		"[user]'s hand slips, cracking [bone] with \the [tool]!" ,
 		"Your hand slips, cracking [bone] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		15,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
 	parent_organ.fracture()
+	parent_organ.take_cut_damage(15, tool)

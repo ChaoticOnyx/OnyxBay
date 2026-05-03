@@ -147,7 +147,7 @@
 	req_access = list(access_syndicate)
 
 /obj/machinery/computer/pod/old/syndicate/attack_hand(mob/user)
-	if(!allowed(user))
+	if(!check_access(user))
 		to_chat(user, "<span class='warning'>Access Denied</span>")
 		return
 	else

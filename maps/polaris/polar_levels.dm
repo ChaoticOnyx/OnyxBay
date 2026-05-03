@@ -5,7 +5,7 @@
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT
 	)
-	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	exterior_atmosphere = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 	exterior_atmos_temp = -30 CELSIUS
 
 /datum/space_level/polar_1/generate(z)
@@ -21,7 +21,7 @@
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT
 	)
-	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	exterior_atmosphere = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 	exterior_atmos_temp = -30 CELSIUS
 
 /datum/space_level/polar_2/generate(z)
@@ -35,7 +35,7 @@
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT,
 	)
-	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	exterior_atmosphere = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 	exterior_atmos_temp = -30 CELSIUS
 
 /datum/space_level/polar_4
@@ -44,7 +44,7 @@
 	traits = list(
 		ZTRAIT_CONTACT,
 	)
-	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	exterior_atmosphere = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 	exterior_atmos_temp = -30 CELSIUS
 
 /datum/space_level/polar_5

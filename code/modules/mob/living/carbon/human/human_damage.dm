@@ -71,7 +71,7 @@
 /mob/living/carbon/human/adjustHalLoss(amount)
 	if(!amount || no_pain)
 		return
-	var/list/pick_organs = organs.Copy()
+	var/list/pick_organs = external_organs.Copy()
 
 	for(var/datum/modifier/M in modifiers)
 		if(!isnull(M.incoming_damage_percent))
@@ -93,7 +93,7 @@
 //These procs fetch a cumulative total damage from all organs
 /mob/living/carbon/human/getBruteLoss()
 	var/amount = 0
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		if(BP_IS_ROBOTIC(O) && !O.vital)
 			continue //robot limbs don't count towards shock and crit
 		amount += O.brute_dam
@@ -101,7 +101,7 @@
 
 /mob/living/carbon/human/getFireLoss()
 	var/amount = 0
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		if(BP_IS_ROBOTIC(O) && !O.vital)
 			continue //robot limbs don't count towards shock and crit
 		amount += O.burn_dam
@@ -161,7 +161,7 @@
 
 /mob/living/carbon/human/getCloneLoss()
 	var/amount = 0
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		amount += E.get_genetic_damage()
 	return amount
 
@@ -183,7 +183,7 @@
 		for(var/datum/modifier/M in modifiers)
 			if(!isnull(M.incoming_healing_percent))
 				amount *= M.incoming_healing_percent
-	var/list/pick_organs = organs.Copy()
+	var/list/pick_organs = external_organs.Copy()
 	while(amount > 0 && pick_organs.len)
 		var/obj/item/organ/external/E = pick(pick_organs)
 		pick_organs -= E
@@ -346,7 +346,7 @@
 //Returns a list of damaged organs
 /mob/living/carbon/human/proc/get_damaged_organs(brute, burn)
 	var/list/obj/item/organ/external/parts = list()
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		if((brute && O.brute_dam) || (burn && O.burn_dam))
 			parts += O
 	return parts
@@ -372,10 +372,10 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
 /mob/living/carbon/human/take_organ_damage(brute, burn, sharp = 0, edge = 0)
-	if(!length(organs))
+	if(!length(external_organs))
 		return
 
-	var/obj/item/organ/external/picked = pick(organs)
+	var/obj/item/organ/external/picked = pick(external_organs)
 	var/damage_flags = (sharp? DAM_SHARP : 0)|(edge? DAM_EDGE : 0)
 
 	if(picked.take_external_damage(brute, burn, damage_flags))
@@ -387,7 +387,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 /mob/living/carbon/human/proc/take_organic_organ_damage(brute, burn)
 	var/list/organic_organs = list()
 
-	for(var/obj/item/organ/external/organ in organs)
+	for(var/obj/item/organ/external/organ in external_organs)
 		if(!BP_IS_ROBOTIC(organ))
 			organic_organs += organ
 
@@ -501,7 +501,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 	if(status_flags & GODMODE)
 		return
 
-	var/organs_count = length(organs)
+	var/organs_count = length(external_organs)
 	if(!organs_count)
 		return
 
@@ -512,7 +512,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 		burn_to_deal /= organs_count
 
 	var/blocked = 0
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		if(QDELETED(E))
 			continue // A slime hand gibbed because of the damage to the arm, or something.
 		if(check_armor)
@@ -532,7 +532,7 @@ This function restores all organs.
 */
 /mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs = FALSE)
 	for(var/bodypart in BP_BY_DEPTH)
-		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
+		var/obj/item/organ/external/current_organ = external_organs_by_name[bodypart]
 		if(istype(current_organ))
 			current_organ.rejuvenate(ignore_prosthetic_prefs)
 
@@ -558,7 +558,7 @@ This function restores all organs.
 
 
 /mob/living/carbon/human/proc/get_organ(zone)
-	return organs_by_name[check_zone(zone)]
+	return external_organs_by_name[check_zone(zone)]
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()
@@ -571,3 +571,95 @@ This function restores all organs.
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
 	return max(0, traumatic_shock)
+
+/mob/living/carbon/human/handle_pull_damage(mob/living/puller)
+	if(!lying)
+		return FALSE
+
+	if(species && (species.species_flags & SPECIES_FLAG_NO_MINOR_CUT))
+		return FALSE
+
+	if(!length(bad_external_organs))
+		return FALSE
+
+	if(!has_gravity())
+		return FALSE
+
+	var/has_blood = TRUE
+	if(species && (species.species_flags & SPECIES_FLAG_NO_BLOOD))
+		has_blood = FALSE
+	else if(!vessel.has_reagent(/datum/reagent/blood))
+		has_blood = FALSE
+
+	var/damage_message = ""
+	var/turf/location = get_turf(src)
+	for(var/obj/item/organ/external/E in shuffle(bad_external_organs))
+		if(E.is_stump())
+			continue
+
+		var/should_take_damage = max(E.cut_dam, E.burn_dam) >= E.min_broken_damage * (E.bleeding ? 0.75 : 1.25)
+		if(should_take_damage)
+			if(max(E.cut_ratio, E.burn_ratio) >= 0.9)
+				if(BP_IS_ROBOTIC(E))
+					damage_message = "Damage to [src]'s [E] worsens terribly from being dragged!"
+				else
+					damage_message = "Wounds on [src]'s [E] worsen terribly from being dragged!"
+					if(has_blood && prob(75))
+						var/obj/effect/decal/cleanable/blood/B = location.add_blood(src)
+						if(istype(B))
+							B.Crossed(src)
+						vessel.remove_reagent(/datum/reagent/blood, 30)
+			else
+				if(BP_IS_ROBOTIC(E))
+					damage_message = "Damage to [src]'s [E] worsens from being dragged!"
+				else
+					damage_message = "Wounds on [src]'s [E] open more from being dragged!"
+					if(has_blood && prob(25))
+						var/obj/effect/decal/cleanable/blood/B = location.add_blood(src)
+						if(istype(B))
+							B.Crossed(src)
+						vessel.remove_reagent(/datum/reagent/blood, 10)
+
+			if(E.last_pull_damage_time < world.time - 3 SECONDS  || E.last_pull_damage_message != damage_message)
+				visible_message(SPAN("danger", damage_message))
+				E.last_pull_damage_message = damage_message
+				E.last_pull_damage_time = world.time
+
+			E.take_cut_damage(3, "Friction")
+			return TRUE // Let's not make floors a tiled god of death, one proc per move is more than enough.
+
+		should_take_damage = !BP_IS_ROBOTIC(E) && E.is_broken()
+		if(should_take_damage)
+			if(E.blunt_ratio >= 0.9)
+				damage_message = "Broken bones in [src]'s [E] shred through the skin from being dragged!"
+				E.take_pierce_damage(3, "Bone Shards")
+				if(has_blood && prob(50))
+					var/obj/effect/decal/cleanable/blood/B = location.add_blood(src)
+					if(istype(B))
+						B.Crossed(src)
+					vessel.remove_reagent(/datum/reagent/blood, 20)
+			else
+				damage_message = "Broken bones in [src]'s [E] jostle badly from being dragged!"
+				E.take_blunt_damage(3, "Broken Bone Movement")
+
+			if(E.last_pull_damage_time < world.time - 3 SECONDS  || E.last_pull_damage_message != damage_message)
+				visible_message(SPAN("danger", damage_message))
+				E.last_pull_damage_message = damage_message
+				E.last_pull_damage_time = world.time
+
+			return TRUE
+
+	return FALSE
+
+/mob/living/carbon/human/pull_damage()
+	if(!lying || getBruteLoss() + getFireLoss() < 100)
+		return 0
+	for(var/thing in external_organs)
+		var/obj/item/organ/external/e = thing
+		if(!e || e.is_stump())
+			continue
+		if((e.status & ORGAN_BROKEN) && !e.splinted)
+			return 1
+		if(e.status & ORGAN_BLEEDING)
+			return 1
+	return 0

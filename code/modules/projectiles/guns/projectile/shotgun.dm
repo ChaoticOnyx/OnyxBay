@@ -264,7 +264,8 @@
 		SET_SAWN_VAR(one_hand_penalty)
 		SET_SAWN_VAR(fire_sound)
 
-		item_state_slots.RemoveAll(slot_l_hand_str, slot_r_hand_str)
+		A_LAZYREMOVE(item_state_slots, slot_l_hand_str)
+		A_LAZYREMOVE(item_state_slots, slot_r_hand_str)
 		update_icon()
 		to_chat(user, SPAN("notice", "You shorten the barrel of \the [src]!"))
 

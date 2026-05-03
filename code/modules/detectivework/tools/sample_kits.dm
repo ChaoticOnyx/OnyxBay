@@ -101,11 +101,11 @@
 
 	if(user.zone_sel.selecting == BP_R_HAND || user.zone_sel.selecting == BP_L_HAND)
 		var/has_hand
-		var/obj/item/organ/external/O = H.organs_by_name[BP_R_HAND]
+		var/obj/item/organ/external/O = H.external_organs_by_name[BP_R_HAND]
 		if(istype(O) && !O.is_stump())
 			has_hand = 1
 		else
-			O = H.organs_by_name[BP_L_HAND]
+			O = H.external_organs_by_name[BP_L_HAND]
 			if(istype(O) && !O.is_stump())
 				has_hand = 1
 		if(!has_hand)
@@ -114,7 +114,9 @@
 		user.visible_message("[user] takes a copy of \the [H]'s fingerprints.")
 		var/fullprint = H.get_full_print()
 		evidence[fullprint] = fullprint
-		copy_evidence(src)
+		var/mob/living/carbon/human/U = user
+		if(istype(U) && (!U.gloves || !(U.gloves.body_parts_covered & HANDS)))
+			copy_evidence(src)
 		SetName("[initial(name)] (\the [H])")
 		icon_state = "fingerprint1"
 		return 1

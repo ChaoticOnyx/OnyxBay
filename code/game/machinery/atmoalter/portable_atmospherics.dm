@@ -45,8 +45,8 @@
 
 /obj/machinery/portable_atmospherics/proc/StandardAirMix()
 	return list(
-		"oxygen" = O2STANDARD * MolesForPressure(),
-		"nitrogen" = N2STANDARD *  MolesForPressure())
+		"oxygen" = O2_STANDARD * MolesForPressure(),
+		"nitrogen" = N2_STANDARD *  MolesForPressure())
 
 /obj/machinery/portable_atmospherics/proc/MolesForPressure(target_pressure = start_pressure)
 	return (target_pressure * air_contents.volume) / (R_IDEAL_GAS_EQUATION * air_contents.temperature)

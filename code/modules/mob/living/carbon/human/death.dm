@@ -13,7 +13,7 @@
 			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
 
 	playsound(src, SFX_FIGHTING_CRUNCH, 75, 1)
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		E.droplimb(TRUE, DROPLIMB_EDGE, TRUE, TRUE, TRUE)
 
 	sleep(1)
@@ -81,7 +81,7 @@
 	RemoveHairAndFacials()
 
 	add_mutation(MUTATION_HUSK)
-	for(var/obj/item/organ/external/head/h in organs)
+	for(var/obj/item/organ/external/head/h in external_organs)
 		h.status |= ORGAN_DISFIGURED
 	update_body(1)
 	return
@@ -98,7 +98,7 @@
 	RemoveHairAndFacials()
 
 	add_mutation(MUTATION_SKELETON)
-	for(var/obj/item/organ/external/head/h in organs)
+	for(var/obj/item/organ/external/head/h in external_organs)
 		h.status |= ORGAN_DISFIGURED
 	update_body(1)
 	return

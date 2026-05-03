@@ -1191,8 +1191,8 @@
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-	air_temporary.adjust_multi("oxygen",  (start_pressure*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature), \
-	                           "nitrogen",(start_pressure*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
+	air_temporary.adjust_multi("oxygen",  (start_pressure*O2_STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature), \
+	                           "nitrogen",(start_pressure*N2_STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 	icon_state = "air"
 
 /obj/machinery/atmospherics/pipe/tank/oxygen

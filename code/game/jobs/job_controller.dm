@@ -442,8 +442,8 @@ var/global/datum/controller/occupations/job_master
 
 			// Remove augmentations that are not allowed for this job (loadout-like behavior).
 			var/list/organs = list()
-			for(var/organ_tag in H.organs_by_name)
-				var/obj/item/organ/O = H.organs_by_name[organ_tag]
+			for(var/organ_tag in H.external_organs_by_name)
+				var/obj/item/organ/O = H.external_organs_by_name[organ_tag]
 				if(O)
 					organs += O
 			for(var/organ_tag in H.internal_organs_by_name)

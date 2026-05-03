@@ -38,8 +38,8 @@ GLOBAL_LIST_INIT(minesweeper_arcade_prizes, list(
 		/obj/item/plastique                            = 3,
 		/obj/item/pen/energy_dagger                    = 3,
 		/obj/item/melee/energy/sword/pirate            = 1,
-		/obj/item/melee/energy/sword/one_hand/red      = 1,
-		/obj/item/melee/energy/sword/one_hand/purple   = 1,
+		/obj/item/melee/energy/sword/saber/red         = 1,
+		/obj/item/melee/energy/sword/saber/purple      = 1,
 		/obj/item/gun/energy/crossbow                  = 1,
 	),
 ))

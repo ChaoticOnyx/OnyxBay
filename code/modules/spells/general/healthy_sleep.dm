@@ -49,7 +49,6 @@
 			E.status &= ~ORGAN_TENDON_CUT
 		if(E.status & ORGAN_BROKEN)
 			E.mend_fracture()
-			E.stage = 0
 
 	H.update_health()
 	H.sleeping = 0
