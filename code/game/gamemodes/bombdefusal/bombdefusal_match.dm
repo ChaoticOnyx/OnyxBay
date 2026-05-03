@@ -51,7 +51,7 @@
 		var/datum/space_level/arena_level = new()
 		arena_level.traits = list("[ZTRAIT_SEALED]" = TRUE)
 		var/datum/gas_mixture/atmos = new()
-		atmos.gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+		atmos.gas = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 		atmos.temperature = 20 CELSIUS
 		arena_level.exterior_atmosphere = atmos
 		GLOB.using_map.map_levels += arena_level
@@ -82,7 +82,7 @@
 		var/datum/space_level/extra_level = new()
 		extra_level.traits = list("[ZTRAIT_SEALED]" = TRUE)
 		var/datum/gas_mixture/atmos = new()
-		atmos.gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+		atmos.gas = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 		atmos.temperature = 20 CELSIUS
 		extra_level.exterior_atmosphere = atmos
 		GLOB.using_map.map_levels += extra_level
