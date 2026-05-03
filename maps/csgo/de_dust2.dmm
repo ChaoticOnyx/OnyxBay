@@ -76,6 +76,7 @@
 "wU" = (/obj/structure/prop/door/shutter{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
 "xk" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/natural/sand/darksand,/area/space)
 "xm" = (/turf/simulated/mineral,/area/space)
+"xu" = (/obj/structure/prop/floodlight,/obj/effect/decal/bombdefusal/site_a{pixel_y = -32},/turf/simulated/floor/natural/sand/gray,/area/space)
 "xJ" = (/obj/structure/prop/largecrate,/obj/effect/floor_decal/spline/plain/black{dir = 8},/turf/simulated/floor/natural/sand/gray,/area/space)
 "xL" = (/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/misc/concrete,/area/space)
 "yb" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/landmark/bombdefusal/t_spawn,/turf/simulated/floor/misc/concrete,/area/space)
@@ -100,13 +101,13 @@
 "Ch" = (/obj/structure/prop/door/half/shutter{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
 "Ci" = (/obj/structure/railing{dir = 1},/turf/simulated/floor/misc/concrete,/area/space)
 "CW" = (/obj/effect/floor_decal/stairs{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
-"DM" = (/obj/structure/prop/door/open/shutter{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"DM" = (/obj/effect/decal/bombdefusal/site_b{pixel_y = -32},/turf/simulated/floor/natural/sand/gray,/area/space)
 "Eo" = (/obj/structure/railing{dir = 1},/obj/structure/prop/crate,/turf/simulated/floor/misc/concrete,/area/space)
 "Fc" = (/obj/structure/railing{dir = 4},/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/misc/concrete,/area/space)
 "Fg" = (/obj/structure/railing{dir = 1},/obj/structure/railing{dir = 4},/obj/structure/prop/crate,/turf/simulated/floor/misc/concrete,/area/space)
 "Fv" = (/obj/structure/loot_pile/mecha/deathripley,/turf/simulated/floor/natural/sand/gray,/area/space)
 "FK" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/spline/plain/black,/turf/simulated/floor/misc/concrete,/area/space)
-"Gq" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/door/open/shutter{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"Gq" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/bombdefusal/site_a{pixel_y = -32},/turf/simulated/floor/misc/concrete,/area/space)
 "GB" = (/obj/structure/railing,/turf/simulated/floor/misc/concrete,/area/space)
 "GJ" = (/obj/structure/prop/largecrate,/turf/simulated/floor/natural/sand/gray,/area/space)
 "Ha" = (/obj/effect/floor_decal/oldflood,/obj/structure/railing,/obj/vehicle/train/cargo/trolley,/turf/unsimulated/floor/rescue_base,/area/space)
@@ -114,7 +115,7 @@
 "Ie" = (/obj/structure/railing{dir = 4},/obj/structure/railing{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
 "Ih" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate,/turf/simulated/floor/misc/concrete,/area/space)
 "IP" = (/obj/structure/prop/largecrate/tank,/turf/simulated/floor/misc/concrete,/area/space)
-"Jt" = (/obj/effect/floor_decal/stairs{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
+"Jt" = (/obj/effect/floor_decal/stairs{dir = 8},/obj/effect/decal/bombdefusal/site_b{pixel_y = -32},/turf/unsimulated/floor/rescue_base,/area/space)
 "Jy" = (/obj/structure/railing{dir = 4},/obj/structure/railing,/turf/simulated/floor/misc/concrete,/area/space)
 "JU" = (/obj/structure/railing{dir = 4},/obj/structure/prop/floodlight,/turf/simulated/floor/misc/concrete,/area/space)
 "Ka" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/misc/concrete,/area/space)
@@ -203,7 +204,7 @@ iZiZuhggdfdfwGwGdfdfdfdfdfdfdfdfdfdfdfdfMqNudfdfdfdfdfdfdfdfdfdfkldfBjdfdfdfdfdf
 iZiZuhdfdfLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
 iZiZuhdfdfLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
 iZiZuhdfdfLyLyLyLyLyLyLyLyLyLyLySGLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
-iZiZuhuhuhdfdfdfwGUBUBUBUBUBUBUBosdfLyLyLydfggdfdfdfdfUndfdfdfdfdfdfdfggwGvnLyLydfdfdfdfdfdfdfdfdfdfdfdfuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhuhuhdfdfdfwGUBUBUBUBUBUBUBosdfLyLyLydfxudfdfdfdfUndfdfdfdfdfdfdfggwGvnLyLydfdfdfdfdfdfdfdfdfdfdfdfuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
 iZiZiZiZuhdfdfdfqwthCiCiCiCiCiCiFgAoLyLyLydfKjKjKjxmxmxmuhuhuhuhuhuhuhuhwGvnLyLydfdfdfdfdfdfdfKjKjKjuhuhuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
 iZiZiZiZuhdfdfdfqwFKAkAkAkAkAkAkJUAoLyLyLydfKjLPKjLPLPLPuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfKjiZKjiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
 iZiZiZiZuhdfdfdfdfzrAkAkAkAkAkAkTSAoLyLyLydfKjKjKjxmxmxmuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfKjKjKjiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
@@ -221,7 +222,7 @@ iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkEoUTAoLyLyLydfuhuhuhWESMSMuhuhuhuhuhuhuhuhLPLPLPLP
 iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkAkCWdfLyLyLyqwIhmaSMSMSMSMZxVZkjLyLyvndVxmLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmdfdfLyLyLyLyLydfdfxmuhLPLPLPLPLPLPLPLPiZ
 iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkAkCWdfLyLyLyqwIhSMSMSMSMSMSMCWSMSMSMmadVxmLPLPLPLPLPLPLPLPLPxmxmxmxmxmxmdfdfLyLyLyLyLyLydfdfdfuhuhSTSTSTuhLPLPLPiZ
 iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkAkCWdfLyLyLyqwWESMSMSMSMSMSMCWSMSMSMSMLyxmLPLPLPLPLPLPLPLPLPxmdfdfdfdfdfLyLyLyLyLyLyLyLyLydfdfdfdfLyLyLyxmLPLPLPLP
-iZiZiZiZiZiZiZiZuhAkIPAkAkAkAkAkTSAoLyLyLyqwWESMSMSMSMSMSMCWSMSMSMSMLyxmLPLPLPLPLPLPLPLPLPxmdfdfdfdfLyLyLyLyLyLyLyLyLyLyLyLydfdfLyLyLyxmLPLPLPLP
+iZiZiZiZiZiZiZiZuhAkIPAkAkAkAkAkTSAoLyLyLyqwWESMSMSMSMSMGqCWSMSMSMSMLyxmLPLPLPLPLPLPLPLPLPxmdfdfdfdfLyLyLyLyLyLyLyLyLyLyLyLydfdfLyLyLyxmLPLPLPLP
 iZiZiZiZiZiZiZiZuhuhuhuhuhuhuhuhuhMeLyLyLydfuhuhuhuhuhuhuhxmxkSMSMSMKBxmLPLPLPLPLPLPLPLPLPxmxmdfdfLyLyLyLyLyLydfdfdfLyLyLyLyLyLyLyLyLyxmLPLPLPLP
 iZLPLPLPLPLPLPLPLPLPLPuhWGVsVsTmvpggLyLyLydfuhLPLPLPLPLPuhxmxmSMSMSMKBxmLPLPLPLPLPLPLPLPLPxmxmdfLyLyLyLyLydfdfdfggdfdfdfLyLyLyLyLyLyLyxmLPLPLPLP
 iZLPLPLPLPLPLPLPLPLPLPuhVsAkAkAkVpdfLyLyLydfuhLPLPLPLPLPuhxmxmSMSMSMKBxmLPLPLPLPLPLPLPLPLPxmxmdfLyLyLyLydfxmxmxmxmxmxmdfdfLyLyLyLyLyLyxmLPLPLPLP
@@ -245,7 +246,7 @@ LPLPLPLPLPLPLPLPxmxmxmxmxmMeUDggdfLyLyLydfuhLPLPLPLPLPLPLPLPuhMpLqhohozLgFMphouh
 LPLPLPLPLPLPLPLPxmxmxmxmjfdfdfdfdfLyLyLyGJuhLPLPLPLPLPLPLPLPuhMpLqMphozLMEMphouhLPLPLPLPuhLPLPLPLPLPLPLPLPLPLPLPuhSMSMSMKcwEggdfLyLyLydfdfdfxmLP
 LPLPLPLPLPLPLPLPLPxmxmxmXPdfdfdfdfLyLyvnGJuhuhuhuhuhuhuhuhuhuhuhuhuhuhLUhgWoWouhLPLPLPLPuhLPLPLPLPLPLPLPLPLPLPLPuhSMSMSMSMeKdfdfLyLyLydfdfdfxmLP
 LPLPLPLPLPLPLPLPLPxmxmdfdfXPdfdfdfLyLyLyNoxmLPLPLPLPLPLPLPLPLPLPLPLPuhmNhoSySyuhLPLPLPKjKjKjuhuhuhsBsBsBuhuhuhKjKjKjSMSMSMeKdfdfLyLyLydfdfxmxmLP
-LPLPLPLPLPLPLPLPLPLPxmBYKBdfdfdfgVLyLyLydfxmxmLPLPLPLPLPLPLPLPLPLPLPuhMphohoMpuhLPLPLPKjLPKjuhuhdfLyLyLydfuhuhKjLPKjSMSMSMeKdfdfLyLyLydfdfxmLPLP
+LPLPLPLPLPLPLPLPLPLPxmBYKBdfdfdfgVLyLyLyDMxmxmLPLPLPLPLPLPLPLPLPLPLPuhMphohoMpuhLPLPLPKjLPKjuhuhdfLyLyLydfuhuhKjLPKjSMSMSMeKdfdfLyLyLydfdfxmLPLP
 LPLPLPLPLPLPLPxmxmxmxmPAPAxmxmKjKjkmQXkmKjKjxmxmLPLPLPLPLPLPLPLPLPLPuhMphohoMpuhLPLPLPKjKjKjSMAodfLyLyLydfdfdfKjKjKjSMSMSMeKdfdfLyLyLydfxmxmLPLP
 LPLPLPLPLPLPLPxmxmvnfsKBrYLydfopdfLyLyLydfdfdfxmxmLPLPLPLPLPLPLPLPLPuhMpuhMpMpuhuhLPLPuhSMSMSMlxdfLyLyLydfdfMewGgfWESMSMSMeKdfdfLyLyLyzlxmxmLPLP
 LPLPLPLPLPLPLPxmyUdVLyLyLyLyLyLydfLyLyLyLydfdfdfxmxmLPuhuhuhuhuhuhuhuhMpMpMpMphouhuhuhuhRxSMetAodfLyLyLydfRqggMeqpWESMSMSMeKdfdfLyLyLydfxmxmLPLP
@@ -256,8 +257,8 @@ LPLPLPLPLPLPLPxmBUBUBUUBUBUBUBUBdfLyLyLyLydfdfdfLyLyLyLyxmLPLPLPuhOZhohohoMpMpuh
 LPLPLPLPLPLPLPuhRERELFREREREREIelnLyLyLydfdfdfdfBYxmxmxmxmLPLPLPuhfphohouhMphouhLPLPLPKjKjKjnQAodfdfdfdfLyLyLyLyLyLyLyLyKRLyLyLyLyLyLydfdfxmLPLP
 LPLPuhuhuhuhuhuhSMSMSMSMXFSMSMAcxJLyLyLydfdfdfMexmLPLPLPLPLPLPLPuhfpMphohoMpMpuhLPLPLPKjLPKjSMAodfdfuhuhsBsBsBuhuhdfdfdfdfdfdfggLyLyLydfdfxmLPLP
 LPLPuhvjSXnpULSMSMSMSMSMSMSMTLsuLyLyLyLyLydfdfdfxmxmxmxmxmxmuhuhuhMphohohohoMpuhLPLPLPKjKjKjxmxmxmxmuhLPLPLPLPLPuhxmxmxmxmxmxmuhLyLyLyuhxmxmLPLP
-LPLPuhvjnZULSMSMSMSMSMSMSMSMTLsuLyLyLyLyLyLyLyLyLyLyLyLyLyLyWjDMrVhohohohohohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmuhSTSTSTuhxmLPLPLP
-LPLPuhvjnpiJSMSMmaPZSMSMSMSMSMTXemLyLyLyLyLyLyLyLyLyLyLyLyLyJtGqMpMpMphohohohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
+LPLPuhvjnZULSMSMSMSMSMSMSMSMTLsuLyLyLyLyLyLyLyLyLyLyLyLyLyLyWjhorVhohohohohohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmuhSTSTSTuhxmLPLPLP
+LPLPuhvjnpiJSMSMmaPZSMSMSMSMSMTXemLyLyLyLyLyLyLyLyLyLyLyLyLyJtMpMpMpMphohohohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
 LPLPuhvjSXSDSMSMSMSMSMSMSMSMSMsRAoLyLyLyLydfdfdfxmxmxmxmxmxmuhuhmNyOafMpuhhoMpuhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
 LPLPuhuhuhuhuhuhuhuhuhuhuhuhuhuhdfLyLyLydfdfdfxmxmLPLPLPLPLPLPLPuhmnmnMpuhhohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
 LPLPLPLPLPLPLPLPLPLPLPLPLPLPLPuhuhSTSTSTuhxmxmxmxmLPLPLPLPLPLPLPuhuhuhMpMpMphouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP

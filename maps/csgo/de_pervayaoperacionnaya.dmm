@@ -559,7 +559,7 @@
 "wA" = (/obj/effect/floor_decal/corner/lime,/obj/effect/floor_decal/corner/lime{dir = 1},/obj/structure/sink{dir = 8; pixel_x = -12; pixel_y = 2},/turf/simulated/floor/tiled/white/rough,/area/space)
 "wB" = (/obj/effect/floor_decal/spline/plain/grey,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/turf/simulated/floor/tiled/freezer,/area/space)
 "wC" = (/obj/effect/floor_decal/ss13_new/l5,/turf/simulated/floor/tiled/rough,/area/space)
-"wF" = (/obj/effect/floor_decal/corner/blue/three_quarters{dir = 1},/obj/effect/floor_decal/spline/fancy{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"wF" = (/obj/effect/floor_decal/corner/blue/three_quarters{dir = 1},/obj/effect/floor_decal/spline/fancy{dir = 8},/obj/effect/decal/bombdefusal/site_b{pixel_y = 32},/turf/simulated/floor/tiled/rough,/area/space)
 "wG" = (/obj/machinery/door/airlock/freezer{name = "Kitchen cold room"},/obj/machinery/door/firedoor,/obj/effect/forcefield{name = "Blocker"; desc = "You can't get in. Heh."; layer = 1},/turf/simulated/floor/tiled/freezer,/area/space)
 "wH" = (/obj/machinery/navbeacon/delivery/Hydroponics,/obj/structure/plasticflaps{opacity = 1},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/industrial/loading,/turf/simulated/floor/tiled/rough,/area/space)
 "wI" = (/obj/machinery/gateway/centerstation,/turf/simulated/floor/tiled/dark/rough,/area/space)
@@ -865,6 +865,7 @@
 "IE" = (/obj/machinery/door/airlock/external{name = "EVA Internal Access"; icon_state = "door_locked"; frequency = 1379; locked = 1; id_tag = "eva_inner"},/obj/effect/forcefield{name = "Blocker"; desc = "You can't get in. Heh."; layer = 1},/turf/simulated/floor/plating/rough,/area/space)
 "IG" = (/obj/structure/toilet{dir = 1; pixel_y = -5},/obj/machinery/light/small{dir = 8},/obj/machinery/newscaster{dir = 8; pixel_x = 32},/turf/simulated/floor/tiled/freezer,/area/space)
 "IK" = (/obj/machinery/door/airlock/hatch{name = "Command Substation"},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
+"IN" = (/obj/effect/decal/bombdefusal/site_b{pixel_y = 32},/turf/simulated/floor/tiled/dark,/area/space)
 "IO" = (/obj/effect/floor_decal/corner/red{dir = 4},/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "IP" = (/obj/machinery/requests_console{name = "Internal Affairs RC"; pixel_x = -30; department = "Internal Affairs"; departmentType = 5},/turf/simulated/floor/trim/wood,/area/space)
 "IQ" = (/obj/random/junk,/obj/random/trash,/turf/simulated/floor/plating,/area/space)
@@ -1095,6 +1096,7 @@
 "RQ" = (/obj/effect/floor_decal/spline/fancy{dir = 9},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "RT" = (/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "RU" = (/obj/effect/floor_decal/corner/lime{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"Sa" = (/obj/effect/decal/bombdefusal/site_b{pixel_y = 32},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Sm" = (/obj/machinery/light/small/hl{dir = 8},/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
 "Sr" = (/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
 "Ss" = (/obj/machinery/door/firedoor,/obj/machinery/door/airlock/maintenance,/obj/effect/forcefield{name = "Blocker"; desc = "You can't get in. Heh."; layer = 1},/turf/simulated/floor/plating,/area/space)
@@ -1200,6 +1202,7 @@
 "Wx" = (/obj/structure/table/steel_reinforced,/obj/effect/floor_decal/industrial/warning{dir = 6},/obj/machinery/cell_charger,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Wy" = (/obj/structure/table/standard,/obj/effect/floor_decal/corner/white/diagonal,/turf/simulated/floor/tiled/rough,/area/space)
 "WC" = (/obj/structure/iv_drip,/turf/simulated/floor/tiled/white,/area/space)
+"WD" = (/obj/effect/floor_decal/corner/pink{dir = 1},/obj/effect/decal/bombdefusal/site_a{pixel_x = -32},/turf/simulated/floor/tiled/white/rough,/area/space)
 "WE" = (/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/plating,/area/space)
 "WG" = (/obj/structure/table/darkwood_reinforced,/obj/machinery/chemical_dispenser/bar_soft/full,/turf/simulated/floor/trim/carpet/red,/area/space)
 "WH" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass_civil{name = "Bar"},/turf/simulated/floor/trim/darkwood,/area/space)
@@ -1265,6 +1268,7 @@
 "YI" = (/obj/effect/floor_decal/spline/plain/black{dir = 5},/turf/simulated/floor/tiled/dark,/area/space)
 "YK" = (/obj/machinery/light/small{dir = 4},/turf/simulated/floor/tiled/dark,/area/space)
 "YM" = (/obj/structure/table/standard,/obj/effect/floor_decal/corner/paleblue{dir = 9},/turf/simulated/floor/tiled/white/rough,/area/space)
+"YQ" = (/obj/effect/floor_decal/corner/paleblue{dir = 10},/obj/effect/decal/bombdefusal/site_a{pixel_y = -32},/turf/simulated/floor/tiled/white/rough,/area/space)
 "YR" = (/obj/effect/floor_decal/corner/beige{dir = 6},/obj/structure/sink{dir = 4; pixel_x = 11},/turf/simulated/floor/tiled/white/rough,/area/space)
 "YV" = (/obj/effect/floor_decal/corner/blue,/obj/effect/decal/bombdefusal/arrow_b{dir = 4; pixel_x = 32},/turf/simulated/floor/tiled/rough,/area/space)
 "YW" = (/obj/machinery/door/window/eastright{name = "Medical Reception"},/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/space)
@@ -1321,11 +1325,11 @@ xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxROelUlUbZlUfnaPlUlUifLBXIXIXIXIUPuAxZxZxZTPiQLm
 xRxRxRxRxRxRxRxRxRxRxRxRxRxRxROeOeOelUlUXNXNXNXNlUlUuXKbUKUKUKUKUPlqTPxZxZTPZUvtzStqEisBZUHYtRxZxZaCblUKUKUKUKKbYalUlUXNEWCOYluhWHuhWHuhnxgWnxnxgWnxnxXNPsPaPaPaParYKKOeJjlUlUlUeiqRqRjaxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxROeOeOeOeOeMzEZEZEZTtEZfyXNlUlUuXKbXIXIXIXILBLBXkxZxZXJZUGFOVxZOVffZUTPDlxZxZLJFaXIXIXIXIKbYalUlUXNgNmVYluhlUlUlUuhdgkzHbdgkzRoXNXNXNtCyHxaumXNCwOeEMhnhnMKeiqRqRjaxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxROeFWFMmolUbxWhOPFPXNXNXNXNlUlUuXKbKbLBLBLBLBBnLJxZxZxZVUemxZxZxZBfRExZxZxZxZqNLBLBLBLBKbKbYalUqHXNXNXNXNuhfWfWfWuhXNXNuhuhCwXNXNWTLJLJLJLJKlhtDdOeaPaPaPpaFjaPaPjaxRxRxRxRxRxR
-xRxRxRxRxRxRxRxRxRxRxROeOIfumklUbxEIlUlUOvyhpPXNdZlUuXuXDXwFvsucxZxZxZxZxZxZVUmXxZGpxZAORExZxZxZxZxZxZTwvsIbgnYaYalUlUfnUwCZlUlUlUlUlUlUCZlUlUlUlUlUwUCDCDCDCDCDCDCDCDBjlUlUlUlUlUlUlUjaxRxRxRxRxRxR
+xRxRxRxRxRxRxRxRxRxRxROeOIfumklUbxEIlUlUOvyhpPXNdZlUuXuXDXwFvsucxZxZxZxZxZxZVUmXxZGpxZAORExZxZxZxZxZINTwvsIbgnYaYalUlUfnUwCZlUlUlUlUlUlUCZlUlUlUlUlUwUCDCDCDCDCDCDCDCDBjlUlUlUlUlUlUlUjaxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxROelUukjrlUbxfZlUlUlUlUybXNRNlUlUlUeyJIvsQTxZxZxZxZxZxZZUmLEtxZfilBZUxZxZxZxZxZxZTwvszmLXlUlUlUlUlUUwlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUlUMClUlUlUlUlUlUlUjaxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxROelUlUDFXNfyXNlUlUlUlUpGXNNrlUICVbkFuMvsQTxZLJTPTPxZxZZURPlOuQlOplZUxZxZDBSIDlxZTwvssxrnahHhlUlUQrUwlUlUatlUlUQratlUlUlUlUqXlUlUlUatlUlUlUQratlUMCHzUBDvlUlUQratjaxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxROefolUYxXNXNXNgblUuklUcGaPNrlUYVLBLBLBLBLBLBLBLBLBhdwKdkjXjXjtjXjXdkjWhdLBLBLBLBLBLBLBLBLBoolUqHXNXNXNXNXNXNXNXNCwXNuhuhuhXNPPPPXNXNXNXNXNXNOeOeOejaHKjajajajaOejaxRxRxRxRxRxR
-xRxRxRxRxRxRxRxRxRxRxROeUgkNlUXNXNbmEIlUlUIRcGsKNrlUICLBZzZzZzsaLJtwLJTrLJLJdkfbyqPryqiYdkLJLJlMMgMgMgMgMgyyNwdksllUlUXNrLCJRFydydGDXNGVkrmNcsmNvfnHnHDDXNWWBzaXHlOexRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxR
+xRxRxRxRxRxRxRxRxRxRxROeUgkNlUXNXNbmEIlUlUIRcGsKNrlUICLBZzZzZzsaLJtwSaTrLJLJdkfbyqPryqiYdkLJLJlMMgMgMgMgMgyyNwdksllUlUXNrLCJRFydydGDXNGVkrmNcsmNvfnHnHDDXNWWBzaXHlOexRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxROeOeXNsTXNXNamEIlUlUlUcGaPNrlUjgLBUDqMAMjXLJLJRTjXXoIqdkiWyqPryqxtdkQdBxHCMggrnvnvIWMgiRTksQlUlUAbydGbosososWboDKtosososososososEjhZUMososhuOexRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxROekblUlUXNZpMhlUlUygXNXNMtvsvsLBXNXNXNXNLJLJdtdkLBdkdklhLBssLBlRdkdkdkdkMgRxIsIsglMgZlKzFRvsvsXNydydostBosydsPKtososososostBosSTaPAdostdUGOexRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxROeNrlUlUuIlUlUlUlUlUsJQtEIlUaoLBgctrdaXNLJLJEYdkgRLByqWqBKpsUVqgyqLBgRdkMgRxIsIsglMgZlKzlxlUlUAbydheosososydXNqwaGbzaGuFosBDosXmXNAdtBosdQOexRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxR
@@ -1338,9 +1342,9 @@ xRxRxRxRxRxRxRxRxRxRxRxRepEslUlUlUlUaPlUlUlUfnaPNrlUGnXalUlUlUlUlUlULBdkdkdkdkdk
 xRxRxRxRxRxRxRxRxRxRxRxRGspflUlUlUlUlylUlUlUXpaPNrlUifLBjdvOntEIlUlUIKaRwlzyeGIKNlCiXfbExZxZYKLBPZPZHpayayPZveLBlUlUqHXNWLxMvFiMJGxQXNoMGlbYaEaPHjkjTsXdaPNnJGJGafXNaPwJaPjajajajajaOexRxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxROeFABoatFolUaPlUlUlUuyXNndCPCPLBvOXRntyJOUxrLBotfyfyIkLBxZxZxZLBxZBdBdLBZXPZLBlUatPZGgLBCPCPCPXNXNXNXNaPxBaPXNXNaPAuaPXNXNFbytXNXNaPGfaPXNXNGVnHOnXNRuDQYsvdOexRxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxROeOeOeZcdkNKvGRDVqRDdkdkgklUlULBLBLBLBLBLBMqLBLBLBLBLBLBXNcQXNLBLBLBLBLBLBRcLBLBLBLBLBLBlUlUlUNAosdzsonHnHnHnHnHnHnHnHqpnHCcwiNbqPLUnHnHnHNbCcosEjLZEJzaxZSAOexRxRxRxRxRxRxR
-xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjaPSMgKvMgaMeICVGxfClUlUuiSwJqlUfKQGfhYalUlUlUlUjxlUlUlUPelUlUlUlUuXMEKrfKVSGMSwuilUlUlUNAawCAhahahajHjHtojHjHjHlZObosjHjHqPODbYbYbYbYkjosEjXNFJMTMTWlOexRxRxRxRxRxRxR
+xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjaPSMgKvMgaMeICVGxfClUlUuiSwJqlUfKQGfhYalUlUlUlUjxlUlUlUPelUlUlUlUuXMEKrfKVSGMSwuilUlUlUNAawCAhahahajHjHtojHjHjHlZObosjHjHqPODbYbYYQbYkjosEjXNFJMTMTWlOexRxRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjaMgMgMgMgMgMgAKaOfCtOlUlUlUlUlUlUvslUlUlUlUlUlUlUeQukXhlUlUlUlUlUlUOBvslUlUlUlUlUlUlUmlXNXNXNXNXNCAXOCwXNaPEnaPXNXNGhXOXNXNXBXBXBXNCwFbPpytXNFuFuFuFuOeOexRxRxRxRxRxR
-xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjaMgfOMgMgMgMgYtGxdUNrMlixNrlUlUlUvslUlUlUcHatCxlUlUlUlUCxlUatlUlUlUlUvslUlUlUlUatlUlUlUXNiSMntQXNlajHXNzKRhfIRhGkXNJrQBXNlcDMzszsiBXNAAosEVXNyMZRzsDMHBOexRxRxRxRxRxR
+xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjaMgfOMgMgMgMgYtGxdUNrMlixNrlUlUlUvslUlUlUcHatCxlUlUlUlUCxlUatlUlUlUlUvslUlUlUlUatlUlUlUXNiSMntQXNlajHXNzKRhfIRhGkXNWDQBXNlcDMzszsiBXNAAosEVXNyMZRzsDMHBOexRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjaLBXNRzkOkOpzipOeOewvaSOeOeOeOeOeOeOeOeOeOeOeOeOelUlUlUXNXNXNXNXNQpXNXNXNXNXNYeAVtWnSjqXNFEosYRXNhajHXNzHfIfIfIppaPJrjHXBWCTiNaynzsXBJgosEjgYzsTiNaynWCOexRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRjajajajajajajajajaxRxRxRxRxRxRxRxRxRxRxRxRxRxRxROeCPCPCPXNcXcXidwVlUlUwuvYTEfyfyXNXNXNXNXNSvosoFKYosjHEnfIfIHGfIfIEnJrosbCzsapGXXVzsLFKttBEjBBzsapsEqvnPOexRxRxRxRxRxR
 xRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxRxROefdlUfMXNcXBclUlUlUBGNRXNXNxkfyFGfyfyvAXNSvosvDXNJrjHaPfIfIfIfIfIaPJrctXBnPwBbOfpecXBYMosEjgYmZwBbOfpnPOexRxRxRxRxRxR

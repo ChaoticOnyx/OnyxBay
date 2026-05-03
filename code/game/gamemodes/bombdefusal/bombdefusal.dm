@@ -71,6 +71,9 @@
 	SSstoryteller.can_fire = FALSE
 	SSevents.can_fire = FALSE
 
+	// Build shop catalog once at game start
+	init_shop_catalog()
+
 	// Register team radio channels so headsets can connect
 	GLOB.radio_channels["Terrorists"] = BOMBDEFUSAL_FREQ_T
 	GLOB.radio_channels["Counter-Terrorists"] = BOMBDEFUSAL_FREQ_CT
@@ -634,11 +637,14 @@
 
 	// Match already running — spawn into it
 	match.spawn_player(pd)
-	match.update_all_team_markers()
-
-	if(pd.owner?.current)
-		to_chat(pd.owner.current, "<span class='notice'><b>You have joined the match!</b> You are on the <b>[join_team.name]</b> team.</span>")
 	match.announce_to_match("<font color='#FFD700'>[user.name] has joined [join_team.name]!</font>", "#FFD700")
+
+	// Defer HUD setup to give client time to attach
+	spawn(3)
+		if(pd.owner?.current)
+			match.setup_player_hud(pd)
+			match.update_all_team_markers()
+			to_chat(pd.owner.current, "<span class='notice'><b>You have joined the match!</b> You are on the <b>[join_team.name]</b> team.</span>")
 
 /datum/game_mode/bombdefusal/proc/force_start_lobby()
 	if(lobby_active)

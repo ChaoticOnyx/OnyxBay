@@ -555,8 +555,14 @@
 
 	return launched
 
+/obj/item/gun/var/override_fire_sound = null // When set, takes priority over the projectile's fire_sound
+
 /obj/item/gun/proc/play_fire_sound(atom/movable/firer, obj/item/projectile/P)
-	var/shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
+	var/shot_sound
+	if(override_fire_sound)
+		shot_sound = override_fire_sound
+	else
+		shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
 
 	if (!silenced)
 		playsound(loc, shot_sound, rand(85, 95), extrarange = 10, falloff = 1) // it should be LOUD // TODO: Normalize all fire sound files so every volume is closely same

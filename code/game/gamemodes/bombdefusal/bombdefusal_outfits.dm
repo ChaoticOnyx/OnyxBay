@@ -8,44 +8,44 @@
 
 /obj/item/clothing/mask/gas/swat/imba
 	name = "\improper SWAT mask"
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/gloves/swat/imba
 	name = "\improper SWAT gloves"
-	armor = list(melee = 150, bullet = 150, laser = 150, energy = 150, bomb = 150, bio = 0)
+	armor_values = alist(melee = 150, bullet = 150, laser = 150, energy = 150, bomb = 150, bio = 0)
 	body_parts_covered = HANDS | ARMS
 
 /obj/item/clothing/shoes/combat/imba
 	name = "\improper SWAT boots"
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 40, bomb = 40, bio = 0)
+	armor_values = alist(melee = 40, bullet = 40, laser = 40, energy = 40, bomb = 40, bio = 0)
 	body_parts_covered = FEET | LEGS
 
 // Undersuit cosmetics
 /obj/item/clothing/under/syndicate/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/syndicate/combat/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/syndicate/tacticool/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/tactical/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/rank/security/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/ert/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 // Suit cosmetics
 /obj/item/clothing/suit/storage/vest/police/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 // Mask cosmetics
 /obj/item/clothing/mask/gas/syndicate/imba
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 // ===== ARENA ARMOR (50 across all types) =====
 
@@ -55,7 +55,7 @@
 	desc = "A sturdy ballistic vest. Worn by terrorists."
 	icon_state = "mercwebvest"
 	item_state = "armor"
-	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 
 // CT vest - security tactical vest
 /obj/item/clothing/suit/armor/vest/bombdefusal_ct
@@ -63,14 +63,14 @@
 	desc = "A tactical armored vest. Standard counter-terrorist issue."
 	icon_state = "ertarmor_sec"
 	item_state = "armor"
-	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 
 // T helmet - mercenary combat helmet
 /obj/item/clothing/head/helmet/bombdefusal_t
 	name = "combat helmet"
 	desc = "A battered combat helmet favored by mercenaries."
 	icon_state = "helmet_merc"
-	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -80,7 +80,7 @@
 	name = "tactical helmet"
 	desc = "A reinforced tactical helmet worn by security response teams."
 	icon_state = "erthelmet_sec"
-	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 	body_parts_covered = HEAD|EYES
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -294,6 +294,26 @@
 	var/decl/hierarchy/outfit/O = outfit_by_type(outfit_path)
 	if(O)
 		O.equip(H)
+
+	// Verify pistol and knife landed in hands; force-spawn if missing
+	if(!istype(H.r_hand, /obj/item/gun/projectile/pistol/secgun))
+		// Drop whatever's there (if anything), force-equip a new pistol
+		if(H.r_hand)
+			H.drop(H.r_hand)
+			qdel(H.r_hand)
+		var/obj/item/gun/projectile/pistol/secgun/pistol = new(H)
+		H.put_in_r_hand(pistol)
+	if(!istype(H.l_hand, /obj/item/material/hatchet/tacknife))
+		if(H.l_hand)
+			H.drop(H.l_hand)
+			qdel(H.l_hand)
+		var/obj/item/material/hatchet/tacknife/knife = new(H)
+		H.put_in_l_hand(knife)
+
+	// Replace fire_sound on the starting pistol with CS 1.6 USP sound
+	for(var/obj/item/gun/projectile/G in list(H.r_hand, H.l_hand))
+		if(G)
+			G.override_fire_sound = 'sound/csgo/weapons/usp1.wav'
 
 // Give back pistol + ammo + knife without touching clothing or armor.
 // Called when a player respawns after dying in a non-first round.

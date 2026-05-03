@@ -51,7 +51,7 @@
 		var/datum/space_level/arena_level = new()
 		arena_level.traits = list("[ZTRAIT_SEALED]" = TRUE)
 		var/datum/gas_mixture/atmos = new()
-		atmos.gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+		atmos.gas = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 		atmos.temperature = 20 CELSIUS
 		arena_level.exterior_atmosphere = atmos
 		GLOB.using_map.map_levels += arena_level
@@ -66,8 +66,8 @@
 				S.maptext = {"<div style="text-align:center;font-size:24px;color:#FFD700;font-family:'Courier New',monospace;margin-top:12px;"><b>LOADING ARENA...</b></div>"}
 
 	// Load arena map on new z-level
+	var/map_path = mode.get_selected_map_path() // also picks random map if none set
 	arena_map = mode.selected_map
-	var/map_path = mode.get_selected_map_path()
 	var/datum/map_template/bombdefusal_arena/arena_template = new()
 	arena_template.mappaths = list(map_path)
 	var/turf/center = arena_template.load_new_z()
@@ -82,7 +82,7 @@
 		var/datum/space_level/extra_level = new()
 		extra_level.traits = list("[ZTRAIT_SEALED]" = TRUE)
 		var/datum/gas_mixture/atmos = new()
-		atmos.gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+		atmos.gas = list("oxygen" = MOLES_O2_STANDARD, "nitrogen" = MOLES_N2_STANDARD)
 		atmos.temperature = 20 CELSIUS
 		extra_level.exterior_atmosphere = atmos
 		GLOB.using_map.map_levels += extra_level
@@ -336,9 +336,13 @@
 			pd.owner.current.anchored = TRUE
 
 	announce_to_match("<font size='4'><b>ROUND [current_round_num]</b></font>", "#FFD700")
-	update_all_hud()
-	// Update team markers after ALL players are spawned so loc refs are correct
-	update_all_team_markers()
+
+	// Defer HUD setup to give clients time to attach after mind transfer
+	spawn(3)
+		for(var/datum/bombdefusal_player_data/hud_pd in team_a.members + team_b.members)
+			setup_player_hud(hud_pd)
+		update_all_hud()
+		update_all_team_markers()
 
 /datum/bombdefusal_match/proc/spawn_player(datum/bombdefusal_player_data/pd)
 	if(!pd.owner)
@@ -433,8 +437,7 @@
 	// Full heal regardless
 	H.arena_full_heal()
 
-	// Setup HUD
-	setup_player_hud(pd)
+	// HUD setup is deferred to start_round after all players spawn (client may not be ready yet)
 
 // Copy appearance (hair, skin, eyes, name, gender, species, body build) from one human to another
 /proc/save_human_appearance(mob/living/carbon/human/H)
@@ -778,6 +781,10 @@
 	if(!victim_pd)
 		return
 
+	// Already processed (e.g. bleedout_player calls L.death() which re-enters this) — bail out
+	if(victim_pd.is_dead)
+		return
+
 	// Check if team has a living medic for downed state (gibbed = instant death, no downed)
 	var/has_medic = FALSE
 	if(!gibbed)
@@ -857,6 +864,15 @@
 	if(!istype(victim, /mob/living/carbon/human))
 		return
 	var/mob/living/carbon/human/H = victim
+
+	// Drop the bomb to the floor first so it doesn't get deleted with the backpack
+	var/turf/drop_loc = get_turf(H)
+	for(var/obj/item/bombdefusal_bomb/B in H.get_contents())
+		if(drop_loc)
+			B.forceMove(drop_loc)
+		else
+			B.forceMove(H.loc)
+
 	var/list/slots = list(
 		slot_r_hand, slot_l_hand,
 		slot_belt, slot_back,

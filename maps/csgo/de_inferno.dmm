@@ -21,6 +21,7 @@
 "ca" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/space)
 "cc" = (/obj/effect/floor_decal/corner/brown,/obj/structure/sign/poster{pixel_y = -32},/turf/simulated/floor/tiled/dark/usedup,/area/space)
 "cv" = (/obj/item/reagent_containers/vessel/bottle/syrup_bottle/caramel,/obj/item/reagent_containers/vessel/bottle/syrup_bottle/liqueur,/obj/structure/coffee_condi_display,/obj/structure/table/steel_reinforced,/turf/simulated/floor/trim/wood,/area/space)
+"cw" = (/obj/effect/decal/bombdefusal/site_a{pixel_x = -32},/turf/simulated/floor/trim/carpet/red,/area/space)
 "cC" = (/obj/effect/floor_decal/stairs,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand/gray,/area/space)
 "cL" = (/obj/structure/bed/pew/pewchapel/right,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dk" = (/obj/machinery/light/small{dir = 1},/turf/simulated/floor/trim/wood,/area/space)
@@ -38,6 +39,7 @@
 "eq" = (/obj/effect/floor_decal/corner/blue{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/space)
 "er" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 8},/turf/simulated/floor/water/fountain,/area/space)
 "eG" = (/obj/structure/table/woodentable,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
+"eS" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/corner/black{dir = 10},/obj/effect/decal/bombdefusal/site_b{pixel_y = -32},/turf/simulated/floor/tiled,/area/space)
 "eT" = (/turf/simulated/floor/tiled/dirty,/area/space)
 "fh" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 8},/obj/machinery/light,/turf/simulated/floor/water/fountain,/area/space)
 "fx" = (/obj/effect/floor_decal/corner/grey/full,/obj/structure/window/reinforced,/turf/simulated/floor/tiled,/area/space)
@@ -135,6 +137,7 @@
 "pQ" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/turf/simulated/floor/tiled,/area/space)
 "pW" = (/obj/machinery/power/port_gen/pacman{sheets = 25},/obj/item/crowbar,/obj/item/wrench,/obj/effect/floor_decal/corner/grey/full,/turf/simulated/floor/tiled,/area/space)
 "pY" = (/obj/structure/sign/poster{pixel_y = -32},/turf/simulated/floor/tiled,/area/space)
+"qa" = (/obj/effect/floor_decal/corner/black{dir = 9},/obj/effect/decal/bombdefusal/site_b{pixel_x = -32},/turf/simulated/floor/tiled,/area/space)
 "qb" = (/obj/structure/flora/ausbushes/brflowers,/turf/simulated/floor/natural/grass,/area/space)
 "qs" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light,/turf/simulated/floor/tiled,/area/space)
 "qz" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/space)
@@ -225,8 +228,9 @@
 "Ap" = (/obj/machinery/light/small/hl{dir = 8},/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood,/area/space)
 "As" = (/obj/structure/railing/steel{dir = 1},/obj/structure/railing/steel{dir = 8},/obj/machinery/light{dir = 1},/turf/simulated/floor/water/fountain,/area/space)
 "Au" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 1},/obj/structure/railing/steel{dir = 8},/obj/structure/railing/steel{dir = 4},/obj/structure/window_frame/grille,/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/space)
+"AD" = (/obj/effect/decal/bombdefusal/site_a{pixel_x = -32},/turf/simulated/floor/tiled,/area/space)
 "AJ" = (/obj/effect/floor_decal/corner/grey/diagonal{dir = 4},/obj/structure/table/marble,/obj/item/material/kitchen/rollingpin,/turf/simulated/floor/tiled/white,/area/space)
-"AK" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/trim/carpet/green,/area/space)
+"AK" = (/obj/effect/floor_decal/corner/blue{dir = 8},/obj/effect/decal/cleanable/dirt,/obj/effect/decal/bombdefusal/site_a{pixel_x = -32},/turf/simulated/floor/tiled,/area/space)
 "AQ" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/corner/black{dir = 5},/obj/machinery/atm{pixel_y = 28},/turf/simulated/floor/tiled,/area/space)
 "Bj" = (/obj/structure/window/reinforced/full,/obj/structure/window/reinforced/full,/turf/simulated/floor/tiled,/area/space)
 "Bl" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/natural/sand/pure,/area/space)
@@ -438,7 +442,7 @@
 "Sw" = (/obj/effect/floor_decal/chapel{dir = 1},/obj/effect/decal/cleanable/cobweb2,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Sx" = (/obj/effect/floor_decal/corner/blue/diagonal{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/corner/white{dir = 1},/obj/effect/floor_decal/rust,/obj/structure/table/standard,/obj/item/clothing/head/flatcap,/obj/item/reagent_containers/food/donkpocket,/turf/simulated/floor/tiled/rough,/area/space)
 "SC" = (/obj/structure/synthesized_instrument/synthesizer/minimoog/chaotic{icon_state = "minipiano_front"},/turf/simulated/floor/trim/carpet/gpurple,/area/space)
-"SG" = (/obj/random/trash,/obj/item/device/flashlight/upgraded,/obj/structure/sign/warning/secure_area{pixel_x = -32},/turf/simulated/floor/trim/carpet/green,/area/space)
+"SG" = (/obj/random/trash,/obj/item/device/flashlight/upgraded,/obj/structure/sign/warning/secure_area{pixel_x = -32},/obj/machinery/light{dir = 1},/turf/simulated/floor/trim/carpet/green,/area/space)
 "SM" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/corner/orange{dir = 8},/turf/simulated/floor/tiled,/area/space)
 "SN" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/space)
 "SP" = (/obj/effect/floor_decal/corner/lime{dir = 9},/turf/simulated/floor/tiled/rough,/area/space)
@@ -537,10 +541,10 @@ aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovQSbEQsbEcayhOtvxvxvxQSovovovovov
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovovovQSQSQSKLEhQsKLQSQSKLQSbMovaIaIaIaIovNUPpPpPpRFovovovovdKIdIdhGbAbAJQQSIPovrcrcHfovovovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovQSQSQSQSKLQSQSNeQSQSKLQSQSovovaIaIaIaIovNUcacabkovovKBFuVSFubdbdFuqRqRJQQSwPovOqFnovovovovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovovovQSQSQScaQSQSqsQSQSfSNdcaMNovaIaIaIaIaIovNUcaQSPpwrovFuDVwUFuCgCgFuDVhOiCQSIPovDKDKDKDKDKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
-aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovKLQSQSQSQSQSQSQSovovovovQSKLQSovovovovovovoveqPpFXPplkovFuFuRDFuWmuAFHFuwUsyQSIPovDKVADKVovTovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
+aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovKLQSQSQSQSQSQSQSovovovovADKLQSovovovovovovoveqPpFXPplkovcwFuRDFuWmuAFHFuwUsyQSIPovDKVADKVovTovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovovovSNQSQSKLpbQSKLKLvLaIaIvLQSQSQSMEKEUfMEMEKEMEQSQSQSPpwrovmnFuoTFuPiovUDFuBSsyQSwPovovovJnDKDKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovWaOwQSQSQSQSQSQSQSQSvLaIaIvLQSQSKLnlsVsVnlnlsVsVQSQSQSPpwrovFuFuFuFubcDLIWGLovNUQSIPovovovJzDKDKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
-aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovrMUDQSQSQScaKLQSQSQSvLaIaIvLKLQSQSUfZNUfUfUfZNUfQSFXPpFXlkovovKbOkYWpxYBYIWgoveqQSIPovovovzVDKDKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
+aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovrMUDQSQSQScaKLQSQSQSvLaIaIvLKLQSQSUfZNUfUfUfZNUfQSFXPpFXlkovovKbOkYWpxYBYIWgovAKQSIPovovovzVDKDKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovLiUDQSQSQSQSYPKLkZTLovovovovSNcaQSovovovovovovovNUQSQSPpwrovovovovovovovovovovNUQSIPovovCfcvVADKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovDTUDQSQSQSYYFuFuFuFuFuFuFuFuFuFuovovovaIaIaIaIovNUQSQSbkovovItovuEovItovovWSovQSQSOWovovmvvTDKNxovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovrZUDQSQSQSYYFuFuFuFuFuFuFuFuFuFuovaIaIaIaIaIaIovNUFXPpPpPpPpPpCQPpPpFXCQPpPpCQQSQSIPovovovJzDKDKovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
@@ -561,9 +565,9 @@ aIaIaIaIaIaIaIovjtepepCyrVSXFzJKCyrVovovsgPpPpodGZaIaIaIovovovoviEovaIaIaIaIaIaI
 aIaIaIaIaIaIaIovJyepepepbpRBFBbpRBepovovEuPpPpTWovaIaIovovtoQSCQFXovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovzeQSQScaQSpYQSpYQSQSQSQSJRKFFIovovGuBzQgQglkovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIovNDepepepSXJKFBSXJKaoovovCZPpPpodovovovovBIQSQSQSQSovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovzeQSQSodovovovovovKRQSQSbvovovovovovovQgEzwrovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIovovovQSQSovaoaoaoaoaoovovzePpPpvVAkAQNRzAQSFXFXTooaovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIovdJQSQSsoovovovovovBmPpPpbvovMeirqbrOQJQgQgwrovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
-aIaIaIaIaIaIaIovMUTlPpPpovaoaoaoIabFovovzePpPpPpFXFXFXPpFXFXPpFXpWovaIaIaIaIaIaIaIaIaIovovovovovaIovzeQSQSWwovovovovovKRPpPpbvovjMwkwkrOSPEzQgLGovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
-aIaIaIaIaIaIaIovraPpPpPpovovovovovovovSGAKFXPpPpPpPpPpFXFXPpPpPpPpovovovovovovaIaIaIovovCMiHovovaIovzePpQSodovovovovovKRPpPpbvovirqbirrOSPQgQgwrovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
-aIaIaIaIaIaIaIovovPpQSQSoviFbPQFPpPpKaKaKaPpPpPplJHEHEHEPpPpPpFXPpZCfIJWSgovovovovaIovETekKJETovovovXYFXPpsoovovovovovBmQSRaQSrOirlZPvovSPQgEzlkovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
+aIaIaIaIaIaIaIovMUTlPpPpovaoaoaoIabFovovqaPpPpPpFXFXFXPpFXFXPpFXpWovaIaIaIaIaIaIaIaIaIovovovovovaIovzeQSQSWwovovovovovKRPpPpbvovjMwkwkrOSPEzQgLGovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
+aIaIaIaIaIaIaIovraPpPpPpovovovovovovovSGKaFXPpPpPpPpPpFXFXPpPpPpPpovovovovovovaIaIaIovovCMiHovovaIovzePpQSodovovovovovKRPpPpbvovirqbirrOSPQgQgwrovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
+aIaIaIaIaIaIaIovovPpQSQSoviFbPQFPpPpKaKaKaPpPpPplJeSHEHEPpPpPpFXPpZCfIJWSgovovovovaIovETekKJETovovovXYFXPpsoovovovovovBmQSRaQSrOirlZPvovSPQgEzlkovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIovkVLRLRPpPpBPPpPpFuFuFuFuwePptDovovovovYFkCHwPpPpPpPpPpMHnKrSovovovovBuekekIeovovEiQSFXPpQSovGopFXuovKRQSPpQSQSovrOrOovSPQgQgouovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIovpzPpPpPpPpPpPpFuFuAsZcFuFuPpPpovaIaIovTunAmSPpFXFXPpFXPpPpioxLJWrSovovTsTsovovovJtdBdBdBwJHRMwijQzHRQpQSPpQSQSkikiCjkiQgQgovovovovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
 aIaIaIaIaIaIaIaIovuNxuPpovFXPpFXwUKDXOUtvIFuCvCvovaIaIovPpLKSMSMZePpPpPpPpPpPpPpPpgsnKvSvSPZvSqDAcgOPpPpPpGQovovovovovovSNODQSSmovovovDmPgwOYNMOWEovaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaIaI
