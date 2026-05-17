@@ -423,22 +423,8 @@
 	H.SetStunned(0)
 	H.SetParalysis(0)
 	H.SetSleeping(0)
-	H.resting = FALSE
-	H.frozen = FALSE
-	H.status_flags &= ~FAKEDEATH
 	if(LAZYLEN(H.pinned))
 		H.pinned.Cut()
-	H.lying = FALSE
-	H.update_canmove()
-
-	// Nuke ALL movespeed modifiers and re-add only the known baselines.
-	// This prevents accumulated slowdown from items, debuffs, aiming, etc. carrying over.
-	if(H.movespeed_modification)
-		H.movespeed_modification.Cut()
-	H.add_movespeed_modifier(/datum/movespeed_modifier/human_delay, FALSE)
-	// Walk/run is added by the intent system on next move; force the run baseline now
-	H.add_movespeed_modifier(/datum/movespeed_modifier/run, FALSE)
-	H.update_movespeed()
 
 	// Initialize component lookup if missing (prevents signal errors on fresh/transferred mobs)
 	if(!H.comp_lookup)
@@ -893,4 +879,3 @@
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		if(pd.owner && pd.owner.current)
 			to_chat(pd.owner.current, "<font color='[color]'>[text]</font>")
-
