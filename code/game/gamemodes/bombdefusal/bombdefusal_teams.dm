@@ -30,6 +30,7 @@
 		var/mob/living/L = pd.owner.current
 		if(istype(L) && L.stat != DEAD && !pd.is_dead)
 			alive += pd
+
 	return alive
 
 /datum/bombdefusal_team/proc/get_alive_count()
@@ -41,8 +42,6 @@
 	var/datum/mind/owner
 	var/datum/bombdefusal_team/team
 	var/datum/bombdefusal_match/match
-	var/role = BOMBDEFUSAL_ROLE_RIFLEMAN
-	var/last_role_swap_round = 0  // Round number when role was last changed
 
 	// Economy
 	var/money = 800
@@ -53,12 +52,8 @@
 	var/deaths = 0
 	var/assists = 0
 
-	// Downed state
-	var/is_downed = FALSE
 	var/is_dead = FALSE
-	var/downed_timer_id
 	var/needs_reequip = FALSE  // Set on death/halftime; cleared after equip_player
-	var/datum/mind/downed_by = null  // Who downed this player (for bleedout kill credit)
 
 	// Original body reference for respawning with same appearance
 	var/mob/living/carbon/human/bombdefusal/original_body
@@ -78,10 +73,7 @@
 	team = player_team
 
 /datum/bombdefusal_player_data/proc/reset_for_round()
-	is_downed = FALSE
 	is_dead = FALSE
-	downed_timer_id = null
-	downed_by = null
 
 /datum/bombdefusal_player_data/proc/reset_for_match(starting_money)
 	money = starting_money
@@ -89,7 +81,6 @@
 	deaths = 0
 	assists = 0
 	loss_streak = 0
-	last_role_swap_round = 0
 	reset_for_round()
 
 /datum/bombdefusal_player_data/proc/award_money(amount, max_money)

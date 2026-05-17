@@ -277,13 +277,6 @@ td:first-child { color: #a8a8a8; width: 180px; }
 		html += "<a class='btn btn-danger' href='?src=\ref[src];action=admin_config;cmd=dbg_kill_me'>Kill Me</a>"
 		html += "<br>"
 
-		// Role debug
-		html += "<h3>Role</h3>"
-		html += "<a class='btn btn-info' href='?src=\ref[src];action=admin_config;cmd=dbg_set_role;role=[BOMBDEFUSAL_ROLE_RIFLEMAN]'>Rifleman</a>"
-		html += "<a class='btn btn-info' href='?src=\ref[src];action=admin_config;cmd=dbg_set_role;role=[BOMBDEFUSAL_ROLE_MEDIC]'>Medic</a>"
-		html += "<a class='btn btn-info' href='?src=\ref[src];action=admin_config;cmd=dbg_set_role;role=[BOMBDEFUSAL_ROLE_SUPPORT]'>Support</a>"
-		html += "<br>"
-
 		// Team side debug
 		html += "<h3>Team Side</h3>"
 		html += "<a class='btn btn-debug' href='?src=\ref[src];action=admin_config;cmd=dbg_swap_side'>Swap My Side (T/CT)</a>"
@@ -341,7 +334,6 @@ td:first-child { color: #a8a8a8; width: 180px; }
 	html += config_row("Bomb Fuse", "cfg_bomb_fuse", cfg_bomb_fuse / 10, 10)
 	html += config_row("Plant Time", "cfg_plant_time", cfg_plant_time / 10, 10)
 	html += config_row("Defuse Time", "cfg_defuse_time", cfg_defuse_time / 10, 10)
-	html += config_row("Bleedout Time", "cfg_bleedout_time", cfg_bleedout_time / 10, 10)
 	html += config_row("Round Over Delay", "cfg_roundover_delay", cfg_roundover_delay / 10, 10)
 	html += config_row("Halftime Delay", "cfg_halftime_delay", cfg_halftime_delay / 10, 10)
 	html += config_row("Lobby Time", "cfg_lobby_time", cfg_lobby_time / 10, 10)
@@ -376,12 +368,12 @@ td:first-child { color: #a8a8a8; width: 180px; }
 		html += "<p>T side: [match.current_t_team.name] | CT side: [match.current_ct_team.name]</p>"
 		html += "<p>Bomb planted: [match.bomb_planted ? "<span class='warn'>YES</span>" : "No"] | Defused: [match.bomb_defused] | Detonated: [match.bomb_detonated]</p>"
 		// Player list
-		html += "<table><tr><th>Player</th><th>Team</th><th>Side</th><th>Role</th><th>$</th><th>K/D/A</th><th>State</th></tr>"
+		html += "<table><tr><th>Player</th><th>Team</th><th>Side</th><th>$</th><th>K/D/A</th><th>State</th></tr>"
 		for(var/datum/bombdefusal_player_data/ppd in match.team_a.members + match.team_b.members)
 			var/pname = ppd.owner ? ppd.owner.name : "Empty"
 			var/side = ppd.team.current_side == BOMBDEFUSAL_TEAM_T ? "<font color='#FF4444'>T</font>" : "<font color='#4444FF'>CT</font>"
-			var/pstate = ppd.is_dead ? "<span class='warn'>DEAD</span>" : (ppd.is_downed ? "<span class='warn'>DOWN</span>" : "<span class='ok'>ALIVE</span>")
-			html += "<tr><td>[pname]</td><td>[ppd.team.name]</td><td>[side]</td><td>[ppd.role]</td><td>$[ppd.money]</td><td>[ppd.kills]/[ppd.deaths]/[ppd.assists]</td><td>[pstate]</td></tr>"
+			var/pstate = ppd.is_dead ? "<span class='warn'>DEAD</span>" : "<span class='ok'>ALIVE</span>"
+			html += "<tr><td>[pname]</td><td>[ppd.team.name]</td><td>[side]</td><td>$[ppd.money]</td><td>[ppd.kills]/[ppd.deaths]/[ppd.assists]</td><td>[pstate]</td></tr>"
 		html += "</table>"
 	html += "</div>"
 
@@ -635,29 +627,11 @@ td:first-child { color: #a8a8a8; width: 180px; }
 				H.adjustBruteLoss(50)
 				to_chat(user, "<span class='warning'>Took 50 brute damage.</span>")
 
-		if("dbg_down_me")
-			if(!my_pd || !match)
-				return
-			my_pd.is_downed = TRUE
-			my_pd.is_dead = FALSE
-			if(ishuman(user))
-				var/mob/living/carbon/human/H = user
-				H.SetWeakened(9999)
-				H.lying = TRUE
-			to_chat(user, "<span class='warning'>You are now in downed state.</span>")
-			my_pd.downed_timer_id = world.time + cfg_bleedout_time
-			spawn(cfg_bleedout_time)
-				match.bleedout_player(my_pd)
-
 		if("dbg_revive_me")
 			if(!my_pd || !match)
 				return
-			if(my_pd.is_downed)
-				match.revive_player(my_pd)
-				to_chat(user, "<span class='notice'>Revived from downed state.</span>")
-			else if(my_pd.is_dead)
+			if(my_pd.is_dead)
 				my_pd.is_dead = FALSE
-				my_pd.is_downed = FALSE
 				if(istype(user, /mob/living/carbon/human/bombdefusal))
 					var/mob/living/carbon/human/bombdefusal/H = user
 					H.arena_full_heal()
@@ -669,19 +643,12 @@ td:first-child { color: #a8a8a8; width: 180px; }
 			if(!my_pd || !match)
 				return
 			my_pd.is_dead = TRUE
-			my_pd.is_downed = FALSE
 			my_pd.deaths++
 			if(isliving(user))
 				var/mob/living/L = user
 				L.death()
 			to_chat(user, "<span class='warning'>You died.</span>")
 
-		// ===== ROLE DEBUG =====
-		if("dbg_set_role")
-			if(!my_pd)
-				return
-			my_pd.role = href_list["role"]
-			to_chat(user, "<span class='notice'>Role set to [my_pd.role].</span>")
 
 		// ===== SIDE/TELEPORT DEBUG =====
 		if("dbg_swap_side")

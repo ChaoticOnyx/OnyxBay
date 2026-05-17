@@ -34,8 +34,6 @@
 			var/datum/bombdefusal_player_data/pd = mode.get_player_data(mind)
 			if(pd && pd.match)
 				pd.match.on_player_death(src, last_attacker_mind, gibbed)
-				if(pd.is_downed && !gibbed)
-					return // Don't actually die - enter downed state instead
 
 	return ..()
 
@@ -98,14 +96,6 @@
 		to_chat(user, SPAN("warning", "This can only be used on arena participants!"))
 		return
 
-	// Only medics can use medkits
-	var/datum/game_mode/bombdefusal/mode = SSticker.mode
-	if(istype(mode))
-		var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(user)
-		if(!pd || pd.role != BOMBDEFUSAL_ROLE_MEDIC)
-			to_chat(user, "<span class='warning'>Only medics can use the medkit!</span>")
-			return
-
 	if(target == user)
 		to_chat(user, "<span class='warning'>You can't use this on yourself! Use an arena injector instead.</span>")
 		return
@@ -131,18 +121,6 @@
 
 	// Full heal - same as between rounds
 	target.arena_full_heal()
-
-	// Revive downed players
-	var/datum/game_mode/bombdefusal/bd_mode = SSticker.mode
-	if(istype(bd_mode))
-		var/datum/bombdefusal_player_data/target_pd = bd_mode.get_player_data_by_mob(target)
-		if(target_pd?.is_downed)
-			target_pd.is_downed = FALSE
-			target_pd.downed_timer_id = null
-			target_pd.downed_by = null
-			target.SetWeakened(0)
-			target.lying = FALSE
-			target.update_canmove()
 
 	charges--
 	next_use_time = world.time + cooldown_time

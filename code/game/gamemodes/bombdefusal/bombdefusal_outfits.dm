@@ -102,14 +102,6 @@
 	..()
 	randomize_t_look(H)
 
-/decl/hierarchy/outfit/bombdefusal/terrorist/medic
-	name = "Bomb Defusal - T Medic"
-	backpack_contents = list(/obj/item/ammo_magazine/c45m = 2, /obj/item/bombdefusal_injector = 1)
-
-/decl/hierarchy/outfit/bombdefusal/terrorist/support
-	name = "Bomb Defusal - T Support"
-	backpack_contents = list(/obj/item/ammo_magazine/c45m = 2, /obj/item/grenade/frag = 1, /obj/item/grenade/smokebomb = 1)
-
 // ===== COUNTER-TERRORIST OUTFITS =====
 
 /decl/hierarchy/outfit/bombdefusal/counter_terrorist
@@ -127,14 +119,6 @@
 /decl/hierarchy/outfit/bombdefusal/counter_terrorist/post_equip(mob/living/carbon/human/H)
 	..()
 	randomize_ct_look(H)
-
-/decl/hierarchy/outfit/bombdefusal/counter_terrorist/medic
-	name = "Bomb Defusal - CT Medic"
-	backpack_contents = list(/obj/item/ammo_magazine/c45m = 2, /obj/item/bombdefusal_injector = 1)
-
-/decl/hierarchy/outfit/bombdefusal/counter_terrorist/support
-	name = "Bomb Defusal - CT Support"
-	backpack_contents = list(/obj/item/ammo_magazine/c45m = 2, /obj/item/grenade/frag = 1, /obj/item/grenade/smokebomb = 1)
 
 // ===== RANDOMIZED APPEARANCE =====
 
@@ -262,24 +246,12 @@
 	if(!istype(H))
 		return
 
-	// Determine outfit path
+	// Determine outfit path (T or CT base)
 	var/outfit_path
 	if(pd.team.current_side == BOMBDEFUSAL_TEAM_T)
-		switch(pd.role)
-			if(BOMBDEFUSAL_ROLE_MEDIC)
-				outfit_path = /decl/hierarchy/outfit/bombdefusal/terrorist/medic
-			if(BOMBDEFUSAL_ROLE_SUPPORT)
-				outfit_path = /decl/hierarchy/outfit/bombdefusal/terrorist/support
-			else
-				outfit_path = /decl/hierarchy/outfit/bombdefusal/terrorist
+		outfit_path = /decl/hierarchy/outfit/bombdefusal/terrorist
 	else
-		switch(pd.role)
-			if(BOMBDEFUSAL_ROLE_MEDIC)
-				outfit_path = /decl/hierarchy/outfit/bombdefusal/counter_terrorist/medic
-			if(BOMBDEFUSAL_ROLE_SUPPORT)
-				outfit_path = /decl/hierarchy/outfit/bombdefusal/counter_terrorist/support
-			else
-				outfit_path = /decl/hierarchy/outfit/bombdefusal/counter_terrorist
+		outfit_path = /decl/hierarchy/outfit/bombdefusal/counter_terrorist
 
 	// Initialize component lookup if missing (prevents signal errors on fresh/transferred mobs)
 	if(!H.comp_lookup)

@@ -45,32 +45,6 @@
 		return FALSE
 	return pd.match.match_state == BOMBDEFUSAL_STATE_BUY || pd.match.match_state == BOMBDEFUSAL_STATE_FREEZE
 
-/datum/action/innate/bombdefusal_role
-	name = "Change Role"
-	button_icon_state = "default"
-	check_flags = 0
-
-/datum/action/innate/bombdefusal_role/Activate()
-	var/datum/game_mode/bombdefusal/mode = SSticker.mode
-	if(!istype(mode))
-		return
-	var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(owner)
-	if(!pd?.match)
-		return
-	if(pd.match.match_state != BOMBDEFUSAL_STATE_BUY && pd.match.match_state != BOMBDEFUSAL_STATE_FREEZE)
-		to_chat(owner, "<span class='warning'>You can only change roles during buy phase!</span>")
-		return
-	mode.show_buy_menu(owner, pd)
-
-/datum/action/innate/bombdefusal_role/IsAvailable()
-	var/datum/game_mode/bombdefusal/mode = SSticker.mode
-	if(!istype(mode))
-		return FALSE
-	var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(owner)
-	if(!pd?.match)
-		return FALSE
-	return pd.match.match_state == BOMBDEFUSAL_STATE_BUY || pd.match.match_state == BOMBDEFUSAL_STATE_FREEZE
-
 // Loading screen overlay
 /atom/movable/screen/fullscreen/bombdefusal_loading
 	icon = 'icons/hud/screen.dmi'
