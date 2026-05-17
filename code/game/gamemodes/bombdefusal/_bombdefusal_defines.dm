@@ -14,11 +14,6 @@
 #define BOMBDEFUSAL_TEAM_T  "terrorist"
 #define BOMBDEFUSAL_TEAM_CT "counter-terrorist"
 
-// Roles
-#define BOMBDEFUSAL_ROLE_RIFLEMAN "Rifleman"
-#define BOMBDEFUSAL_ROLE_MEDIC    "Medic"
-#define BOMBDEFUSAL_ROLE_SUPPORT  "Support"
-
 // Buy menu categories
 #define BOMBDEFUSAL_CAT_PISTOLS  "Pistols"
 #define BOMBDEFUSAL_CAT_SMGS     "SMGs"

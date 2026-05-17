@@ -387,6 +387,8 @@
 		if(pd.original_body && !QDELETED(pd.original_body) && pd.original_body != H)
 			qdel(pd.original_body)
 		pd.original_body = H
+		// Fresh body has no gear, force re-equip
+		pd.needs_reequip = TRUE
 
 	// Transfer mind and client into the body.
 	// transfer_to() skips the key assignment if mind.active == 0 (which happens
@@ -408,11 +410,35 @@
 	if(!pd.saved_appearance)
 		pd.saved_appearance = save_human_appearance(H)
 
-	// Clear lying so put_in_r/l_hand work (revive() doesn't clear it)
-	H.lying = FALSE
 	H.last_attacker_mind = null
-	if(H.stat == DEAD)
+
+	// Revive FIRST (sets stat = CONSCIOUS, clears stuns/weakened/paralysis)
+	if(H.stat != CONSCIOUS)
 		H.revive()
+		// If they were crit/dead, they need a fresh loadout — body/gear is unreliable
+		pd.needs_reequip = TRUE
+
+	// Now clear all incapacitating states so update_canmove() won't set lying back to TRUE
+	H.SetWeakened(0)
+	H.SetStunned(0)
+	H.SetParalysis(0)
+	H.SetSleeping(0)
+	H.resting = FALSE
+	H.frozen = FALSE
+	H.status_flags &= ~FAKEDEATH
+	if(LAZYLEN(H.pinned))
+		H.pinned.Cut()
+	H.lying = FALSE
+	H.update_canmove()
+
+	// Nuke ALL movespeed modifiers and re-add only the known baselines.
+	// This prevents accumulated slowdown from items, debuffs, aiming, etc. carrying over.
+	if(H.movespeed_modification)
+		H.movespeed_modification.Cut()
+	H.add_movespeed_modifier(/datum/movespeed_modifier/human_delay, FALSE)
+	// Walk/run is added by the intent system on next move; force the run baseline now
+	H.add_movespeed_modifier(/datum/movespeed_modifier/run, FALSE)
+	H.update_movespeed()
 
 	// Initialize component lookup if missing (prevents signal errors on fresh/transferred mobs)
 	if(!H.comp_lookup)
@@ -781,40 +807,15 @@
 	if(!victim_pd)
 		return
 
-	// Already processed (e.g. bleedout_player calls L.death() which re-enters this) — bail out
+	// Already processed — bail out (death() can re-enter via bombdefusal/death override)
 	if(victim_pd.is_dead)
 		return
 
-	// Check if team has a living medic for downed state (gibbed = instant death, no downed)
-	var/has_medic = FALSE
-	if(!gibbed)
-		for(var/datum/bombdefusal_player_data/pd in victim_pd.team.members)
-			if(pd == victim_pd)
-				continue
-			if(pd.role == BOMBDEFUSAL_ROLE_MEDIC && !pd.is_dead && !pd.is_downed)
-				has_medic = TRUE
-				break
-
-	if(has_medic && !victim_pd.is_downed && !gibbed)
-		// Enter downed state instead of dying
-		victim_pd.is_downed = TRUE
-		victim_pd.downed_by = killer_mind
-		if(istype(victim, /mob/living/carbon/human/bombdefusal))
-			var/mob/living/carbon/human/bombdefusal/H = victim
-			H.arena_full_heal()
-			H.SetWeakened(9999)
-			H.lying = TRUE
-		to_chat(victim, "<span class='danger'><font size='4'>YOU ARE DOWN!</font> A medic can revive you. Bleedout in [mode.cfg_bleedout_time / 10] seconds.</span>")
-		// Use spawn for delayed bleedout - track via downed_timer_id as world.time deadline
-		victim_pd.downed_timer_id = world.time + mode.cfg_bleedout_time
-		spawn(mode.cfg_bleedout_time)
-			bleedout_player(victim_pd)
-	else
-		// Actual death
-		victim_pd.is_dead = TRUE
-		victim_pd.needs_reequip = TRUE
-		victim_pd.deaths++
-		strip_dead_player(victim)
+	// Actual death — no downed state, players die normally
+	victim_pd.is_dead = TRUE
+	victim_pd.needs_reequip = TRUE
+	victim_pd.deaths++
+	strip_dead_player(victim)
 
 	// Award killer
 	if(killer_pd && killer_pd.team != victim_pd.team)
@@ -830,35 +831,6 @@
 		var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "World"
 		add_killfeed_entry(killer_name, victim_name)
 		announce_to_match("[killer_name] > [victim_name]", "#FFFFFF")
-
-/datum/bombdefusal_match/proc/bleedout_player(datum/bombdefusal_player_data/pd)
-	if(!pd || !pd.is_downed)
-		return
-	pd.is_downed = FALSE
-	pd.is_dead = TRUE
-	pd.needs_reequip = TRUE
-	pd.deaths++
-	pd.downed_timer_id = null
-
-	// Credit the kill to whoever downed them
-	if(pd.downed_by)
-		var/datum/bombdefusal_player_data/killer_pd = mode.get_player_data(pd.downed_by)
-		if(killer_pd && killer_pd.team != pd.team)
-			killer_pd.kills++
-			killer_pd.award_money(mode.cfg_money_kill, mode.cfg_money_max)
-		// Killfeed
-		var/victim_name = pd.owner ? pd.owner.name : "Unknown"
-		var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "Unknown"
-		add_killfeed_entry(killer_name, victim_name)
-		announce_to_match("[killer_name] > [victim_name] (bled out)", "#FFFFFF")
-		pd.downed_by = null
-
-	if(pd.owner && pd.owner.current)
-		to_chat(pd.owner.current, "<span class='danger'><font size='4'>You have bled out!</font></span>")
-		var/mob/living/L = pd.owner.current
-		if(istype(L))
-			L.death()
-			strip_dead_player(L)
 
 /datum/bombdefusal_match/proc/strip_dead_player(mob/living/victim)
 	if(!istype(victim, /mob/living/carbon/human))
@@ -885,18 +857,6 @@
 		if(I)
 			H.drop(I)
 			qdel(I)
-
-/datum/bombdefusal_match/proc/revive_player(datum/bombdefusal_player_data/pd)
-	if(!pd || !pd.is_downed)
-		return FALSE
-	pd.is_downed = FALSE
-	pd.downed_timer_id = null // Clears the timer reference so spawn'd bleedout won't fire
-
-	if(pd.owner && pd.owner.current && istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
-		var/mob/living/carbon/human/bombdefusal/H = pd.owner.current
-		H.arena_full_heal()
-		to_chat(H, "<span class='notice'><font size='4'>You have been revived!</font></span>")
-	return TRUE
 
 /datum/bombdefusal_match/proc/on_bomb_planted()
 	bomb_planted = TRUE
