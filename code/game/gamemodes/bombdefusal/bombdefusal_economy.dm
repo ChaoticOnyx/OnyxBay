@@ -15,6 +15,18 @@
 	magazine_type = /obj/item/ammo_magazine/a50/bombdefusal
 	allowed_magazines = list(/obj/item/ammo_magazine/a50, /obj/item/ammo_magazine/a50/bombdefusal)
 
+// AWP / Anti-Materiel Rifle stun nerf — bombdefusal-specific .145 chain
+/obj/item/projectile/bullet/rifle/a145/bombdefusal
+	poisedamage = 0 // No knockdown
+	stun = 0
+	weaken = 0
+
+/obj/item/ammo_casing/a145/bombdefusal
+	projectile_type = /obj/item/projectile/bullet/rifle/a145/bombdefusal
+
+/obj/item/gun/projectile/heavysniper/bombdefusal
+	ammo_type = /obj/item/ammo_casing/a145/bombdefusal
+
 
 // Buy menu item definition
 /datum/bombdefusal_shop_item
@@ -62,7 +74,7 @@
 	// Heavy
 	shop_catalog += new /datum/bombdefusal_shop_item("Double-Barrel Shotgun", BOMBDEFUSAL_CAT_HEAVY, 1200, /obj/item/gun/projectile/shotgun/doublebarrel/pellet, spares = /obj/item/ammo_casing/shotgun/pellet, spare_amt = 4)
 	shop_catalog += new /datum/bombdefusal_shop_item("Combat Shotgun",      BOMBDEFUSAL_CAT_HEAVY,   1800, /obj/item/gun/projectile/shotgun/pump/combat, spares = /obj/item/ammo_casing/shotgun/pellet, spare_amt = 7)
-	shop_catalog += new /datum/bombdefusal_shop_item("Anti-Materiel Rifle", BOMBDEFUSAL_CAT_HEAVY,   4750, /obj/item/gun/projectile/heavysniper, spares = /obj/item/ammo_casing/a145, spare_amt = 3)
+	shop_catalog += new /datum/bombdefusal_shop_item("Anti-Materiel Rifle", BOMBDEFUSAL_CAT_HEAVY,   4750, /obj/item/gun/projectile/heavysniper/bombdefusal, spares = /obj/item/ammo_casing/a145/bombdefusal, spare_amt = 3)
 	shop_catalog += new /datum/bombdefusal_shop_item("L6 SAW",              BOMBDEFUSAL_CAT_HEAVY,   5750, /obj/item/gun/projectile/automatic/l6_saw, mags = /obj/item/ammo_magazine/box/a556)
 	shop_catalog += new /datum/bombdefusal_shop_item("Energy Barrier",      BOMBDEFUSAL_CAT_HEAVY,   500,  /obj/item/device/energybarrier/arena)
 	// Gear
@@ -71,10 +83,12 @@
 	shop_catalog += new /datum/bombdefusal_shop_item("Tactical Vest",       BOMBDEFUSAL_CAT_GEAR,    650,  /obj/item/clothing/suit/armor/vest/bombdefusal_ct, side = BOMBDEFUSAL_TEAM_CT)
 	shop_catalog += new /datum/bombdefusal_shop_item("SWAT Helmet",         BOMBDEFUSAL_CAT_GEAR,    350,  /obj/item/clothing/head/helmet/bombdefusal_ct,      side = BOMBDEFUSAL_TEAM_CT)
 	shop_catalog += new /datum/bombdefusal_shop_item("Defuse Kit",          BOMBDEFUSAL_CAT_GEAR,    400,  /obj/item/wirecutters, side = BOMBDEFUSAL_TEAM_CT)
-	shop_catalog += new /datum/bombdefusal_shop_item("Frag Grenade",        BOMBDEFUSAL_CAT_GEAR,    300,  /obj/item/grenade/frag)
-	shop_catalog += new /datum/bombdefusal_shop_item("Flashbang",           BOMBDEFUSAL_CAT_GEAR,    200,  /obj/item/grenade/flashbang)
-	shop_catalog += new /datum/bombdefusal_shop_item("Smoke Grenade",       BOMBDEFUSAL_CAT_GEAR,    300,  /obj/item/grenade/smokebomb)
 	shop_catalog += new /datum/bombdefusal_shop_item("Night Vision",        BOMBDEFUSAL_CAT_GEAR,    1250, /obj/item/clothing/glasses/hud/standard/night/active)
+	// Grenades
+	shop_catalog += new /datum/bombdefusal_shop_item("Frag Grenade",        BOMBDEFUSAL_CAT_GRENADES, 300, /obj/item/grenade/frag)
+	shop_catalog += new /datum/bombdefusal_shop_item("Flashbang",           BOMBDEFUSAL_CAT_GRENADES, 200, /obj/item/grenade/flashbang)
+	shop_catalog += new /datum/bombdefusal_shop_item("Smoke Grenade",       BOMBDEFUSAL_CAT_GRENADES, 300, /obj/item/grenade/smokebomb)
+	shop_catalog += new /datum/bombdefusal_shop_item("Incendiary",          BOMBDEFUSAL_CAT_GRENADES, 500, /obj/item/grenade/chem_grenade/incendiary)
 	// Ammo
 	shop_catalog += new /datum/bombdefusal_shop_item("9mm Pistol Magazine", BOMBDEFUSAL_CAT_AMMO,    50,   /obj/item/ammo_magazine/mc9mm)
 	shop_catalog += new /datum/bombdefusal_shop_item(".38 Speed Loader",    BOMBDEFUSAL_CAT_AMMO,    50,   /obj/item/ammo_magazine/c38)
@@ -88,12 +102,12 @@
 	shop_catalog += new /datum/bombdefusal_shop_item("7.62mm Magazine",     BOMBDEFUSAL_CAT_AMMO,    200,  /obj/item/ammo_magazine/a762)
 	shop_catalog += new /datum/bombdefusal_shop_item("5.56mm Ammo Box",    BOMBDEFUSAL_CAT_AMMO,    350,  /obj/item/ammo_magazine/box/a556)
 	shop_catalog += new /datum/bombdefusal_shop_item("12g Shotgun Shell",   BOMBDEFUSAL_CAT_AMMO,    25,   /obj/item/ammo_casing/shotgun/pellet)
-	shop_catalog += new /datum/bombdefusal_shop_item("14.5mm Round",        BOMBDEFUSAL_CAT_AMMO,    300,  /obj/item/ammo_casing/a145)
+	shop_catalog += new /datum/bombdefusal_shop_item("14.5mm Round",        BOMBDEFUSAL_CAT_AMMO,    300,  /obj/item/ammo_casing/a145/bombdefusal)
 	// Medical
 	shop_catalog += new /datum/bombdefusal_shop_item("Arena Medkit",        BOMBDEFUSAL_CAT_MEDICAL, 1000, /obj/item/bombdefusal_medkit)
 	shop_catalog += new /datum/bombdefusal_shop_item("Arena Stimulant",     BOMBDEFUSAL_CAT_MEDICAL, 400,  /obj/item/bombdefusal_injector)
 
-/datum/game_mode/bombdefusal/proc/show_buy_menu(mob/user, datum/bombdefusal_player_data/pd, force_open = FALSE)
+/datum/game_mode/bombdefusal/proc/show_buy_menu(mob/user, datum/bombdefusal_player_data/pd, force_open = FALSE, category = null)
 	if(!pd || !pd.match)
 		return
 	var/datum/bombdefusal_match/match = pd.match
@@ -105,51 +119,80 @@
 		init_shop_catalog()
 
 	var/list/html = list()
-	html += "<html><head><meta charset='utf-8'><title>Buy Menu</title>"
-	html += "<style>"
-	html += "body { background: #1a1a2e; color: #eee; font-family: 'Courier New', monospace; margin: 10px; }"
-	html += "h1 { color: #FFD700; text-align: center; margin: 5px; }"
-	html += "h2 { color: #e94560; margin: 10px 0 5px 0; border-bottom: 1px solid #333; }"
-	html += ".money { color: #00FF00; font-size: 20px; text-align: center; margin: 5px; }"
-	html += ".item { background: #16213e; padding: 5px 10px; margin: 2px 0; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }"
-	html += ".item:hover { border-color: #e94560; }"
-	html += ".btn { background: #e94560; color: white; padding: 3px 12px; border: none; cursor: pointer; text-decoration: none; font-size: 12px; }"
-	html += ".btn:hover { background: #ff6b6b; }"
-	html += ".btn-disabled { background: #555; cursor: not-allowed; }"
-	html += ".price { color: #FFD700; }"
-	html += ".locked { color: #666; }"
-	html += "</style></head><body>"
+	html += {"<html><head><meta charset='utf-8'><title>Buy Menu</title>
+<style>
+body { background: #1a1a1a url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\"/>'); color: #ff9933; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+.frame { background: rgba(20, 20, 25, 0.92); margin: 10px; padding: 12px; border: 1px solid #444; }
+h1 { color: #ff9933; font-size: 18px; margin: 0 0 8px 0; padding-bottom: 6px; border-bottom: 1px solid #ff9933; text-transform: uppercase; letter-spacing: 1px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.money { color: #ffd700; font-size: 18px; font-weight: bold; }
+.side { color: #ccc; font-size: 12px; }
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.cat-btn { display: block; background: #2a2a2a; color: #ff9933; padding: 14px 16px; text-decoration: none; font-size: 13px; font-weight: bold; text-transform: uppercase; border: 1px solid #555; }
+.cat-btn:hover { background: #c8102e; color: #fff; border-color: #c8102e; }
+.cat-btn .num { color: #ffd700; margin-right: 8px; font-size: 14px; }
+.item-list { display: flex; flex-direction: column; gap: 4px; }
+.item { display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 8px 12px; text-decoration: none; color: #ff9933; font-size: 13px; border: 1px solid #555; }
+.item:hover { background: #c8102e; color: #fff; border-color: #c8102e; }
+.item .num { color: #ffd700; margin-right: 8px; }
+.item:hover .num { color: #fff; }
+.item.locked { background: #1f1f1f; color: #666; border-color: #333; cursor: not-allowed; }
+.item.locked:hover { background: #1f1f1f; color: #666; }
+.price { color: #ffd700; font-weight: bold; }
+.item:hover .price { color: #fff; }
+.item.locked .price { color: #555; }
+.back-btn { display: block; margin-top: 12px; background: #2a2a2a; color: #ff9933; padding: 10px 16px; text-decoration: none; font-size: 13px; font-weight: bold; text-transform: uppercase; border: 1px solid #555; text-align: center; }
+.back-btn:hover { background: #444; color: #fff; }
+.back-btn .num { color: #ffd700; margin-right: 8px; }
+</style></head><body><div class='frame'>"}
 
-	html += "<h1>BUY MENU</h1>"
-	html += "<div class='money'>$[pd.money]</div>"
+	var/side_label = (pd.team.current_side == BOMBDEFUSAL_TEAM_T) ? "<font color='#ff4444'>TERRORISTS</font>" : "<font color='#4488ff'>COUNTER-TERRORISTS</font>"
 
-	var/current_cat = ""
-	for(var/datum/bombdefusal_shop_item/item in shop_catalog)
-		if(item.category != current_cat)
-			current_cat = item.category
-			html += "<h2>[current_cat]</h2>"
-
-		var/can_buy = TRUE
-		var/reason = ""
-		if(!pd.can_afford(item.price))
-			can_buy = FALSE
-			reason = "Can't afford"
-		if(item.required_side && pd.team.current_side != item.required_side)
-			can_buy = FALSE
-			reason = "[item.required_side] only"
-
-		html += "<div class='item'>"
-		if(can_buy)
-			html += "<span>[item.name] - <span class='price'>$[item.price]</span></span>"
-			html += "<a class='btn' href='?src=\ref[src];action=buy_item;item=\ref[item]'>BUY</a>"
-		else
-			html += "<span class='locked'>[item.name] - $[item.price] ([reason])</span>"
-			html += "<span class='btn btn-disabled'>BUY</span>"
+	if(!category)
+		// Category grid view
+		html += "<h1>Buy Menu</h1>"
+		html += "<div class='topbar'><span class='side'>[side_label]</span><span class='money'>$[pd.money]</span></div>"
+		html += "<div class='cat-grid'>"
+		var/list/cats_used = list()
+		var/cat_num = 1
+		for(var/datum/bombdefusal_shop_item/item in shop_catalog)
+			if(item.category in cats_used)
+				continue
+			cats_used += item.category
+			html += "<a class='cat-btn' href='?src=\ref[src];action=buy_cat;cat=[item.category]'><span class='num'>[cat_num]</span>[item.category]</a>"
+			cat_num++
 		html += "</div>"
+		html += "<a class='back-btn' href='?src=\ref[src];action=buy_close'><span class='num'>0</span>CANCEL</a>"
+	else
+		// Item list for the chosen category
+		html += "<h1>Buy [category]</h1>"
+		html += "<div class='topbar'><span class='side'>[side_label]</span><span class='money'>$[pd.money]</span></div>"
+		html += "<div class='item-list'>"
+		var/item_num = 1
+		for(var/datum/bombdefusal_shop_item/item in shop_catalog)
+			if(item.category != category)
+				continue
 
-	html += "</body></html>"
+			var/can_buy = TRUE
+			var/reason = ""
+			if(!pd.can_afford(item.price))
+				can_buy = FALSE
+				reason = "Can't afford"
+			if(item.required_side && pd.team.current_side != item.required_side)
+				can_buy = FALSE
+				reason = "[item.required_side] only"
 
-	show_browser(user, html.Join(""), "window=bombdefusal_buy;size=400x600")
+			if(can_buy)
+				html += "<a class='item' href='?src=\ref[src];action=buy_item;item=\ref[item];cat=[category]'><span><span class='num'>[item_num]</span>[item.name]</span><span class='price'>$[item.price]</span></a>"
+			else
+				html += "<div class='item locked'><span><span class='num'>[item_num]</span>[item.name] <small>([reason])</small></span><span class='price'>$[item.price]</span></div>"
+			item_num++
+		html += "</div>"
+		html += "<a class='back-btn' href='?src=\ref[src];action=buy_back'><span class='num'>0</span>BACK</a>"
+
+	html += "</div></body></html>"
+
+	show_browser(user, html.Join(""), "window=bombdefusal_buy;size=500x600")
 
 /datum/game_mode/bombdefusal/proc/handle_buy_topic(mob/user, list/href_list)
 	var/datum/bombdefusal_player_data/pd = get_player_data_by_mob(user)
@@ -167,10 +210,26 @@
 		to_chat(user, "<span class='warning'>Buy phase is over!</span>")
 		return
 
+	var/sub_action = href_list["action"]
+
+	// Navigation actions
+	if(sub_action == "buy_cat")
+		show_buy_menu(user, pd, category = href_list["cat"])
+		return
+	if(sub_action == "buy_back")
+		show_buy_menu(user, pd)
+		return
+	if(sub_action == "buy_close")
+		if(user.client)
+			close_browser(user, "window=bombdefusal_buy")
+		return
+
 	var/datum/bombdefusal_shop_item/item = locate(href_list["item"])
 	if(!item)
 		log_debug("Bombdefusal buy: Item ref not found: [href_list["item"]]")
 		return
+
+	var/return_cat = href_list["cat"] // Remember which category to return to after buying
 
 	// Validate
 	if(!pd.can_afford(item.price))
@@ -188,11 +247,11 @@
 		var/mob/living/carbon/human/H = user
 		if(ispath(item.item_type, /obj/item/clothing/suit/armor) && H.wear_suit)
 			to_chat(user, "<span class='warning'>You already have a vest equipped!</span>")
-			show_buy_menu(user, pd)
+			show_buy_menu(user, pd, category = return_cat)
 			return
 		if(ispath(item.item_type, /obj/item/clothing/head/helmet) && H.head)
 			to_chat(user, "<span class='warning'>You already have a helmet equipped!</span>")
-			show_buy_menu(user, pd)
+			show_buy_menu(user, pd, category = return_cat)
 			return
 
 	// Purchase
@@ -251,4 +310,4 @@
 
 	sound_to(user, sound('sound/csgo/gun-pickup.mp3'))
 	to_chat(user, "<span class='notice'>Purchased [item.name] for $[item.price]. Remaining: $[pd.money]</span>")
-	show_buy_menu(user, pd)
+	show_buy_menu(user, pd, category = return_cat)

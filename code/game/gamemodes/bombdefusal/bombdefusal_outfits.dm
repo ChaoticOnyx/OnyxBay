@@ -12,13 +12,23 @@
 
 /obj/item/clothing/gloves/swat/imba
 	name = "\improper SWAT gloves"
-	armor_values = alist(melee = 150, bullet = 150, laser = 150, energy = 150, bomb = 150, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 20, energy = 20, bomb = 20, bio = 0)
 	body_parts_covered = HANDS | ARMS
 
 /obj/item/clothing/shoes/combat/imba
 	name = "\improper SWAT boots"
-	armor_values = alist(melee = 40, bullet = 40, laser = 40, energy = 40, bomb = 40, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 20, energy = 20, bomb = 20, bio = 0)
 	body_parts_covered = FEET | LEGS
+
+// Bombdefusal-specific knife — high damage close combat weapon
+/obj/item/material/hatchet/tacknife/bombdefusal
+	name = "combat knife"
+	desc = "A wicked combat knife. Lethal in close quarters."
+	force_const = 30
+	thrown_force_const = 15
+	armor_penetration = 60
+	sharp = 1
+	edge = 1
 
 // Undersuit cosmetics
 /obj/item/clothing/under/syndicate/imba
@@ -55,7 +65,7 @@
 	desc = "A sturdy ballistic vest. Worn by terrorists."
 	icon_state = "mercwebvest"
 	item_state = "armor"
-	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
 
 // CT vest - security tactical vest
 /obj/item/clothing/suit/armor/vest/bombdefusal_ct
@@ -63,14 +73,14 @@
 	desc = "A tactical armored vest. Standard counter-terrorist issue."
 	icon_state = "ertarmor_sec"
 	item_state = "armor"
-	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
 
 // T helmet - mercenary combat helmet
 /obj/item/clothing/head/helmet/bombdefusal_t
 	name = "combat helmet"
 	desc = "A battered combat helmet favored by mercenaries."
 	icon_state = "helmet_merc"
-	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -80,7 +90,7 @@
 	name = "tactical helmet"
 	desc = "A reinforced tactical helmet worn by security response teams."
 	icon_state = "erthelmet_sec"
-	armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
 	body_parts_covered = HEAD|EYES
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -95,7 +105,7 @@
 	l_ear = /obj/item/device/radio/headset/bombdefusal/bombdefusal_t
 	belt = /obj/item/storage/belt/security/tactical
 	r_hand = /obj/item/gun/projectile/pistol/secgun
-	l_hand = /obj/item/material/hatchet/tacknife
+	l_hand = /obj/item/material/hatchet/tacknife/bombdefusal
 	backpack_contents = list(/obj/item/ammo_magazine/c45m = 3)
 
 /decl/hierarchy/outfit/bombdefusal/terrorist/post_equip(mob/living/carbon/human/H)
@@ -112,7 +122,7 @@
 	l_ear = /obj/item/device/radio/headset/bombdefusal/bombdefusal_ct
 	belt = /obj/item/storage/belt/security/tactical
 	r_hand = /obj/item/gun/projectile/pistol/secgun
-	l_hand = /obj/item/material/hatchet/tacknife
+	l_hand = /obj/item/material/hatchet/tacknife/bombdefusal
 	glasses = /obj/item/clothing/glasses/sunglasses
 	backpack_contents = list(/obj/item/ammo_magazine/c45m = 3)
 
@@ -279,7 +289,7 @@
 		if(H.l_hand)
 			H.drop(H.l_hand)
 			qdel(H.l_hand)
-		var/obj/item/material/hatchet/tacknife/knife = new(H)
+		var/obj/item/material/hatchet/tacknife/bombdefusal/knife = new(H)
 		H.put_in_l_hand(knife)
 
 	// Replace fire_sound on the starting pistol with CS 1.6 USP sound

@@ -351,7 +351,7 @@
 	var/action = href_list["action"]
 
 	// Allow bombdefusal actions for all players, not just admins
-	if(!(action in list("create_team", "join_team", "leave_team", "kick_member", "approve_join", "deny_join", "refresh_lobby", "buy_item", "admin_config", "ghost_join", "ghost_join_refresh")))
+	if(!(action in list("create_team", "join_team", "leave_team", "kick_member", "approve_join", "deny_join", "refresh_lobby", "buy_item", "buy_cat", "buy_back", "buy_close", "admin_config", "ghost_join", "ghost_join_refresh")))
 		if(..())
 			return TRUE
 
@@ -507,7 +507,7 @@
 		if("refresh_lobby")
 			show_lobby_ui(user)
 
-		if("buy_item")
+		if("buy_item", "buy_cat", "buy_back", "buy_close")
 			handle_buy_topic(user, href_list)
 
 		if("admin_config")
