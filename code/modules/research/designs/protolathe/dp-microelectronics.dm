@@ -138,15 +138,6 @@
 	build_path = /obj/item/jtag_programmer
 	sort_string = "VABBA"
 
-/datum/design/item/mcu/mcu_debugger
-	name = "Debugger Probe"
-	id = "mcu_debugger"
-	build_type = PROTOLATHE
-	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
-	materials = list(MATERIAL_STEEL = 300)
-	build_path = /obj/item/debugger
-	sort_string = "VABCA"
-
 // Modules
 
 /datum/design/item/mcu/tts_module
@@ -158,14 +149,14 @@
 	build_path = /obj/item/mcu_module/tts
 	sort_string = "VABCA"
 
-/datum/design/item/mcu/serial_terminal_module
-	name = "Serial Terminal module"
-	id = "serial_terminal_module"
-	build_type = PROTOLATHE
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
-	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
-	build_path = /obj/item/mcu_module/serial_terminal
-	sort_string = "VABCA"
+// /datum/design/item/mcu/serial_terminal_module
+// 	name = "Serial Terminal module"
+// 	id = "serial_terminal_module"
+// 	build_type = PROTOLATHE
+// 	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+// 	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
+// 	build_path = /obj/item/mcu_module/serial_terminal
+// 	sort_string = "VABCA"
 
 /datum/design/item/mcu/signaler_module
 	name = "Signaler module"

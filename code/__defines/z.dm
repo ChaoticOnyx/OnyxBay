@@ -30,6 +30,14 @@ var/__z_name = null
 #define Z_ERROR_UNKNOWN "Unknown"
 #define Z_ERROR_ALREADY_RUNNING "AlreadyRunning"
 #define Z_ERROR_FAILED_TO_START "FailedToStart"
+#define Z_ERROR_SCRIPT_NOT_FOUND "ScriptNotFound"
+#define Z_ERROR_BAD_INT "BadInt"
+#define Z_ERROR_UNSUPPORTED_TYPE "UnsupportedType"
+#define Z_ERROR_VAR_NOT_FOUND "VarNotFound"
+#define Z_ERROR_OUT_OF_LIMITS "OutOfLimits"
+#define Z_ERROR_ALREDY_EXISTS "AlreadyExists"
+#define Z_ERROR_BAD_TYPINGS "BadTypings"
+#define Z_ERROR_OUT_OF_RANGE "OutOfRange"
 
 // Global
 
@@ -116,152 +124,6 @@ var/__z_name = null
 /// Stops the WebSocket server. Returns true if the server was running.
 #define Z_WS_STOP(...) call_ext(__z_name, "byond:Z_ws_stop")()
 
-// Machines
-
-#define Z_MSTATE_STOPPED (1)
-#define Z_MSTATE_RUNNING (2)
-
-#define Z_MAX_PCI_DEVICES 18
-
-#define Z_DEVICE_TYPE_TTS 1
-#define Z_DEVICE_TYPE_SERIAL_TERMINAL 2
-#define Z_DEVICE_TYPE_SIGNALER 3
-#define Z_DEVICE_TYPE_GPS 4
-#define Z_DEVICE_TYPE_LIGHT 5
-#define Z_DEVICE_TYPE_ENV_SENSOR 6
-#define Z_DEVICE_TYPE_PRIZE_BOX 8
-#define Z_DEVICE_TYPE_MINING_BLOCK 9
-
-#define Z_TTS_N2B_CMD_SAY 1
-#define Z_TTS_B2N_CMD_READY_STATUS 1
-
-#define Z_SERIAL_N2B_CMD_WRITE 1
-#define Z_SERIAL_B2N_CMD_WRITE 1
-#define Z_SERIAL_N2B_CMD_SET_RAW_MODE 2
-
-#define Z_SIGNALER_N2B_CMD_SET 1
-#define Z_SIGNALER_N2B_CMD_SEND 2
-#define Z_SIGNALER_B2N_CMD_PULSE 1
-#define Z_SIGNALER_B2N_CMD_READY_STATUS 2
-
-#define Z_LIGHT_N2B_CMD_SET 1
-#define Z_LIGHT_B2N_CMD_READY_STATUS 1
-
-#define Z_ENV_SENSOR_N2B_CMD_UPDATE 1
-#define Z_ENV_SENSOR_B2N_CMD_READY_STATUS 1
-#define Z_ENV_SENSOR_B2N_CMD_UPDATE 2
-
-#define Z_PRIZE_BOX_N2B_CMD_VEND 1
-#define Z_PRIZE_BOX_B2N_CMD_READY_STATUS 1
-#define Z_PRIZE_BOX_B2N_CMD_IS_EMPTY 2
-
-#define Z_MINING_BLOCK_N2B_CMD_FOUND 1
-#define Z_MINING_BLOCK_B2N_CMD_SET_ARGS 1
-
-#define Z_MINING_BLOCK_ALGORITHM_NONE 0
-#define Z_MINING_BLOCK_ALGORITHM_POW 1
-
-#define Z_MINING_BLOCK_POW_HASH_FNV1A 0
-#define Z_MINING_BLOCK_POW_HASH_MURMUR_HASH3 1
-#define Z_MINING_BLOCK_POW_HASH_BLAKE2S 2
-#define Z_MINING_BLOCK_POW_HASH_XX_HASH 3
-#define Z_MINING_BLOCK_POW_HASH_SHA256 4
-
-// All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
-
-/// Creates a new machine. Returns numeric machine ID.
-/// Machine starts with no RAM and default frequency (1 MHz), not yet runnable.
-#define Z_MACHINE_CREATE(SRC) call_ext(__z_name, "byond:Z_machine_create")(SRC)
-
-/// Resets a machine: zeroes all CPU registers and clears RAM contents.
-/// Frequency, RAM size, and connected BYOND object are preserved.
-/// ELF must be reloaded after reset.
-#define Z_MACHINE_RESET(ID) call_ext(__z_name, "byond:Z_machine_reset")(ID)
-
-/// Allocates RAM for a machine in bytes. Frees previous RAM.
-/// Machine is not runnable until RAM is set and ELF is loaded.
-#define Z_MACHINE_SET_RAM_SIZE(ID, SIZE) call_ext(__z_name, "byond:Z_machine_set_ram_size")(ID, SIZE)
-
-/// Returns the size of the RAM in bytes
-#define Z_MACHINE_GET_RAM_SIZE(ID) call_ext(__z_name, "byond:Z_machine_get_ram_size")(ID)
-
-/// Returns a byte from the RAM at the specified address
-#define Z_MACHINE_READ_RAM_BYTE(ID, ADDRESS) call_ext(__z_name, "byond:Z_machine_read_ram_byte")(ID, ADDRESS)
-
-/// Writes a byte to the RAM at the specified address
-#define Z_MACHINE_WRITE_RAM_BYTE(ID, ADDRESS, VALUE) call_ext(__z_name, "byond:Z_machine_write_ram_byte")(ID, ADDRESS, VALUE)
-
-/// Reads multiple bytes from the RAM at the specified address into the DST list
-#define Z_MACHINE_READ_RAM_BYTES(ID, ADDRESS, DST) call_ext(__z_name, "byond:Z_machine_read_ram_bytes")(ID, ADDRESS, DST)
-
-/// Writes multiple bytes to the RAM at the specified address from the SRC list
-#define Z_MACHINE_WRITE_RAM_BYTES(ID, ADDRESS, SRC) call_ext(__z_name, "byond:Z_machine_write_ram_bytes")(ID, ADDRESS, SRC)
-
-/// Sets CPU clock frequency in Hz. Determines how many cycles
-/// the machine gets per tick. Default: 1 MHz.
-#define Z_MACHINE_SET_FREQUENCY(ID, FREQ) call_ext(__z_name, "byond:Z_machine_set_frequency")(ID, FREQ)
-
-/// Sets a machine's state, possible values: Z_MSTATE_STOPPED, Z_MSTATE_RUNNING
-#define Z_MACHINE_SET_STATE(ID, STATE) call_ext(__z_name, "byond:Z_machine_set_state")(ID, STATE)
-
-/// Returns a machine's state
-#define Z_MACHINE_GET_STATE(ID) call_ext(__z_name, "byond:Z_machine_get_state")(ID)
-
-/// Returns `cycles_executed / budget` at the previous`Z_MACHINES_TICK`
-#define Z_MACHINE_GET_UTILIZATION(ID) call_ext(__z_name, "byond:Z_machine_get_utilization")(ID)
-
-/// Returns `cycles_executed` at the previous`Z_MACHINES_TICK`, might not fit into f32
-#define Z_MACHINE_GET_EXECUTED(ID) call_ext(__z_name, "byond:Z_machine_get_executed")(ID)
-
-#define Z_MACHINE_SET_SENSORS(ID, TEMP, OVERHEAT, THROTTLED) call_ext(__z_name, "byond:Z_machine_set_sensors")(ID, TEMP, OVERHEAT, THROTTLED)
-
-#define Z_MACHINE_SET_POWER(ID, BATTERY_CHARGE, HAS_EXTERNAL_SOURCE) call_ext(__z_name, "byond:Z_machine_set_power")(ID, BATTERY_CHARGE, HAS_EXTERNAL_SOURCE)
-
-#define Z_MACHINE_SET_SHIFT_ID(ID, SHIFT_ID) call_ext(__z_name, "byond:Z_machine_set_shift_id")(ID, SHIFT_ID)
-
-/// Sets the proc to be called after tick in Z_MACHINES_TICK.
-#define Z_MACHINE_SET_POST_TICK_PROC(ID, PROC) call_ext(__z_name, "byond:Z_machine_set_post_tick_proc")(ID, PROC)
-
-#define Z_MACHINE_SET_TRAP_PROC(ID, PROC) call_ext(__z_name, "byond:Z_machine_set_trap_proc")(ID, PROC)
-
-#define Z_MACHINE_SET_SYSCALL_PROC(ID, PROC) call_ext(__z_name, "byond:Z_machine_set_syscall_proc")(ID, PROC)
-
-/// Manually adds cycles and mtime to the machine registers.
-/// Useful for simulating elapsed time or debugging.
-#define Z_MACHINE_APPEND_COUNTERS(ID, CYCLES, IDLE_CYCLES, MTIME) call_ext(__z_name, "byond:Z_machine_append_counters")(ID, CYCLES, IDLE_CYCLES, MTIME)
-
-/// Loads a RISC-V ELF binary from the given file path into the machine's RAM.
-/// RAM must be allocated first via Z_MACHINE_SET_RAM_SIZE.
-#define Z_MACHINE_LOAD_ELF(ID, PATH) call_ext(__z_name, "byond:Z_machine_load_elf")(ID, PATH)
-
-#define Z_MACHINE_SYSCALL(ID, SLOT, ARGS...) call_ext(__z_name, "byond:Z_machine_syscall")(ID, SLOT, ARGS)
-
-/// Attaches a PCI device to a machine. Returns PCI slot id.
-#define Z_MACHINE_TRY_ATTACH_PCI(ID, TYPE_ID) call_ext(__z_name, "byond:Z_machine_try_attach_pci")(ID, TYPE_ID)
-
-/// Detaches a PCI device from a machine.
-#define Z_MACHINE_TRY_DETACH_PCI(ID, SLOT) call_ext(__z_name, "byond:Z_machine_try_detach_pci")(ID, SLOT)
-
-#define Z_MACHINE_DUMP_REGISTERS(ID) call_ext(__z_name, "byond:Z_machine_dump_registers")(ID)
-
-/// Destroys a machine and frees all its resources.
-#define Z_MACHINE_DESTROY(ID) call_ext(__z_name, "byond:Z_machine_destroy")(ID)
-
-/// Executes all runnable machines for DELTA_US microseconds of emulated time.
-/// Budget and scheduling are handled internally by the backend.
-/// MMIO events trigger mmio_read/mmio_write on connected BYOND objects.
-#define Z_MACHINES_TICK(DELTA_US) call_ext(__z_name, "byond:Z_machines_tick")(DELTA_US)
-
-/// Returns JSON string with global emulator statistics.
-/// Fields: total_instructions, total_cycles, total_ticks,
-///         last_wall_us, last_budget_us, last_machines_served,
-///         last_machines_starved, load_avg
-#define Z_MACHINES_STATS(...) call_ext(__z_name, "byond:Z_machines_stats")()
-
-/// Sets the max percentage of delta time the emulator may use (10-80).
-/// Lower = more time for game logic, higher = faster emulation.
-#define Z_MACHINES_SET_BUDGET(PERCENT) call_ext(__z_name, "byond:Z_machines_set_budget")(PERCENT)
-
 // Crypto
 
 /// Generates a LEN bytes and encodes them in url-safe base64 string without padding.
@@ -270,3 +132,109 @@ var/__z_name = null
 /// Content and key must be a string.
 /// Returns a url-safe base64 string without padding.
 #define Z_CRYPTO_HMAC_SHA256(CONTENT, KEY) call_ext(__z_name, "byond:Z_crypto_hmac_sha256")(CONTENT, KEY)
+
+// Scripting
+
+#define Z_SCRIPT_VAR_CAST_NONE 0
+#define Z_SCRIPT_VAR_CAST_INT 1
+#define Z_SCRIPT_VAR_CAST_SYMBOL 2
+#define Z_SCRIPT_VAR_CAST_OBJECT 3
+#define Z_SCRIPT_VAR_CAST_ADDRESS 4
+
+#define Z_SCRIPT_CREATE(SRC, MEMORY_SIZE) call_ext(__z_name, "byond:Z_script_create")(SRC, MEMORY_SIZE)
+
+#define Z_SCRIPT_DESTROY(ID) call_ext(__z_name, "byond:Z_script_destroy")(ID)
+
+#define Z_SCRIPT_HAS_VAR(ID, NAME) call_ext(__z_name, "byond:Z_script_has_var")(ID, NAME)
+
+#define Z_SCRIPT_SET_VAR(ID, NAME, VALUE, CAST) call_ext(__z_name, "byond:Z_script_set_var")(ID, NAME, VALUE, CAST)
+
+#define Z_SCRIPT_GET_VAR(ID, NAME) call_ext(__z_name, "byond:Z_script_get_var")(ID, NAME)
+
+#define Z_SCRIPT_VAR_TYPE_NULL 0
+#define Z_SCRIPT_VAR_TYPE_INT 1
+#define Z_SCRIPT_VAR_TYPE_FLOAT 2
+#define Z_SCRIPT_VAR_TYPE_STRING 3
+#define Z_SCRIPT_VAR_TYPE_SYMBOL 4
+#define Z_SCRIPT_VAR_TYPE_OBJECT 5
+#define Z_SCRIPT_VAR_TYPE_ADDRESS 6
+
+#define Z_SCRIPT_GET_VAR_TYPE(ID, NAME) call_ext(__z_name, "byond:Z_script_get_var_type")(ID, NAME)
+
+#define Z_SCRIPT_UNSET_VAR(ID, NAME) call_ext(__z_name, "byond:Z_script_unset_var")(ID, NAME)
+
+#define Z_SCRIPT_TYPING_NULL (1 << 0)
+#define Z_SCRIPT_TYPING_INT (1 << 1)
+#define Z_SCRIPT_TYPING_FLOAT (1 << 2)
+#define Z_SCRIPT_TYPING_STRING (1 << 3)
+#define Z_SCRIPT_TYPING_SYMBOL (1 << 4)
+#define Z_SCRIPT_TYPING_OBJECT (1 << 5)
+#define Z_SCRIPT_TYPING_ADDRESS (1 << 6)
+#define Z_SCRIPT_TYPING_ANY (Z_SCRIPT_TYPING_NULL | Z_SCRIPT_TYPING_INT | Z_SCRIPT_TYPING_FLOAT | Z_SCRIPT_TYPING_STRING | Z_SCRIPT_TYPING_SYMBOL | Z_SCRIPT_TYPING_OBJECT | Z_SCRIPT_TYPING_ADDRESS)
+#define Z_SCRIPT_TYPING_ANY_PRIMITIVE (Z_SCRIPT_TYPING_NULL | Z_SCRIPT_TYPING_INT | Z_SCRIPT_TYPING_FLOAT | Z_SCRIPT_TYPING_STRING | Z_SCRIPT_TYPING_SYMBOL | Z_SCRIPT_TYPING_ADDRESS)
+#define Z_SCRIPT_TYPING_VARARGS (1 << 7)
+
+#define Z_SCRIPT_FUNCTION_ERROR 0
+#define Z_SCRIPT_FUNCTION_OK 1
+#define Z_SCRIPT_FUNCTION_YIELD 2
+#define Z_SCRIPT_REGISTER_FUNCTION(ID, NAME, CALLBACK, SRC, TYPINGS) call_ext(__z_name, "byond:Z_script_register_function")(ID, NAME, CALLBACK, SRC, TYPINGS)
+
+#define Z_SCRIPT_UNREGISTER_FUNCTION(ID, NAME) call_ext(__z_name, "byond:Z_script_unregister_function")(ID, NAME)
+
+#define Z_SCRIPT_COMPILE_RESULT_ERROR 0
+#define Z_SCRIPT_COMPILE_RESULT_OK 1
+#define Z_SCRIPT_COMPILE_RESULT_OUT_OF_MEMORY 2
+#define Z_SCRIPT_COMPILE_RESULT_OUT_OF_LIMITS 3
+
+#define Z_SCRIPT_COMPILE_ERROR_EXPECTED_OP 1
+#define Z_SCRIPT_COMPILE_ERROR_UNKNOWN_OP 2
+#define Z_SCRIPT_COMPILE_ERROR_BAD_OP_ARGS 3
+#define Z_SCRIPT_COMPILE_ERROR_BAD_STRING_LITERAL 4
+#define Z_SCRIPT_COMPILE_ERROR_BAD_SYMBOL_LITERAL 5
+#define Z_SCRIPT_COMPILE_ERROR_BAD_NUMBER_LITERAL 6
+#define Z_SCRIPT_COMPILE_ERROR_TOO_BIG_INT 7
+#define Z_SCRIPT_COMPILE_ERROR_SYNTAX 8
+#define Z_SCRIPT_COMPILE_ERROR_UNKNOWN_LABEL 9
+
+#define Z_SCRIPT_COMPILE(ID, CODE, MAX_OPCODES, MAX_STRINGS) call_ext(__z_name, "byond:Z_script_compile")(ID, CODE, MAX_OPCODES, MAX_STRINGS)
+
+#define Z_SCRIPT_GET_COMPILE_ERROR_KIND(ID) call_ext(__z_name, "byond:Z_get_compile_error_kind")(ID)
+
+#define Z_SCRIPT_GET_COMPILE_ERROR_POS(ID) call_ext(__z_name, "byond:Z_get_compile_error_pos")(ID)
+
+#define Z_SCRIPT_RESULT_ERROR 0
+#define Z_SCRIPT_RESULT_OK 1
+#define Z_SCRIPT_RESULT_YIELDED 2
+#define Z_SCRIPT_RESULT_OUT_OF_LIMITS 3
+
+#define Z_SCRIPT_RUNTIME_ERROR_DIVISION_BY_ZERO 1
+#define Z_SCRIPT_RUNTIME_ERROR_TYPE_MISMATCH 2
+#define Z_SCRIPT_RUNTIME_ERROR_STACK_UNDERFLOW 3
+#define Z_SCRIPT_RUNTIME_ERROR_STACK_OVERFLOW 4
+#define Z_SCRIPT_RUNTIME_ERROR_UNKNOWN_OPCODE 5
+#define Z_SCRIPT_RUNTIME_ERROR_UNDEFINED_FUNCTION 6
+#define Z_SCRIPT_RUNTIME_ERROR_UNDEFINED_VARIABLE 7
+#define Z_SCRIPT_RUNTIME_ERROR_INVALID_BIT_SHIFT 8
+#define Z_SCRIPT_RUNTIME_ERROR_FUNCTION 9
+
+#define Z_SCRIPT_RUN(ID, MAX_OPS, MAX_TIME_DS, TIME_CHECK_INTERVAL, TIME_UTIL) call_ext(__z_name, "byond:Z_script_run")(ID, MAX_OPS, MAX_TIME_DS, TIME_CHECK_INTERVAL, TIME_UTIL)
+
+#define Z_SCRIPT_GET_RUNTIME_ERROR_KIND(ID) call_ext(__z_name, "byond:Z_get_runtime_error_kind")(ID)
+
+#define Z_SCRIPT_GET_RUNTIME_ERROR_IP(ID) call_ext(__z_name, "byond:Z_get_runtime_error_ip")(ID)
+
+#define Z_SCRIPT_RESET(ID, CLEAR_VARS, CLEAR_FUNCTIONS, CLEAR_STACK) call_ext(__z_name, "byond:Z_script_reset")(ID, CLEAR_VARS, CLEAR_FUNCTIONS, CLEAR_STACK)
+
+#define Z_SCRIPT_GC_COLLECT(ID) call_ext(__z_name, "byond:Z_script_gc_collect")(ID)
+
+#define Z_SCRIPT_GET_IP(ID) call_ext(__z_name, "byond:Z_script_get_ip")(ID)
+
+#define Z_SCRIPT_SET_IP(ID, IP) call_ext(__z_name, "byond:Z_script_set_ip")(ID, IP)
+
+#define Z_SCRIPT_GET_OP_POS(ID, IP) call_ext(__z_name, "byond:Z_script_get_op_pos")(ID, IP)
+
+#define Z_SCRIPT_GET_USED_MEMORY(ID) call_ext(__z_name, "byond:Z_script_get_used_memory")(ID)
+
+// Hash
+
+#define Z_HASH_XXHASH32(SEED, VALUE) call_ext(__z_name, "byond:Z_hash_xxhash32")(SEED, VALUE)

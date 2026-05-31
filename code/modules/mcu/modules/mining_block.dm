@@ -1,3 +1,4 @@
+// TODO:
 /obj/item/mcu_module/mining_block
 	name = "mining block module"
 	desc = "A mining block module"

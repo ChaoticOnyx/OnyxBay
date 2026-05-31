@@ -39,6 +39,11 @@
 /// TID ratio: visible degradation + 2x error multiplier.
 #define MCU_TID_DEGRADE_RATIO 0.75
 
+#define MCU_STATE_OFF 0
+#define MCU_STATE_ON 1
+#define MCU_MAX_MESSAGES 25
+#define MCU_GC_COLLECT_INTERVAL (5 SECONDS)
+
 /obj/item/device/mcu
 	name = "generic MCU"
 	desc = "A microcontroller unit. This one seems to be a prototype."
@@ -46,7 +51,17 @@
 	icon_state = "green"
 	w_class = ITEM_SIZE_TINY
 
-	var/id = null
+	var/datum/script/__script = null
+	var/list/__included_files = list()
+	var/__state = MCU_STATE_OFF
+	var/__wait_ds = 0
+	var/obj/item/mcu_module/__wait_module = null
+	var/__last_think = 0
+	var/__last_compile = 0
+	var/__last_gc_collect = 0
+	var/__used_memory = 0
+	var/list/__messages = list()
+
 	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
 	var/target_frequency = 1000000 // 1 MHz
@@ -99,26 +114,25 @@
 
 	var/pci_slots = 2
 
-	var/list/__pci_devices = null
+	var/list/obj/item/mcu_module/__pci_devices = null
 	var/obj/item/cell/__battery = null
-	var/__elf_path = null
 
 	var/weakref/__chassis = null
 
 /obj/item/device/mcu/Initialize()
 	. = ..()
 
-	ASSERT(pci_slots <= Z_MAX_PCI_DEVICES)
 	ASSERT(pci_slots >= 0)
-
 	__pci_devices = new /list(pci_slots)
 
 /obj/item/device/mcu/Destroy()
-	if(id)
+	set_next_think(0)
+	__wait_module = null
+
+	if(!QDELETED(__script))
+		qdel(__script)
+		__script = null
 		SSmcu.total_mcu -= 1
-		power_off(null, FALSE)
-		Z_MACHINE_DESTROY(id)
-		id = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(!QDELETED(M))
@@ -126,40 +140,14 @@
 
 	if(!QDELETED(__battery))
 		qdel(__battery)
+		__battery = null
 
 	. = ..()
-
-/obj/item/device/mcu/proc/__try_init(mob/activator = null)
-	if(id)
-		return TRUE
-
-	if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
-		return FALSE
-
-	id = Z_MACHINE_CREATE(src)
-
-	if(!id)
-		CRASH("Failed to create a MCU: [Z_GET_LAST_ERROR()]")
-
-	SSmcu.total_mcu += 1
-
-	if(activator != null)
-		log_debug("[activator] ([activator.ckey]) triggered creation of a machine [id]")
-
-	// TODO: add a reset proc
-	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
-	ASSERT(Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency)) == TRUE)
-	ASSERT(Z_MACHINE_SET_RAM_SIZE(id, ram_size) == TRUE)
-	ASSERT(Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick)) == TRUE)
-	ASSERT(Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap)) == TRUE)
-	ASSERT(Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall)) == TRUE)
-
-	return TRUE
 
 /obj/item/device/mcu/examine(mob/user, infix)
 	. = ..()
 
-	if(!user.IsAdvancedToolUser() || !__try_init(user))
+	if(!user.IsAdvancedToolUser())
 		return
 
 	if(user.Adjacent(src))
@@ -245,38 +233,162 @@
 		if(length(modules) > 0)		
 			. += "Modules are connected to the board: [english_list(modules)]"
 
+/obj/item/device/mcu/tgui_static_data(mob/user)
+	. = ..()
+	.["declarations"] = GLOB.script_mcu_decls.generate_completions()
+
+/obj/item/device/mcu/tgui_data(mob/user)
+	var/list/data = list(
+		"compile_errors" = list(),
+		"runtime_errors" = list(),
+		"messages" = __messages,
+	)
+
+	if(QDELETED(__script))
+		return data
+	
+	var/compile_error_kind = __script.get_compile_error_kind()
+	var/compile_error_pos = __script.get_compile_error_pos()
+
+	if(compile_error_kind != 0)
+		var/message = ""
+
+		switch(compile_error_kind)
+			if(Z_SCRIPT_COMPILE_ERROR_EXPECTED_OP)
+				message = "Expected an operation"
+			if(Z_SCRIPT_COMPILE_ERROR_UNKNOWN_OP)
+				message = "An unknown operation"
+			if(Z_SCRIPT_COMPILE_ERROR_BAD_OP_ARGS)
+				message = "Bad operation arguments"
+			if(Z_SCRIPT_COMPILE_ERROR_BAD_STRING_LITERAL)
+				message = "Bad string literal"
+			if(Z_SCRIPT_COMPILE_ERROR_BAD_SYMBOL_LITERAL)
+				message = "Bad symbol literal"
+			if(Z_SCRIPT_COMPILE_ERROR_BAD_NUMBER_LITERAL)
+				message = "Bad number literal"
+			if(Z_SCRIPT_COMPILE_ERROR_TOO_BIG_INT)
+				message = "Number is too big"
+			if(Z_SCRIPT_COMPILE_ERROR_SYNTAX)
+				message = "Bad syntax"
+			if(Z_SCRIPT_COMPILE_ERROR_UNKNOWN_LABEL)
+				message = "Unknown label"
+
+		data["compile_errors"] += list(list(
+			"pos" = compile_error_pos,
+			"message" = message,
+		))
+	
+	var/runtime_error_kind = __script.get_runtime_error_kind()
+	var/runtime_error_ip = __script.get_runtime_error_ip()
+
+	if(runtime_error_kind != 0)
+		var/message = ""
+		var/pos = __script.get_op_pos(runtime_error_ip)
+
+		switch(runtime_error_kind)
+			if(Z_SCRIPT_RUNTIME_ERROR_DIVISION_BY_ZERO)
+				message = "Division by zero"
+			if(Z_SCRIPT_RUNTIME_ERROR_TYPE_MISMATCH)
+				message = "Type mismatch"
+			if(Z_SCRIPT_RUNTIME_ERROR_STACK_UNDERFLOW)
+				message = "Stack underflow"
+			if(Z_SCRIPT_RUNTIME_ERROR_STACK_OVERFLOW)
+				message = "Stack overflow"
+			if(Z_SCRIPT_RUNTIME_ERROR_UNKNOWN_OPCODE)
+				message = "Unknown opcode"
+			if(Z_SCRIPT_RUNTIME_ERROR_UNDEFINED_FUNCTION)
+				message = "Undefined function"
+			if(Z_SCRIPT_RUNTIME_ERROR_UNDEFINED_VARIABLE)
+				message = "Undefined variable"
+			if(Z_SCRIPT_RUNTIME_ERROR_INVALID_BIT_SHIFT)
+				message = "Invalid bit shift"
+			if(Z_SCRIPT_RUNTIME_ERROR_FUNCTION)
+				message = "Function error"
+
+		data["runtime_errors"] += list(list(
+			"pos" = pos,
+			"message" = message,
+		))
+
+	return data
+
+/obj/item/device/mcu/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "ScriptEditor")
+		ui.open()
+
+/obj/item/device/mcu/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+
+	if(.)
+		return
+	
+	switch(action)
+		if("compile")
+			if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
+				to_chat(usr, SPAN_WARNING("Some indescribable force is preventing the board from programming."))
+				return
+
+			if(is_on())
+				to_chat(usr, SPAN_WARNING("The MCU must be powered off before programming."))
+				return
+
+			if(flash_protection)
+				to_chat(usr, SPAN_WARNING("The OTP fuse is burned. \The [src] cannot be reprogrammed."))
+				return
+
+			if(world.time - __last_compile < 2 SECONDS)
+				to_chat(usr, SPAN_WARNING("Wait before the next compilation."))
+				return
+
+			__last_compile = world.time
+
+			__included_files = params["included_files"]
+			if(!islist(__included_files))
+				__included_files = list()
+
+			if(QDELETED(__script))
+				__script = new(ram_size)
+				SSmcu.total_mcu += 1
+			
+			try
+				__script.reset(TRUE, TRUE, TRUE)
+				__script.gc_collect()
+				GLOB.script_mcu_decls.register_functions(__script, src, __included_files)
+				GLOB.script_mcu_decls.register_vars(__script, __included_files)
+
+				switch(__script.compile(params["code"]))
+					if(Z_SCRIPT_COMPILE_RESULT_ERROR)
+						to_chat(usr, SPAN_WARNING("The script has errors!"))
+						return TRUE
+					if(Z_SCRIPT_COMPILE_RESULT_OUT_OF_LIMITS)
+						to_chat(usr, SPAN_WARNING("The script is too complex!"))
+						return TRUE
+					if(Z_SCRIPT_COMPILE_RESULT_OUT_OF_MEMORY)
+						to_chat(usr, SPAN_WARNING("The script is too big!"))
+						return TRUE
+			catch
+				to_chat(usr, SPAN_WARNING("Failed to compile the source code!"))
+				return TRUE
+
+			to_chat(usr, "Code compiled successfully")
+
+			return TRUE
+
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
-	if(!user.IsAdvancedToolUser() || !__try_init(user))
+	if(!user.IsAdvancedToolUser())
 		return ..()
 
 	if(istype(W, /obj/item/jtag_programmer))
+		// Just warnings
 		if(is_on())
 			to_chat(user, SPAN_WARNING("The MCU must be powered off before programming."))
-			return
 
 		if(flash_protection)
 			to_chat(user, SPAN_WARNING("The OTP fuse is burned. \The [src] cannot be reprogrammed."))
-			return
-
-		var/elf_file = input(user, "Upload an ELF file", "JTAG Programmer") as file|null
-
-		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.ckey || !user.Adjacent(src))
-			return
-
-		if(length(elf_file) > config.mcu.max_elf_size)
-			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.mcu.max_elf_size] max)"))
-			return
-
-		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
-
-		while(fexists(tmp_file))
-			tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
-
-		log_debug("[user] ([user.ckey]) uploaded an ELF file \"[tmp_file]\" ([length(elf_file)])")
-		fcopy(elf_file, tmp_file)
-
-		if(!load_elf(tmp_file, user, FALSE, TRUE))
-			fdel(tmp_file)
+		
+		tgui_interact(user)
 
 		return
 	else if(isMultitool(W))
@@ -373,96 +485,11 @@
 			)
 
 		return
-	else if(istype(W, /obj/item/debugger))
-		if(!do_after(user, 1 SECOND, src, TRUE))
-			return
-
-		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
-		var/list/data = json_decode(dump)
-
-		var/list/output = list()
-		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
-
-		output += SPAN_NOTICE("<b>── Status ──</b>")
-		output += "  PC: [num2hex(data["pc"], 8)] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
-		output += "  Privilege: [data["privilege"]]"
-
-		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
-		var/list/common = data["common"]
-		for(var/row = 0; row < 8; row++)
-			var/line = "  "
-			for(var/col = 0; col < 4; col++)
-				var/idx = row * 4 + col
-				var/val = common[idx + 1]
-				line += "x[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
-			output += line
-
-		output += SPAN_NOTICE("<b>── Float Registers (f0-f31) ──</b>")
-		var/list/floats = data["float"]
-		for(var/row = 0; row < 8; row++)
-			var/line = "  "
-			for(var/col = 0; col < 4; col++)
-				var/idx = row * 4 + col
-				var/val = floats[idx + 1]
-				line += "f[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
-			output += line
-
-		var/list/fcsr = data["fcsr"]
-		output += SPAN_NOTICE("<b>── FCSR ──</b>")
-		output += "  FRM: [fcsr["frm"]] | NX: [fcsr["nx"]] | UF: [fcsr["uf"]] | OF: [fcsr["of"]] | DZ: [fcsr["dz"]] | NV: [fcsr["nv"]]"
-
-		output += SPAN_NOTICE("<b>── Timers ──</b>")
-		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
-
-		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
-		output += "  mscratch: [num2hex(data["mscratch"], 8)] | mepc: [num2hex(data["mepc"], 8)] | mtval: [num2hex(data["mtval"], 8)]"
-
-		var/list/mcause = data["mcause"]
-		output += "  mcause: code=[mcause["code"]], interrupt=[mcause["interrupt"]]"
-
-		var/list/mtvec = data["mtvec"]
-		output += "  mtvec: mode=[mtvec["mode"]], base=[num2hex(mtvec["base"])]"
-
-		var/list/mie = data["mie"]
-		var/list/mip = data["mip"]
-		output += SPAN_NOTICE("<b>── Interrupts ──</b>")
-		output += "  MIE: msie=[mie["msie"]], mtie=[mie["mtie"]], meie=[mie["meie"]]"
-		output += "  MIP: msip=[mip["msip"]], mtip=[mip["mtip"]], meip=[mip["meip"]]"
-
-		output += SPAN_NOTICE("<b>── Identification ──</b>")
-		output += "  mvendorid: [data["mvendorid"]] | marchid: [data["marchid"]] | mimpid: [data["mimpid"]] | mhartid: [data["mhartid"]]"
-
-		output += SPAN_NOTICE("<b>══════════════════════════════════════════</b>")
-
-		to_chat(user, output.Join("<br>"))
-
-		return
 
 	return ..()
 
-/obj/item/device/mcu/proc/load_elf(path, mob/activator = null, ignore_flash_protection = FALSE, delete_old = FALSE)
-	if(!Z_MACHINE_LOAD_ELF(id, path))
-		switch(Z_GET_LAST_ERROR())
-			if(Z_ERROR_OUT_OF_RAM)
-				if(activator != null)
-					to_chat(activator, "Failed to load the ELF file: does not fit into the RAM")
-			if(Z_ERROR_BAD_ELF)
-				if(activator != null)
-					to_chat(activator, "Failed to load the ELF file: bad or unsupported ELF file")
-
-		return FALSE
-	else
-		if(activator != null)
-			to_chat(activator, SPAN_NOTICE("ELF file uploaded successfully."))
-
-	if(__elf_path != null && delete_old)
-		fdel(__elf_path)
-
-	__elf_path = path
-	return TRUE
-
 /obj/item/device/mcu/proc/__interact(mob/user)
-	if(!user.IsAdvancedToolUser() || !__try_init(user))
+	if(!user.IsAdvancedToolUser())
 		return FALSE
 
 	for(var/i = 1 to pci_slots)
@@ -483,44 +510,32 @@
 	return ..()
 
 /obj/item/device/mcu/proc/try_add_pci(obj/item/mcu_module/M, mob/activator = null)
-	ASSERT(M.device_type > 0)
 	ASSERT(M.__pci_slot == null)
 	ASSERT(M.__host == null)
 
-	if(!__try_init(activator))
-		return FALSE
+	var/slot = null
 
-	var/has_slots = FALSE
 	for(var/i = 1 to pci_slots)
 		if(__pci_devices[i] == null)
-			has_slots = TRUE
+			slot = i
 			break
 
-	if(!has_slots)
+	if(slot == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("No more PCI slots available."))
 
 		return FALSE
 
-	var/slot = Z_MACHINE_TRY_ATTACH_PCI(id, M.device_type)
-
-	if(slot == null)
-		if(activator)
-			to_chat(activator, SPAN_WARNING("It looks like [M] won't work here."))
-
-		return FALSE
-
 	if(activator)
 		if(!activator.drop(M, src))
-			Z_MACHINE_TRY_DETACH_PCI(id, slot)
 			return FALSE
 	else
 		M.forceMove(src)
 
 	M.__pci_slot = slot
 	M.__host = weakref(src)
-	ASSERT(__pci_devices[slot + 1] == null)
-	__pci_devices[slot + 1] = M
+	ASSERT(__pci_devices[slot] == null)
+	__pci_devices[slot] = M
 
 	M.__reset(TRUE)
 
@@ -611,13 +626,6 @@
 	else
 		broken = TRUE
 
-/obj/item/device/mcu/proc/__trap()
-	emergency_shutdown(TRUE)
-
-/obj/item/device/mcu/proc/__syscall(pci_slot, ...)
-	var/obj/item/mcu_module/M = __pci_devices[pci_slot + 1]
-	return M.__syscall(arglist(args.Copy(2)))
-
 /obj/item/device/mcu/proc/set_oc_unlocked(new_state, mob/activator = null)
 	oc_unlocked = new_state
 
@@ -652,9 +660,6 @@
 /// Power calculation uses EFFECTIVE frequency (what actually runs).
 /// but OC penalty based on TARGET (what player set).
 /obj/item/device/mcu/proc/calculate_power(util)
-	if(!id)
-		return 0
-
 	if(!is_on())
 		return 0
 
@@ -719,7 +724,7 @@
 
 		return FALSE
 
-	if(!__try_init(activator) || !config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
+	if(!config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
 
@@ -737,7 +742,7 @@
 
 		return FALSE
 
-	if(__elf_path == null)
+	if(QDELETED(__script))
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] fails to start."))
 
@@ -751,20 +756,19 @@
 
 		return FALSE
 
-	ASSERT(Z_MACHINE_RESET(id) == TRUE)
-	// TODO: add a reset proc
-	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
-
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(QDELETED(M))
 			continue
 
 		M.__power_on()
 
-	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
-	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
-	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), temperature >= shutdown_temp, temperature >= throttle_temp)
-	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), __chassis != null)
+	__script.set_ip(0)
+	__script.reset(TRUE, FALSE, TRUE)
+	__script.gc_collect()
+	GLOB.script_mcu_decls.register_vars(__script, __included_files)
+	__state = MCU_STATE_ON
+	__messages = list()
+	__wait_ds = 0
 	SSmcu.total_running += 1
 
 	if(activator)
@@ -773,13 +777,16 @@
 	if(__chassis != null)
 		__chassis.resolve().__on_mcu_on()
 
+	set_next_think(world.time + world.tick_lag)
+	__last_think = world.time
+
 	return TRUE
 
 /obj/item/device/mcu/proc/is_on()
-	if(!id)
+	if(QDELETED(__script))
 		return FALSE
 
-	return Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING
+	return __state == MCU_STATE_ON
 
 /obj/item/device/mcu/proc/power_off(mob/activator = null, is_trap = FALSE)
 	throttled = FALSE
@@ -794,7 +801,7 @@
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] off.", "You turn \the [src] off.")
 
-	Z_MACHINE_SET_STATE(id, Z_MSTATE_STOPPED)
+	__state = MCU_STATE_OFF
 	SSmcu.total_running -= 1
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
@@ -856,23 +863,55 @@
 
 	return __battery.use(amount)
 
-/obj/item/device/mcu/proc/__post_tick(delta_us)
-	var/delta_s = delta_us * 1e-6
+/obj/item/device/mcu/think()
+	var/delta_ds = world.time - __last_think
+	var/delta_s = delta_ds * 0.1
+	__last_think = world.time
+
+	set_next_think(world.time + world.tick_lag)
+
+	__wait_ds = max(0, __wait_ds - delta_ds)
+
+	if(!QDELETED(__wait_module) && __wait_module.ready)
+		__wait_module = null
 
 	// Generated heat
 	var/P = 0 WATT
 	var/energy_Wh = 0
 
-	if(is_on())
-		var/util = Z_MACHINE_GET_UTILIZATION(id)
+	if(is_on() && __wait_ds <= 0 && __wait_module == null)
+		var/budget_ds = ((delta_ds * config.mcu.budget_percent) / 100) / SSmcu.total_running
+		var/max_ops = round((frequency * budget_ds) / 10)
+		var/budget_util = 0.0
+		var/ret = null
+
+		try
+			ret = __script.run_script(max_ops, budget_ds, 50000, &budget_util)
+
+			if(ret == Z_SCRIPT_FUNCTION_ERROR)
+				tgui_update()
+				emergency_shutdown(TRUE)
+
+				return
+		catch
+			tgui_update()
+			emergency_shutdown(TRUE)
+
+			return
+
+		__used_memory = __script.get_used_memory()
+
+		if(world.time - __last_gc_collect > MCU_GC_COLLECT_INTERVAL)
+			__script.gc_collect()
+			__last_gc_collect = world.time
 
 		// Sustained full-load tracking
-		if(util >= 0.95)
+		if(budget_util >= 0.95)
 			sustained_full_ticks++
 		else
 			sustained_full_ticks = max(0, sustained_full_ticks - 2)
 
-		P = calculate_power(util)
+		P = calculate_power(budget_util)
 
 		for(var/obj/item/mcu_module/M in __pci_devices)
 			if(QDELETED(M))
@@ -887,8 +926,6 @@
 		if(__try_drain_power(energy_Wh, TRUE) == FALSE)
 			emergency_shutdown(FALSE)
 			// MCU is now off, but we still process thermal below
-
-	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), __chassis != null)
 
 	var/datum/gas_mixture/M = return_air()
 
@@ -936,13 +973,6 @@
 
 		return
 
-	// Overclock instability (based on TARGET, not effective)
-	if(target_frequency > max_frequency)
-		var/oc_severity = (target_frequency / max_frequency) - 1
-
-		if(!oc_ram_protection && prob(oc_severity * 100))
-			__trigger_overclock_error()
-
 	// Throttling (disabled when OC unlocked)
 	if(oc_unlocked)
 		throttled = FALSE
@@ -952,13 +982,6 @@
 		else if(throttled && temperature < (throttle_temp - MCU_THROTTLE_HYSTERESIS))
 			throttled = FALSE
 
-	Z_MACHINE_SET_SENSORS(id, \
-		CONV_KELVIN_CELSIUS(temperature), \
-		temperature >= shutdown_temp, \
-		temperature >= throttle_temp \
-	)
-
-	// Apply effective frequency
 	__update_effective_frequency()
 
 /// Called every tick while temperature ≥ damage_temp.
@@ -972,30 +995,10 @@
 	THROTTLE(thermal_corruption_cd, corruption_interval)
 
 	if(thermal_corruption_cd)
-		var/ram_len = Z_MACHINE_GET_RAM_SIZE(id)
-		var/bytes_to_corrupt = clamp(round(severity), 1, 8)
-
-		for(var/i in 1 to bytes_to_corrupt)
-			var/ram_addr = rand(0, ram_len - 1)
-			var/ram_value = rand(0, 255)
-			Z_MACHINE_WRITE_RAM_BYTE(id, ram_addr, ram_value)
-
 		if(severity >= 3 && prob(30))
 			var/datum/effect/effect/system/spark_spread/sparks = new()
 			sparks.set_up(2, 1, get_turf(src))
 			sparks.start()
-
-/obj/item/device/mcu/proc/__trigger_overclock_error()
-	THROTTLE(mem_corruption_cd, MCU_MEMORY_CORRUPTION_FREQUENCY)
-
-	if(mem_corruption_cd)
-		var/ram_len = Z_MACHINE_GET_RAM_SIZE(id)
-		var/bytes_to_corrupt = rand(1, 8)
-
-		for(var/i in 1 to bytes_to_corrupt)
-			var/ram_addr = rand(0, ram_len - 1)
-			var/ram_value = rand(0, 255)
-			Z_MACHINE_WRITE_RAM_BYTE(id, ram_addr, ram_value)
 
 /obj/item/device/mcu/proc/__process_radiation(delta_s)
 	if(rad_dead)
@@ -1051,15 +1054,15 @@
 		degrade_mult = 1.5
 
 	// SEU - Single Event Upset (memory corruption)
-	var/seu_prob = clamp(effective_dose * MCU_RAD_SEU_COEFF * degrade_mult, 0, 95)
+	// var/seu_prob = clamp(effective_dose * MCU_RAD_SEU_COEFF * degrade_mult, 0, 95)
 
-	if(prob(seu_prob))
-		var/ram_len = Z_MACHINE_GET_RAM_SIZE(id)
-		var/bytes_to_corrupt = clamp(round(effective_dose * MCU_RAD_SEU_BYTE_COEFF), 1, MCU_RAD_SEU_MAX_BYTES)
+	// if(prob(seu_prob))
+	// 	var/ram_len = Z_MACHINE_GET_RAM_SIZE(id)
+	// 	var/bytes_to_corrupt = clamp(round(effective_dose * MCU_RAD_SEU_BYTE_COEFF), 1, MCU_RAD_SEU_MAX_BYTES)
 
-		for(var/i in 1 to bytes_to_corrupt)
-			var/addr = rand(0, ram_len - 1)
-			Z_MACHINE_WRITE_RAM_BYTE(id, addr, rand(0, 255))
+	// 	for(var/i in 1 to bytes_to_corrupt)
+	// 		var/addr = rand(0, ram_len - 1)
+	// 		Z_MACHINE_WRITE_RAM_BYTE(id, addr, rand(0, 255))
 
 	// SEL - Single Event Latchup (overcurrent -> shutdown)
 	var/sel_prob = clamp(effective_dose * MCU_RAD_SEL_COEFF * degrade_mult, 0, 30)
@@ -1100,9 +1103,6 @@
 		frequency = target_frequency
 
 	frequency = max(frequency, min_frequency)
-
-	if(id)
-		Z_MACHINE_SET_FREQUENCY(id, frequency)
 
 /obj/item/device/mcu/verb/turn_on()
 	set src in view(1)
@@ -1164,13 +1164,10 @@
 	return try_detach_pci_module(__pci_devices[slot], activator)
 
 /obj/item/device/mcu/proc/try_detach_pci_module(obj/item/mcu_module/M, mob/activator = null)
-	if(!id || QDELETED(M) || M.__pci_slot == null)
+	if(QDELETED(M) || M.__pci_slot == null)
 		return FALSE
 
-	__pci_devices[M.__pci_slot + 1] = null
-
-	ASSERT(Z_MACHINE_TRY_DETACH_PCI(id, M.__pci_slot) == TRUE)
-
+	__pci_devices[M.__pci_slot] = null
 	M.__pci_slot = null
 	M.__host = null
 	M.__reset(FALSE)
@@ -1187,6 +1184,179 @@
 		M.forceMove(get_turf(src))
 
 	return TRUE
+
+/obj/item/device/mcu/proc/__print_function()
+	if(length(args) == 0)
+		return Z_SCRIPT_FUNCTION_OK
+
+	__messages += list(jointext(args, " "))
+
+	if(length(__messages) > MCU_MAX_MESSAGES)
+		__messages.Cut(1, 2)
+
+	tgui_update()
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__printf_function()
+	var/msg = args[1]
+	var/result = ""
+	var/arg_idx = 2
+	var/i = 1
+	var/msg_len = length_char(msg)
+
+	while(i <= msg_len)
+		var/char = copytext_char(msg, i, i + 1)
+
+		if(char == "\\")
+			if(i < msg_len)
+				var/next_char = copytext_char(msg, i + 1, i + 2)
+				if(next_char == "{" || next_char == "}" || next_char == "\\")
+					result += next_char
+					i += 2
+
+					continue
+			
+			result += "\\"
+			i++
+
+			continue
+
+		if(char == "{" && i < msg_len && copytext_char(msg, i + 1, i + 2) == "}")
+			if(arg_idx > length(args))
+				return Z_SCRIPT_FUNCTION_ERROR
+			
+			result += "[args[arg_idx]]"
+			arg_idx++
+			i += 2
+
+			continue
+
+		result += char
+		i++
+
+	__messages += list(result)
+
+	if(length(__messages) > MCU_MAX_MESSAGES)
+		__messages.Cut(1, 2)
+
+	tgui_update()
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__var_function()
+	for(var/V in args)
+		__script.set_var(V, null, Z_SCRIPT_VAR_CAST_NONE)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__wait_function()
+	var/time_ms = max(0, args[1])
+	__wait_ds = round(time_ms * 1e-2)
+
+	return Z_SCRIPT_FUNCTION_YIELD
+
+/obj/item/device/mcu/proc/__rand_int_function()
+	var/lower = args[1] || 0
+	var/upper = args[2] || 2
+
+	__script.set_var(args[3], rand(lower, upper - 1), Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__rand_float_function()
+	var/lower = args[1] || 0
+	var/upper = args[2] || 1
+	var/factor = rand(0, 99999) / 100000
+
+	__script.set_var(args[3], lower + factor * (upper - lower), Z_SCRIPT_VAR_CAST_NONE)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__get_temperature_function()
+	__script.set_var(args[1], CONV_KELVIN_CELSIUS(temperature), Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__is_overheating_function()
+	__script.set_var(args[1], temperature >= shutdown_temp, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__is_throttled_function()
+	__script.set_var(args[1], temperature >= throttle_temp, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__get_battery_charge_function()
+	var/charge = QDELETED(__battery) ? 0 : __battery.charge * 1000
+	__script.set_var(args[1], charge, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__is_external_power_function()
+	__script.set_var(args[1], __chassis != null, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__pci_get_device_count_function()
+	var/pci_devices = 0
+
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+		
+		pci_devices += 1
+
+	__script.set_var(args[1], pci_devices, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__pci_wait_ready_function()
+	var/obj/item/mcu_module/M = args[1]
+
+	if(!istype(M))
+		return Z_SCRIPT_FUNCTION_ERROR
+
+	if(M.ready)
+		return Z_SCRIPT_FUNCTION_OK
+	
+	__wait_module = M
+	return Z_SCRIPT_FUNCTION_YIELD
+
+/obj/item/device/mcu/proc/__pci_get_device_function()
+	var/idx = args[1] + 1
+
+	if(idx > length(__pci_devices) || QDELETED(__pci_devices[idx]))
+		__script.set_var(args[2], null, Z_SCRIPT_VAR_CAST_OBJECT)
+
+		return Z_SCRIPT_FUNCTION_OK
+
+	__script.set_var(args[2], __pci_devices[idx], Z_SCRIPT_VAR_CAST_OBJECT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__pci_get_device_type_function()
+	var/obj/item/mcu_module/M = args[1]
+
+	#define X(type_path, pci_constant) if(istype(M, type_path)) { __script.set_var(args[2], pci_constant, Z_SCRIPT_VAR_CAST_INT); } else
+	MCU_MODULE_LIST
+	#undef X
+	{
+		__script.set_var(args[2], null, Z_SCRIPT_FUNCTION_ERROR)
+	}
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__is_ready_function()
+	var/obj/item/mcu_module/M = args[1]
+
+	if(!istype(M))
+		return Z_SCRIPT_FUNCTION_ERROR
+
+	__script.set_var(args[2], M.ready, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
 
 /obj/item/device/mcu/standard
 	name = "NCR-1000 MCU"
@@ -1524,3 +1694,8 @@
 	throttle_temp = 70 CELSIUS
 	shutdown_temp = 95 CELSIUS
 	damage_temp = 100 CELSIUS
+
+#undef MCU_STATE_OFF
+#undef MCU_STATE_ON
+#undef MCU_MAX_MESSAGES
+#undef MCU_GC_COLLECT_INTERVAL

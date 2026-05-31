@@ -1,6 +1,6 @@
 [mcu]
 enable = true
-budget_percent = 10
+budget_percent = 5
 hardcap = 25
 power_scale = 500
 rad_scale = 0.00005

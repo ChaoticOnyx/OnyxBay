@@ -2,11 +2,11 @@
 	icon = 'icons/obj/mcu.dmi'
 	w_class = ITEM_SIZE_TINY
 
-	var/device_type = 0
 	/// The amount of power to drain by the host.
 	var/power_usage = 0
+	var/ready = FALSE
 	
-	/// Set by MCU, starts from 0 NOT 1!!!
+	/// Set by MCU.
 	var/__pci_slot = null
 	/// Set by MCU.
 	var/weakref/__host = null
@@ -19,9 +19,6 @@
 
 /obj/item/mcu_module/proc/__reset(attached)
 	return
-
-/obj/item/mcu_module/proc/__syscall(cmd, ...)
-	return FALSE
 
 /obj/item/mcu_module/proc/__interact(mob/user)
 	return FALSE

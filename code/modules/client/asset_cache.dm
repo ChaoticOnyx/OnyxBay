@@ -281,6 +281,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	assets = list(
 		"tgui.bundle.js" = 'tgui/public/tgui.bundle.js',
 		"tgui.bundle.css" = 'tgui/public/tgui.bundle.css',
+		"tgui.bundle.ttf" = 'tgui/public/tgui.bundle.ttf',
 	)
 
 /datum/asset/simple/tgui_panel

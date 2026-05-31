@@ -1583,3 +1583,13 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 			if(C.mob && isnewplayer(C.mob))
 				sound_to(C, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
 				C.playtitlemusic()
+
+/datum/admins/proc/turn_of_all_mcu()
+	set name = "Turn Off All MCU"
+	set category = "Admin"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	for(var/obj/item/device/mcu/M in world)
+		M.power_off(null, TRUE)

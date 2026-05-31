@@ -1,3 +1,4 @@
+// TODO:
 #define SIGNAL_CARGO_MINING_NEW_ARGS "cargo_mining_new_args"
 
 #define MINING_BASE_REWARD     1

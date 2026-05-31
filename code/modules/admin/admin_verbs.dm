@@ -109,7 +109,8 @@ var/list/admin_verbs_admin = list(
 	/datum/admins/proc/follow_panel,
 	/datum/admins/proc/events_panel,
 	/datum/admins/proc/change_lobby_art,
-	/datum/admins/proc/change_lobby_music
+	/datum/admins/proc/change_lobby_music,
+	/datum/admins/proc/turn_of_all_mcu,
 	)
 
 var/list/admin_verbs_ban = list(

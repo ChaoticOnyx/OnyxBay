@@ -3,8 +3,12 @@
 	desc = "A GPS module"
 	icon_state = "gps"
 
-	device_type = Z_DEVICE_TYPE_GPS
+/obj/item/mcu_module/gps/proc/__get_position_function()
+	var/obj/item/device/mcu/M = __host.resolve()
+	var/turf/T = get_turf(M)
 
-/obj/item/mcu_module/gps/__reset(attached)
-	if(!attached)
-		return
+	M.__script.set_var(args[1], T.x, Z_SCRIPT_VAR_CAST_INT)
+	M.__script.set_var(args[2], T.y, Z_SCRIPT_VAR_CAST_INT)
+	M.__script.set_var(args[3], T.z, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK

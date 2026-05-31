@@ -92,8 +92,9 @@
 	cost = 10
 	containername = "\improper Plastic cup bags"
 
-/decl/hierarchy/supply_pack/supply/mining_block
-	name = "Mining block"
-	contains = list(/obj/item/mcu_module/mining_block/cargo = 1)
-	cost = 60
-	containername = "\improper Mining block"
+// TODO:
+// /decl/hierarchy/supply_pack/supply/mining_block
+// 	name = "Mining block"
+// 	contains = list(/obj/item/mcu_module/mining_block/cargo = 1)
+// 	cost = 60
+// 	containername = "\improper Mining block"

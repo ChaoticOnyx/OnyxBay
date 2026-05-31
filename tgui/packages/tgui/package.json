@@ -12,6 +12,7 @@
     "inferno-vnode-flags": "9.x.x",
     "js-yaml": "^4.1.0",
     "marked": "4.0.6",
+    "monaco-editor": "^0.55.1",
     "tgui-dev-server": "4.3.0"
   }
 }
