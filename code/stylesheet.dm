@@ -62,6 +62,8 @@ em						{font-style: normal;font-weight: bold;}
 .entradio				{color: #339966;}
 
 .secradio				{color: #a30000;}
+.tradio					{color: #cc8822;}
+.ctradio				{color: #3366cc;}
 .engradio				{color: #a66300;}
 .medradio				{color: #008160;}
 .sciradio				{color: #993399;}

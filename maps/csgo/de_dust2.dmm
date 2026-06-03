@@ -1,0 +1,266 @@
+"af" = (/obj/structure/prop/canister/blue,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/space)
+"ak" = (/obj/structure/prop/largecrate/wood2,/obj/structure/barricade/material,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"aB" = (/obj/structure/prop/canister/broken/blue,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"bg" = (/obj/effect/floor_decal/spline/plain/black{dir = 1},/turf/simulated/floor/natural/sand/darksand,/area/space)
+"cO" = (/obj/effect/floor_decal/spline/plain/black{dir = 8},/obj/effect/floor_decal/spline/plain/black{dir = 1},/turf/simulated/floor/natural/sand/gray,/area/space)
+"df" = (/turf/simulated/floor/natural/sand/gray,/area/space)
+"dC" = (/obj/structure/prop/largecrate/tank,/turf/simulated/floor/natural/sand/gray,/area/space)
+"dV" = (/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"em" = (/obj/effect/floor_decal/spline/plain/black{dir = 8},/turf/simulated/floor/natural/sand/darksand,/area/space)
+"et" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/black,/turf/simulated/floor/misc/concrete,/area/space)
+"eK" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/black{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
+"eV" = (/obj/effect/floor_decal/asteroid,/obj/structure/rock,/turf/simulated/floor/natural/sand/gray,/area/space)
+"fd" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/effect/landmark/bombdefusal/t_spawn,/turf/simulated/floor/misc/concrete,/area/space)
+"fp" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor,/turf/simulated/floor/tiled/rough,/area/space)
+"fs" = (/obj/machinery/mining/brace{dir = 8; anchored = 1},/turf/simulated/floor/natural/sand/darksand,/area/space)
+"fB" = (/obj/structure/railing{dir = 8},/obj/structure/railing,/obj/effect/floor_decal/oldflood,/obj/structure/prop/crate/oxy,/turf/simulated/floor/misc/concrete,/area/space)
+"fM" = (/obj/effect/floor_decal/stairs{dir = 8},/obj/effect/floor_decal/spline/plain/brown,/turf/simulated/floor/misc/concrete,/area/space)
+"gf" = (/obj/structure/prop/largecrate/ore2,/obj/effect/floor_decal/spline/plain/grey{dir = 4},/turf/simulated/floor/natural/sand/gray,/area/space)
+"gg" = (/obj/structure/prop/floodlight,/turf/simulated/floor/natural/sand/gray,/area/space)
+"gB" = (/obj/structure/prop/door/open/shutter{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
+"gF" = (/obj/effect/floor_decal/spline/plain/grey{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"gV" = (/obj/structure/prop/crate/rough,/turf/simulated/floor/natural/sand/gray,/area/space)
+"hg" = (/obj/structure/railing{dir = 4},/obj/structure/railing{dir = 1},/obj/structure/prop/crate,/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/floor_decal/spline/plain/black{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
+"ho" = (/turf/simulated/floor/tiled/rough,/area/space)
+"hC" = (/obj/effect/decal/bombdefusal/arrow_a{dir = 1; pixel_x = -32},/turf/simulated/floor/natural/sand/darksand,/area/space)
+"ih" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/bombdefusal/arrow_a{dir = 8; pixel_y = 32},/turf/simulated/floor/misc/concrete,/area/space)
+"iJ" = (/obj/structure/prop/canister/redws,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"iZ" = (/turf/unsimulated/floor/rescue_base,/area/space)
+"jf" = (/obj/structure/rock,/turf/simulated/floor/natural/sand/gray,/area/space)
+"kj" = (/obj/structure/railing,/obj/structure/prop/crate/bin,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"kl" = (/obj/structure/prop/canister/broken/blue,/turf/simulated/floor/natural/sand/gray,/area/space)
+"km" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/door/half/blast,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"kC" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/structure/prop/crate/weapon,/turf/simulated/floor/misc/concrete,/area/space)
+"lj" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/floodlight,/turf/simulated/floor/tiled/rough,/area/space)
+"ln" = (/obj/structure/prop/floodlight,/obj/effect/floor_decal/spline/plain/black{dir = 8},/turf/simulated/floor/natural/sand/gray,/area/space)
+"lx" = (/obj/effect/floor_decal/spline/plain/black{dir = 8},/obj/structure/prop/floodlight,/turf/simulated/floor/natural/sand/gray,/area/space)
+"lP" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/space)
+"ma" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/floodlight,/turf/simulated/floor/misc/concrete,/area/space)
+"mn" = (/obj/structure/prop/largecrate/tank,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/space)
+"mN" = (/obj/structure/prop/floodlight,/turf/simulated/floor/tiled/rough,/area/space)
+"np" = (/obj/structure/prop/largecrate/wood1,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"nQ" = (/obj/structure/prop/crate/secure,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"nZ" = (/obj/structure/prop/largecrate/hydro,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"op" = (/obj/structure/prop/crate/trash,/turf/simulated/floor/natural/sand/gray,/area/space)
+"os" = (/obj/effect/floor_decal/spline/plain/grey,/obj/structure/barricade/material,/turf/simulated/floor/natural/sand/gray,/area/space)
+"oz" = (/obj/structure/filingcabinet,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"qp" = (/obj/structure/prop/largecrate/ore1,/obj/effect/floor_decal/spline/plain/grey{dir = 4},/turf/simulated/floor/natural/sand/gray,/area/space)
+"qw" = (/obj/effect/floor_decal/spline/plain/grey{dir = 4},/turf/simulated/floor/natural/sand/gray,/area/space)
+"rm" = (/obj/item/trash/nutribar,/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{dir = 10; id = "mining_west"},/turf/simulated/floor/tiled/rough,/area/space)
+"rV" = (/obj/effect/decal/bombdefusal/arrow_b{dir = 8; pixel_y = 32},/turf/simulated/floor/tiled/rough,/area/space)
+"rY" = (/obj/structure/prop/crate/rough,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"so" = (/obj/effect/landmark/bombdefusal/bombsite/b,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"su" = (/obj/effect/floor_decal/stairs{dir = 4},/turf/unsimulated/floor/shuttle_ceiling,/area/space)
+"sB" = (/obj/structure/prop/door/shutter,/turf/simulated/floor/misc/concrete,/area/space)
+"sR" = (/obj/structure/prop/largecrate/wood2,/obj/structure/railing{dir = 4},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"te" = (/obj/item/trash/skrellsnacks,/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor,/turf/simulated/floor/tiled/rough,/area/space)
+"tg" = (/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"th" = (/obj/structure/railing{dir = 1},/obj/structure/railing{dir = 8},/turf/simulated/floor/misc/concrete,/area/space)
+"tY" = (/obj/item/trash/liquidfood,/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{dir = 8; id = "merchantbelt1"},/turf/simulated/floor/tiled/rough,/area/space)
+"uf" = (/obj/structure/railing,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"uh" = (/turf/simulated/wall/unbreakable,/area/space)
+"ur" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/crate/weapon,/turf/simulated/floor/misc/concrete,/area/space)
+"uU" = (/obj/effect/floor_decal/stairs{dir = 4},/turf/unsimulated/floor/rescue_base,/area/space)
+"uX" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"uY" = (/obj/structure/computerframe,/turf/simulated/floor/natural/sand/gray,/area/space)
+"vj" = (/obj/structure/prop/door/blast_old,/turf/simulated/floor/misc/concrete,/area/space)
+"vn" = (/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"vp" = (/obj/structure/prop/crate/weapon,/turf/simulated/floor/natural/sand/gray,/area/space)
+"vP" = (/obj/effect/landmark/bombdefusal/bombsite/a,/turf/simulated/floor/misc/concrete,/area/space)
+"wl" = (/obj/structure/prop/door/blast,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"wt" = (/obj/structure/prop/crate/weapon,/turf/simulated/floor/misc/concrete,/area/space)
+"wv" = (/obj/structure/prop/door/open/blast,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"wE" = (/obj/effect/floor_decal/oldflood,/obj/structure/loot_pile/mecha/ripley,/obj/effect/floor_decal/spline/plain/black{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
+"wG" = (/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/natural/sand/gray,/area/space)
+"wI" = (/obj/structure/prop/door/open/shutter{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
+"wU" = (/obj/structure/prop/door/shutter{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
+"xk" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"xm" = (/turf/simulated/mineral,/area/space)
+"xu" = (/obj/structure/prop/floodlight,/obj/effect/decal/bombdefusal/site_a{pixel_y = -32},/turf/simulated/floor/natural/sand/gray,/area/space)
+"xJ" = (/obj/structure/prop/largecrate,/obj/effect/floor_decal/spline/plain/black{dir = 8},/turf/simulated/floor/natural/sand/gray,/area/space)
+"xL" = (/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/misc/concrete,/area/space)
+"yb" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/landmark/bombdefusal/t_spawn,/turf/simulated/floor/misc/concrete,/area/space)
+"yO" = (/obj/structure/prop/largecrate/wood3,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/space)
+"yU" = (/obj/machinery/mining/drill,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"ze" = (/obj/effect/floor_decal/asteroid,/obj/structure/prop/largecrate/ore2,/obj/effect/floor_decal/spline/plain/grey{dir = 4},/turf/simulated/floor/natural/sand/gray,/area/space)
+"zf" = (/obj/structure/prop/door/open/shutter,/obj/effect/floor_decal/spline/plain/brown{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"zl" = (/obj/effect/decal/bombdefusal/arrow_b{dir = 8; pixel_x = 32},/turf/simulated/floor/natural/sand/gray,/area/space)
+"zr" = (/obj/effect/floor_decal/stairs{dir = 8},/turf/simulated/floor/misc/concrete,/area/space)
+"zv" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/floodlight,/turf/unsimulated/floor/rescue_base,/area/space)
+"zL" = (/obj/effect/floor_decal/stairs{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"zW" = (/obj/effect/floor_decal/oldflood,/obj/structure/barricade/material,/turf/unsimulated/floor/rescue_base,/area/space)
+"Ac" = (/obj/structure/railing{dir = 4},/obj/effect/floor_decal/spline/plain/black,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Ah" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/effect/floor_decal/spline/plain/black,/obj/effect/landmark/bombdefusal/t_spawn,/turf/simulated/floor/misc/concrete,/area/space)
+"Ak" = (/turf/simulated/floor/misc/concrete,/area/space)
+"Ao" = (/obj/effect/floor_decal/spline/plain/black{dir = 8},/turf/simulated/floor/natural/sand/gray,/area/space)
+"Bd" = (/obj/structure/prop/crate,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Bj" = (/obj/effect/decal/bombdefusal/arrow_a{dir = 8; pixel_y = 32},/turf/simulated/floor/natural/sand/gray,/area/space)
+"Bq" = (/obj/effect/floor_decal/spline/plain/black{dir = 1},/turf/simulated/floor/natural/sand/gray,/area/space)
+"BU" = (/obj/effect/floor_decal/spline/plain/grey,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"BY" = (/obj/structure/prop/floodlight,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"Ch" = (/obj/structure/prop/door/half/shutter{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
+"Ci" = (/obj/structure/railing{dir = 1},/turf/simulated/floor/misc/concrete,/area/space)
+"CW" = (/obj/effect/floor_decal/stairs{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
+"DM" = (/obj/effect/decal/bombdefusal/site_b{pixel_y = -32},/turf/simulated/floor/natural/sand/gray,/area/space)
+"Eo" = (/obj/structure/railing{dir = 1},/obj/structure/prop/crate,/turf/simulated/floor/misc/concrete,/area/space)
+"Fc" = (/obj/structure/railing{dir = 4},/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/misc/concrete,/area/space)
+"Fg" = (/obj/structure/railing{dir = 1},/obj/structure/railing{dir = 4},/obj/structure/prop/crate,/turf/simulated/floor/misc/concrete,/area/space)
+"Fv" = (/obj/structure/loot_pile/mecha/deathripley,/turf/simulated/floor/natural/sand/gray,/area/space)
+"FK" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/spline/plain/black,/turf/simulated/floor/misc/concrete,/area/space)
+"Gq" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/bombdefusal/site_a{pixel_y = -32},/turf/simulated/floor/misc/concrete,/area/space)
+"GB" = (/obj/structure/railing,/turf/simulated/floor/misc/concrete,/area/space)
+"GJ" = (/obj/structure/prop/largecrate,/turf/simulated/floor/natural/sand/gray,/area/space)
+"Ha" = (/obj/effect/floor_decal/oldflood,/obj/structure/railing,/obj/vehicle/train/cargo/trolley,/turf/unsimulated/floor/rescue_base,/area/space)
+"Hm" = (/obj/structure/prop/crate/secure,/obj/structure/railing,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Ie" = (/obj/structure/railing{dir = 4},/obj/structure/railing{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Ih" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate,/turf/simulated/floor/misc/concrete,/area/space)
+"IP" = (/obj/structure/prop/largecrate/tank,/turf/simulated/floor/misc/concrete,/area/space)
+"Jt" = (/obj/effect/floor_decal/stairs{dir = 8},/obj/effect/decal/bombdefusal/site_b{pixel_y = -32},/turf/unsimulated/floor/rescue_base,/area/space)
+"Jy" = (/obj/structure/railing{dir = 4},/obj/structure/railing,/turf/simulated/floor/misc/concrete,/area/space)
+"JU" = (/obj/structure/railing{dir = 4},/obj/structure/prop/floodlight,/turf/simulated/floor/misc/concrete,/area/space)
+"Ka" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/misc/concrete,/area/space)
+"Kc" = (/obj/effect/floor_decal/oldflood,/obj/structure/loot_pile/mecha/ripley,/turf/simulated/floor/misc/concrete,/area/space)
+"Kj" = (/turf/simulated/wall/iron/unbreakable,/area/space)
+"KB" = (/obj/effect/floor_decal/oldflood,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"KR" = (/obj/structure/prop/canister/broken,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"Lq" = (/obj/effect/floor_decal/oldflood,/obj/structure/barricade/material,/turf/simulated/floor/tiled/rough,/area/space)
+"Ly" = (/turf/simulated/floor/natural/sand/darksand,/area/space)
+"LF" = (/obj/structure/prop/canister/orange,/obj/structure/railing{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"LN" = (/obj/effect/floor_decal/spline/plain/black{dir = 1},/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/natural/sand/gray,/area/space)
+"LP" = (/turf/unsimulated/floor/shuttle_ceiling,/area/space)
+"LU" = (/obj/structure/railing{dir = 1},/obj/structure/prop/canister/blue,/obj/effect/floor_decal/spline/plain/grey{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"LY" = (/obj/structure/prop/door/shutter{dir = 4},/turf/unsimulated/floor/rescue_base,/area/space)
+"Me" = (/obj/structure/prop/largecrate/ore1,/turf/simulated/floor/natural/sand/gray,/area/space)
+"Mm" = (/obj/effect/floor_decal/spline/plain/grey,/obj/effect/floor_decal/spline/plain/black{dir = 8},/turf/simulated/floor/natural/sand/gray,/area/space)
+"Mp" = (/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/space)
+"Mq" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/turf/unsimulated/floor/rescue_base,/area/space)
+"Ms" = (/obj/structure/prop/door/open/blast,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"MC" = (/obj/structure/loot_pile/mecha/ripley,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"ME" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"No" = (/obj/structure/rocky,/turf/simulated/floor/natural/sand/gray,/area/space)
+"Nr" = (/obj/structure/prop/largecrate/ore2,/turf/unsimulated/floor/rescue_base,/area/space)
+"Nt" = (/obj/effect/floor_decal/spline/plain/grey{dir = 4},/obj/structure/prop/floodlight,/turf/simulated/floor/natural/sand/gray,/area/space)
+"Nu" = (/obj/effect/floor_decal/oldflood,/turf/unsimulated/floor/rescue_base,/area/space)
+"Oq" = (/obj/structure/prop/canister/grey,/turf/simulated/floor/tiled/rough,/area/space)
+"OZ" = (/obj/machinery/conveyor,/turf/simulated/floor/tiled/rough,/area/space)
+"PA" = (/obj/effect/floor_decal/oldflood,/obj/structure/barricade/material,/turf/simulated/floor/misc/concrete,/area/space)
+"PC" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/oldflood,/obj/structure/prop/canister/blue,/turf/simulated/floor/misc/concrete,/area/space)
+"PZ" = (/obj/structure/prop/largecrate/wood3,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Qh" = (/obj/structure/prop/door/open/shutter{dir = 4},/turf/unsimulated/floor/rescue_base,/area/space)
+"Qt" = (/obj/structure/prop/largecrate,/obj/effect/floor_decal/spline/plain/brown{dir = 4},/obj/effect/floor_decal/spline/plain/brown,/turf/simulated/floor/misc/concrete,/area/space)
+"QT" = (/obj/structure/railing,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/black{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
+"QX" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/door/open/blast,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"Rq" = (/turf/space,/turf/simulated/floor/natural/sand/gray,/area/space)
+"Rx" = (/obj/structure/prop/crate/cart,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"RE" = (/obj/structure/railing{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"RL" = (/obj/machinery/mining/brace{dir = 1; anchored = 1},/turf/simulated/floor/natural/sand/darksand,/area/space)
+"RW" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/floodlight,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"RZ" = (/obj/effect/floor_decal/oldflood,/obj/effect/landmark/bombdefusal/t_spawn,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"Sy" = (/obj/effect/floor_decal/spline/plain/grey{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"SD" = (/obj/structure/prop/largecrate/tank,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"SG" = (/obj/structure/barricade/material,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"SM" = (/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"ST" = (/obj/structure/prop/door/blast,/turf/simulated/floor/misc/concrete,/area/space)
+"SX" = (/obj/structure/prop/largecrate/wood2,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Tm" = (/obj/effect/floor_decal/spline/plain/brown{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
+"TB" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/door/open/shutter{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
+"TL" = (/obj/effect/floor_decal/spline/plain/black{dir = 4},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"TS" = (/obj/structure/railing{dir = 4},/turf/simulated/floor/misc/concrete,/area/space)
+"TX" = (/obj/structure/railing{dir = 4},/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"Un" = (/obj/structure/prop/canister/broken/purple,/turf/simulated/floor/natural/sand/gray,/area/space)
+"UB" = (/obj/effect/floor_decal/spline/plain/grey,/turf/simulated/floor/natural/sand/gray,/area/space)
+"UD" = (/obj/effect/floor_decal/asteroid,/obj/structure/prop/crate/rough,/turf/simulated/floor/natural/sand/gray,/area/space)
+"UL" = (/obj/structure/prop/canister/blue,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"UT" = (/obj/structure/railing{dir = 4},/obj/structure/railing{dir = 1},/obj/structure/prop/floodlight,/turf/simulated/floor/misc/concrete,/area/space)
+"Vp" = (/obj/effect/floor_decal/stairs{dir = 8},/obj/effect/floor_decal/spline/plain/brown{dir = 1},/turf/simulated/floor/misc/concrete,/area/space)
+"Vs" = (/obj/effect/landmark/bombdefusal/ct_spawn,/turf/simulated/floor/misc/concrete,/area/space)
+"Vt" = (/obj/effect/floor_decal/asteroid,/obj/structure/prop/largecrate/ore2,/turf/simulated/floor/natural/sand/gray,/area/space)
+"VZ" = (/obj/structure/railing,/obj/structure/prop/crate/trash,/obj/effect/floor_decal/spline/plain/grey,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"Wg" = (/obj/effect/floor_decal/oldflood,/obj/structure/railing,/turf/simulated/floor/misc/concrete,/area/space)
+"Wj" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/stairs{dir = 8},/turf/unsimulated/floor/rescue_base,/area/space)
+"Wo" = (/obj/effect/floor_decal/stairs{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"WE" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"WG" = (/obj/structure/prop/crate/rad,/turf/simulated/floor/misc/concrete,/area/space)
+"WI" = (/obj/structure/prop/largecrate/wood2,/obj/structure/barricade/material,/turf/simulated/floor/natural/sand/gray,/area/space)
+"WT" = (/obj/structure/prop/door/half/shutter{dir = 4},/turf/unsimulated/floor/rescue_base,/area/space)
+"Xe" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/oldflood,/obj/structure/prop/canister/broken/blue,/turf/simulated/floor/misc/concrete,/area/space)
+"Xh" = (/obj/structure/railing{dir = 8},/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/structure/prop/floodlight,/turf/simulated/floor/misc/concrete,/area/space)
+"XF" = (/obj/structure/prop/canister/orange,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/misc/concrete,/area/space)
+"XH" = (/obj/structure/bed/chair/comfy/captain,/turf/simulated/floor/natural/sand/gray,/area/space)
+"XP" = (/obj/effect/floor_decal/asteroid,/turf/simulated/floor/natural/sand/gray,/area/space)
+"YC" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/spline/plain/grey{dir = 8},/turf/simulated/floor/misc/concrete,/area/space)
+"Zf" = (/obj/effect/floor_decal/spline/plain/brown,/obj/effect/landmark/bombdefusal/ct_spawn,/turf/simulated/floor/misc/concrete,/area/space)
+"Zv" = (/obj/effect/floor_decal/oldflood,/obj/structure/prop/largecrate/tank,/turf/unsimulated/floor/rescue_base,/area/space)
+"Zx" = (/obj/structure/railing{dir = 8},/obj/structure/railing,/obj/structure/prop/crate/cart,/obj/effect/floor_decal/spline/plain/black{dir = 8},/obj/effect/floor_decal/spline/plain/grey,/turf/simulated/floor/natural/sand/darksand,/area/space)
+"ZF" = (/obj/structure/prop/floodlight,/turf/unsimulated/floor/rescue_base,/area/space)
+
+(1,1,1) = {"
+iZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZuhuhuhuhuhuhuhuhuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZuhuhuhuhuhuhuhuhiZiZiZiZiZiZiZiZiZiZiZiZuhSMSMSMSMSMSMmauhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZuhZvZvNuNuNuzvuhiZiZiZiZiZiZiZiZiZiZiZiZuhSMSMSMSMSMSMSMuhKjKjKjiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZuhNuNuNuNuNuNuuhiZiZiZiZiZiZiZiZiZiZiZiZuhSMSMSMSMSMSMSMuhKjiZKjiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhuhuhuhuhuhuhuhuhuhuhuhuhuhuhuhuhHaNuNuzWzWzWuhuhuhuhuhuhuhuhuhuhuhuhuhuhWgWgSMSMWgWgWgWgKjKjKjuhuhuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhggdfdfwGwGdfdfdfdfdfdfdfdfdfdfdfdfMqNudfdfdfdfdfdfdfdfdfdfkldfBjdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhdfdfLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhdfdfLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhdfdfLyLyLyLyLyLyLyLyLyLyLySGLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZuhuhuhdfdfdfwGUBUBUBUBUBUBUBosdfLyLyLydfxudfdfdfdfUndfdfdfdfdfdfdfggwGvnLyLydfdfdfdfdfdfdfdfdfdfdfdfuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZuhdfdfdfqwthCiCiCiCiCiCiFgAoLyLyLydfKjKjKjxmxmxmuhuhuhuhuhuhuhuhwGvnLyLydfdfdfdfdfdfdfKjKjKjuhuhuhiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZuhdfdfdfqwFKAkAkAkAkAkAkJUAoLyLyLydfKjLPKjLPLPLPuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfKjiZKjiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZuhdfdfdfdfzrAkAkAkAkAkAkTSAoLyLyLydfKjKjKjxmxmxmuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfKjKjKjiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZuhdfdfdfdfzrAkAkAkvPAkAkTSAoLyLyLyLyzrSMSMSMSMSMuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfggxmxmxmiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZiZ
+iZiZiZiZuhdfdfdfdfzrAkAkAkAkAkAkFcAoLyLyLyLyzrSMSMSMSMSMuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfMedfdfxmiZiZiZiZiZiZiZiZiZiZiZLPLPLPLPLPLPLPLPLPiZ
+iZiZiZiZuhdfdfdfqwXhAkAkAkAkAkAkFcAoLyLyLyLyzrSMSMSMSMSMuhLPLPLPLPLPLPuhdfLyLyLydfdfdfdfdfdfdfdfdfdfxmiZiZiZiZiZiZiZiZiZiZiZuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZuhuhuhuhuhuhAkAkAkAkAkGBJyAoLyLyLydfuhuhuhWESMSMuhLPLPLPLPLPLPuhdfLyLyLydfdfuhuhuhuhuhuhuhuhuhuhxmxmxmxmxmxmxmxmxmxmuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZiZuhAkAkAkAkTScOBqdfLyLyLydfdfdfzeWESMSMuhLPLPLPLPLPLPuhdfLyLyLyLydfuhiZiZNrNriZiZiZZFuhdfdfdfFvBjdfdfdfggxmuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZiZuhAkxLxLAkTSAodfdfLyLyLydfdfdfNtWESMSMuhLPLPLPLPLPLPuhdfozLyLyLyLywUiZiZNrNriZiZiZiZQhLyLyLyLyLyLyLyLyLyLySTLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZiZuhAkxLxLAkTSAodfdfLyLyLydfdfdfqwWESMSMuhLPLPLPLPLPLPuhXHuYLyLyLyLyChiZiZiZiZiZiZiZiZWTLyLyLyLyLyLyLyLyLyLySTLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZiZuhAkAkAkAkTSAodfdfLyLyLydfdfdfqwWESMSMuhLPLPLPLPLPLPuhxmdfdfLyLyLygBiZiZiZiZiZNrNriZLYLyLyLyLyLyLyLyLyLyLySTLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZiZuhAkAkAkAkTSAodfdfLyLyLydfdfdfqwWESMSMuhLPLPLPLPLPLPuhxmxmggdfdfdfuhiZiZiZiZiZNrNriZuhdfdfLyLyLyLyLydfdfxmuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZuhuhAkAkAkAkTSMmUBdfLyLyLydfdfdfqwWESMSMuhLPLPLPLPLPLPuhxmxmxmxmxmxmuhuhuhuhuhuhuhuhuhuhdfdfdfLyLyLydfdfdfxmuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkEoUTAoLyLyLydfuhuhuhWESMSMuhuhuhuhuhuhuhuhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmdfdfLyLyLyLydfdfdfxmuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkAkCWdfLyLyLyqwIhmaSMSMSMSMZxVZkjLyLyvndVxmLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmdfdfLyLyLyLyLydfdfxmuhLPLPLPLPLPLPLPLPiZ
+iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkAkCWdfLyLyLyqwIhSMSMSMSMSMSMCWSMSMSMmadVxmLPLPLPLPLPLPLPLPLPxmxmxmxmxmxmdfdfLyLyLyLyLyLydfdfdfuhuhSTSTSTuhLPLPLPiZ
+iZiZiZiZiZiZiZiZuhAkAkAkAkAkAkAkCWdfLyLyLyqwWESMSMSMSMSMSMCWSMSMSMSMLyxmLPLPLPLPLPLPLPLPLPxmdfdfdfdfdfLyLyLyLyLyLyLyLyLydfdfdfdfLyLyLyxmLPLPLPLP
+iZiZiZiZiZiZiZiZuhAkIPAkAkAkAkAkTSAoLyLyLyqwWESMSMSMSMSMGqCWSMSMSMSMLyxmLPLPLPLPLPLPLPLPLPxmdfdfdfdfLyLyLyLyLyLyLyLyLyLyLyLydfdfLyLyLyxmLPLPLPLP
+iZiZiZiZiZiZiZiZuhuhuhuhuhuhuhuhuhMeLyLyLydfuhuhuhuhuhuhuhxmxkSMSMSMKBxmLPLPLPLPLPLPLPLPLPxmxmdfdfLyLyLyLyLyLydfdfdfLyLyLyLyLyLyLyLyLyxmLPLPLPLP
+iZLPLPLPLPLPLPLPLPLPLPuhWGVsVsTmvpggLyLyLydfuhLPLPLPLPLPuhxmxmSMSMSMKBxmLPLPLPLPLPLPLPLPLPxmxmdfLyLyLyLyLydfdfdfggdfdfdfLyLyLyLyLyLyLyxmLPLPLPLP
+iZLPLPLPLPLPLPLPLPLPLPuhVsAkAkAkVpdfLyLyLydfuhLPLPLPLPLPuhxmxmSMSMSMKBxmLPLPLPLPLPLPLPLPLPxmxmdfLyLyLyLydfxmxmxmxmxmxmdfdfLyLyLyLyLyLyxmLPLPLPLP
+iZLPLPLPLPLPLPLPLPLPLPuhVsAkAkAkzrdfLyLyLydfuhLPLPLPLPLPuhxmxmSMSMSMKBxmxmLPLPLPLPLPLPLPLPxmdfdfLyLyLydfxmxmLPLPLPLPxmxmhCLyLyLyLyLyLyxmLPLPLPLP
+LPLPLPLPLPLPLPLPLPLPLPuhVsAkAkAkfMdfLyLyLydfuhLPLPLPLPLPuhxmKBSMSMSMKBuXxmxmxmxmxmxmxmxmxmxmdfdfLyLyLydfxmLPLPLPLPLPLPxmLyLyUBUBLyLyLyxmLPLPLPLP
+LPLPLPLPLPLPLPLPLPLPLPuhwtVsZfQtdfdfLyLyLydfuhLPLPLPLPLPuhxmRWSMSMSMSMSMSMihSMSMSMSMSMdfdfdfdfLyLyLyLydfxmLPLPLPLPLPLPxmLyqwWEeKLyLyLyxmxmKjLPLP
+LPLPLPLPLPLPLPLPLPLPLPuhuhuhGJGJdfvpLyLyLydfuhLPKjKjKjxmuhxmKBSMSMSMSMSMSMSMSMSMSMSMSMdfdfdfdfLyLyLyLydfxmLPLPLPLPLPLPxmLyqwWEeKLyLyLyYCxmKjLPLP
+LPLPLPLPLPLPLPLPLPLPLPLPLPuhuhuhuhMeLyLyLygguhuhKjLPKjuhuhWgWgWgWgWgWgWgWgWgWgWgWgWgWgdfggxmdfLyLyLydfdfxmLPLPLPLPLPLPxmLyqwWEeKLyLyLyYCKaKjKjKj
+LPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmxmdfLyLyLydfdfdfKjKjKjdfdfLNLNBqBqBqBqBqBqBqBqBqBqBqBqdfdfxmLyLyLyLydfdfxmLPLPLPLPLPLPxmLyqwWEeKLyLyLyfdmaKjLPKj
+LPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmxmdfLyLyLyLyLyLyLywlLyLyLyvnvnLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLydfdfxmxmLPLPLPLPxmxmLyqwWEeKLyLyLyAhetKjKjKj
+LPLPLPLPLPLPLPLPLPLPLPLPLPLPxmxmdfdfLyLyLyLyLyLyLyMsLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLydfdfxmxmxmxmxmxmLyLyqwWEeKLyLyLyKBKBRZSTLP
+LPLPLPLPLPLPLPLPLPLPLPLPLPxmjfXPdfLyLyLyLyLyLyLyLywlLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyakakLyLyLyLyLyLyLyLyLyLyLyLyLyLyLyqwWEeKLyLyLyKBKBRZSTLP
+LPLPLPLPLPLPLPLPLPLPLPxmxmjfXPdfdfLyLyLykldfdfdfKjKjKjdfdfdfdfdfdfdfdCdCdfdfdfdfdfdfdfdfWIWIdfLyLyLyLyLyLyLyLyLyLyLyLyLydfqwWEeKLyLyLyKBKBRZSTLP
+LPLPLPLPLPLPLPLPLPxmxmxmxmXPdfdfdfLyLyLydfuhuhuhKjLPKjuhuhuhuhuhzfzfuhuhxmxmxmxmxmxmxmxmxmxmdfdfLyLyLyLydfggxmxmxmxmxmxmxmxmxmeKLyLyLyybkCKjKjKj
+LPLPLPLPLPLPLPLPLPxmxmxmjfdfXPdfdfLyLyLydfuhLPLPKjKjKjLPLPLPuhhoMpMpljuhLPLPLPLPLPLPLPLPxmxmdfdfLyLyLydfdfxmxmLPLPLPLPLPLPLPxmeKLyLyLyfdurKjLPKj
+LPLPLPLPLPLPLPLPxmxmxmxmdfXPdfdfdfLyLyLydfuhLPLPLPLPLPLPLPLPuhhohoMpMpuhLPLPLPLPLPLPLPLPKjKjKjdfLyLyLydfKjKjKjLPLPLPLPLPLPLPxmeKLyLyLyYCmaKjKjKj
+LPLPLPLPLPLPLPLPxmxmxmeVdfXPdfdfdfLyLyLydfuhLPLPLPLPLPLPLPLPuhhohoMphouhLPLPLPLPLPLPLPLPKjLPKjuhsBsBsBuhKjLPKjLPLPLPLPLPLPLPxmeKLyLyLyYCxmKjLPLP
+LPLPLPLPLPLPLPLPxmxmxmxmdfdfdfdfdfLyLyLydfuhLPLPLPLPLPLPLPLPuhMphoMphouhLPLPLPLPLPLPLPLPKjKjKjLPLPLPLPLPKjKjKjLPLPLPLPLPLPLPxmeKLyLyLyYCxmLPLPLP
+LPLPLPLPLPLPLPLPxmxmxmxmxmVtdfdfdfLyLyLydfuhLPLPLPLPLPLPLPLPuhMphohohouhuhuhuhuhLPLPLPLPLPuhLPLPLPLPLPLPLPuhLPLPLPLPLPLPLPLPxmeKLyLyLyYCxmLPLPLP
+LPLPLPLPLPLPLPLPxmxmxmxmxmMeUDggdfLyLyLydfuhLPLPLPLPLPLPLPLPuhMpLqhohozLgFMphouhLPLPLPLPuhuhLPLPLPLPLPLPLPuhuhuhuhuhuhuhuhuhKjKjwvwvwvKjKjKjKjLP
+LPLPLPLPLPLPLPLPxmxmxmxmjfdfdfdfdfLyLyLyGJuhLPLPLPLPLPLPLPLPuhMpLqMphozLMEMphouhLPLPLPLPuhLPLPLPLPLPLPLPLPLPLPLPuhSMSMSMKcwEggdfLyLyLydfdfdfxmLP
+LPLPLPLPLPLPLPLPLPxmxmxmXPdfdfdfdfLyLyvnGJuhuhuhuhuhuhuhuhuhuhuhuhuhuhLUhgWoWouhLPLPLPLPuhLPLPLPLPLPLPLPLPLPLPLPuhSMSMSMSMeKdfdfLyLyLydfdfdfxmLP
+LPLPLPLPLPLPLPLPLPxmxmdfdfXPdfdfdfLyLyLyNoxmLPLPLPLPLPLPLPLPLPLPLPLPuhmNhoSySyuhLPLPLPKjKjKjuhuhuhsBsBsBuhuhuhKjKjKjSMSMSMeKdfdfLyLyLydfdfxmxmLP
+LPLPLPLPLPLPLPLPLPLPxmBYKBdfdfdfgVLyLyLyDMxmxmLPLPLPLPLPLPLPLPLPLPLPuhMphohoMpuhLPLPLPKjLPKjuhuhdfLyLyLydfuhuhKjLPKjSMSMSMeKdfdfLyLyLydfdfxmLPLP
+LPLPLPLPLPLPLPxmxmxmxmPAPAxmxmKjKjkmQXkmKjKjxmxmLPLPLPLPLPLPLPLPLPLPuhMphohoMpuhLPLPLPKjKjKjSMAodfLyLyLydfdfdfKjKjKjSMSMSMeKdfdfLyLyLydfxmxmLPLP
+LPLPLPLPLPLPLPxmxmvnfsKBrYLydfopdfLyLyLydfdfdfxmxmLPLPLPLPLPLPLPLPLPuhMpuhMpMpuhuhLPLPuhSMSMSMlxdfLyLyLydfdfMewGgfWESMSMSMeKdfdfLyLyLyzlxmxmLPLP
+LPLPLPLPLPLPLPxmyUdVLyLyLyLyLyLydfLyLyLyLydfdfdfxmxmLPuhuhuhuhuhuhuhuhMpMpMpMphouhuhuhuhRxSMetAodfLyLyLydfRqggMeqpWESMSMSMeKdfdfLyLyLydfxmxmLPLP
+LPLPLPLPLPLPLPxmvnLyLyLysoLyLyLyLyLyLyLyLyLyaBdfdfxmxmLPLPLPLPLPuhrmtYMpMphohohoTBMpMpTBSMTLuULyLyLyLyLyLydfdfdfqwXeSMSMSMeKdfdfLyLyLydfxmxmLPLP
+LPLPLPLPLPLPLPxmRLLydVdfdfLyLyLyLyLyLyLyLyLyLyMCLyLyxmxmxmLPLPLPuhteuhMphohohohowIMplPTBSMTLuULyLyLyLyLyLyLydfdfqwPCSMSMSMeKdfdfLyLyLydfxmxmLPLP
+LPLPLPLPLPLPLPxmLyLydfdfdfwGdfdfdfLyLyLyLyLyLyLyLydVLyLyxmLPLPLPuhfpOqhohohoMpljuhuhuhuhSMSMtgAodfdfLyLyLyLyLyLyqwfBHmufufQTLyLyLyLyLydfdfxmLPLP
+LPLPLPLPLPLPLPxmBUBUBUUBUBUBUBUBdfLyLyLyLydfdfdfLyLyLyLyxmLPLPLPuhOZhohohoMpMpuhuhLPLPuhSMSMBdlndfdfLyLyLyLyLyLyLybgbgbgbgbgLyLyLyLyLydfdfxmLPLP
+LPLPLPLPLPLPLPuhRERELFREREREREIelnLyLyLydfdfdfdfBYxmxmxmxmLPLPLPuhfphohouhMphouhLPLPLPKjKjKjnQAodfdfdfdfLyLyLyLyLyLyLyLyKRLyLyLyLyLyLydfdfxmLPLP
+LPLPuhuhuhuhuhuhSMSMSMSMXFSMSMAcxJLyLyLydfdfdfMexmLPLPLPLPLPLPLPuhfpMphohoMpMpuhLPLPLPKjLPKjSMAodfdfuhuhsBsBsBuhuhdfdfdfdfdfdfggLyLyLydfdfxmLPLP
+LPLPuhvjSXnpULSMSMSMSMSMSMSMTLsuLyLyLyLyLydfdfdfxmxmxmxmxmxmuhuhuhMphohohohoMpuhLPLPLPKjKjKjxmxmxmxmuhLPLPLPLPLPuhxmxmxmxmxmxmuhLyLyLyuhxmxmLPLP
+LPLPuhvjnZULSMSMSMSMSMSMSMSMTLsuLyLyLyLyLyLyLyLyLyLyLyLyLyLyWjhorVhohohohohohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPxmuhSTSTSTuhxmLPLPLP
+LPLPuhvjnpiJSMSMmaPZSMSMSMSMSMTXemLyLyLyLyLyLyLyLyLyLyLyLyLyJtMpMpMpMphohohohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
+LPLPuhvjSXSDSMSMSMSMSMSMSMSMSMsRAoLyLyLyLydfdfdfxmxmxmxmxmxmuhuhmNyOafMpuhhoMpuhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
+LPLPuhuhuhuhuhuhuhuhuhuhuhuhuhuhdfLyLyLydfdfdfxmxmLPLPLPLPLPLPLPuhmnmnMpuhhohouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
+LPLPLPLPLPLPLPLPLPLPLPLPLPLPLPuhuhSTSTSTuhxmxmxmxmLPLPLPLPLPLPLPuhuhuhMpMpMphouhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
+LPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPuhuhuhuhuhuhLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLPLP
+"}

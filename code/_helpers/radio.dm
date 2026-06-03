@@ -33,6 +33,12 @@
 	if(frequency == ENT_FREQ)
 		return "entradio"
 
+	if(frequency == 1215) // BOMBDEFUSAL_FREQ_T
+		return "tradio"
+
+	if(frequency == 1217) // BOMBDEFUSAL_FREQ_CT
+		return "ctradio"
+
 	if(frequency in GLOB.department_frequencies)
 		return "deptradio"
 
