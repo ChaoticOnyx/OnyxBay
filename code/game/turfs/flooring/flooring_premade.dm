@@ -615,6 +615,14 @@
 	icon_state = "asteroidplating"
 	icon = 'icons/turf/floors.dmi'
 
+/turf/simulated/floor/natural/sand/light
+	rand_state = FALSE
+	icon_state = "sand_light"
+
+/turf/simulated/floor/natural/sand/light/path
+	name = "compacted sand"
+	icon_state = "sand_light_path"
+
 /turf/simulated/floor/sand_floor
 	name = "sand floor"
 	icon = 'icons/turf/flooring/sand.dmi'

@@ -83,9 +83,17 @@
 		if(immobilize)
 			M.RemoveMovementHandler(/datum/movement_handler/no_move/toss)
 
-/* Stops things thrown by a thrower, doesn't do anything */
+/* Stops mobs from passing through, but allows projectiles */
 
 /obj/effect/step_trigger/stopper
+	density = TRUE
+
+/obj/effect/step_trigger/stopper/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover, /obj/item/projectile))
+		return TRUE
+	if(isobserver(mover))
+		return TRUE
+	return FALSE
 
 /* Instant teleporter */
 

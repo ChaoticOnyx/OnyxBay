@@ -19,6 +19,7 @@
 	var/global/damage_overlays[16]
 	var/active
 	var/can_open = 0
+	var/indestructible = FALSE // Can't take damage by normal means if TRUE.
 	var/material/material
 	var/material/reinf_material
 	var/last_state
@@ -331,6 +332,8 @@
 	return
 
 /turf/simulated/wall/proc/take_damage(dam)
+	if(indestructible)
+		return
 	if(dam)
 		damage = max(0, damage + dam)
 		update_damage()
@@ -362,6 +365,8 @@
 	return ..()
 
 /turf/simulated/wall/proc/dismantle_wall(devastated, explode, no_product)
+	if(indestructible)
+		return
 
 	playsound(src, 'sound/items/Deconstruct.ogg', 100, 1)
 	if(!no_product)
@@ -386,6 +391,9 @@
 	ChangeTurf(floor_type)
 
 /turf/simulated/wall/ex_act(severity)
+	if(indestructible)
+		return
+
 	switch(severity)
 		if(1.0)
 			src.ChangeTurf(get_base_turf_by_area(src))
@@ -408,9 +416,11 @@
 		new /obj/effect/overlay/wallrot(src)
 
 /turf/simulated/wall/proc/can_melt()
+	if(indestructible)
+		return FALSE
 	if(material.material_flags & MATERIAL_UNMELTABLE)
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 /turf/simulated/wall/proc/thermitemelt(mob/user as mob)
 	if(!can_melt())
@@ -439,9 +449,14 @@
 	return
 
 /turf/simulated/wall/proc/CheckPenetration(base_chance, damage)
+	if(indestructible)
+		return 0
 	return round(damage/material.integrity*180)
 
 /turf/simulated/wall/proc/burn(temperature)
+	if(indestructible)
+		return
+
 	if(material.combustion_effect(src, temperature, 0.7))
 		spawn(2)
 			new /obj/structure/girder(src)
