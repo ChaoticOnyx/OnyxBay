@@ -924,9 +924,9 @@ About the new airlock wires panel:
 		req_one_access = null
 		if(length(electronics.conf_access))
 			if(electronics.one_access)
-				req_one_access = list(electronics.conf_access)
+				req_one_access = electronics.conf_access
 			else
-				req_access = list(electronics.conf_access)
+				req_access = electronics.conf_access
 
 		//get the name from the assembly
 		if(assembly.created_name)
