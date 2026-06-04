@@ -35,13 +35,10 @@
 	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
-	var/slowdown = 0
-	if(slowdown_per_slot?[slot_shoes])
-		slowdown = slowdown_per_slot?[slot_shoes]
+	var/slowdown = magpulse ? 2 : 0
+
 	if(shoes?.slowdown_per_slot?[slot_shoes])
 		slowdown = max(slowdown, shoes.slowdown_per_slot[slot_shoes]) // So you can't put on magboots to make you walk faster.
-	if(magpulse)
-		slowdown += 2
 
 	if(slowdown)
 		A_LAZYSET(slowdown_per_slot, slot_shoes, slowdown)
