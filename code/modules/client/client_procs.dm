@@ -488,6 +488,25 @@
 	if(prefs)
 		prefs.open_setup_window(usr)
 
+/client/verb/set_fps()
+	set name = "Set FPS"
+	set category = "OOC"
+
+	if(!prefs)
+		return
+
+	var/version_message
+	if(byond_version < 511)
+		version_message = "\nYou need to be using byond version 511 or later to take advantage of this feature, your version of [byond_version] is too low"
+	if(world.byond_version < 511)
+		version_message += "\nThis server does not currently support client side fps. You can set now for when it does."
+
+	var/new_fps = input("Choose your desired fps.[version_message]\n(0 = default value ([config.general.client_fps]) < RECOMMENDED\n -1 = synced with server (currently:[world.fps]))", "Global Preference") as num|null
+	if(isnum(new_fps))
+		prefs.clientfps = Clamp(new_fps ? new_fps : config.general.client_fps, CLIENT_MIN_FPS, CLIENT_MAX_FPS)
+		apply_fps(prefs.clientfps)
+		SScharacter_setup.queue_preferences_save(prefs)
+
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		fps = client_fps
