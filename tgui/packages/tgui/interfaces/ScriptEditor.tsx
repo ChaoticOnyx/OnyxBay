@@ -1381,6 +1381,7 @@ type ScriptEditorData = {
   output?: string[];
   compile_errors: CompileError[];
   runtime_errors: RuntimeError[];
+  is_on: boolean;
   messages: string[];
   declarations?: DeclarationsData;
 };
@@ -1442,6 +1443,18 @@ export class ScriptEditor extends Component<any, ScriptEditorState> {
     this.editorInstance?.focus();
   };
 
+  private handleStart = () => {
+    if (this.actFn) {
+      this.actFn("start");
+    }
+  };
+
+  private handleStop = () => {
+    if (this.actFn) {
+      this.actFn("stop");
+    }
+  };
+
   private handleToggleOutput = () => {
     this.setState({ outputCollapsed: !this.state.outputCollapsed });
   };
@@ -1494,9 +1507,8 @@ export class ScriptEditor extends Component<any, ScriptEditorState> {
                 type="button"
                 className="script-editor-btn-compile"
                 onClick={this.handleCompile}
-                title="Compile"
+                title="Compile (upload to MCU)"
               >
-                {/* codicon-play */}
                 <svg
                   viewBox="0 0 16 16"
                   width="14"
@@ -1507,6 +1519,66 @@ export class ScriptEditor extends Component<any, ScriptEditorState> {
                 </svg>
                 Compile
               </button>
+
+              <div className="script-editor-toolbar__separator" />
+
+              <button
+                type="button"
+                className={
+                  "script-editor-btn-start" +
+                  (data.is_on ? " script-editor-btn--disabled" : "")
+                }
+                onClick={this.handleStart}
+                disabled={data.is_on}
+                title="Start MCU"
+              >
+                {/* codicon debug-start */}
+                <svg
+                  viewBox="0 0 16 16"
+                  width="14"
+                  height="14"
+                  className="script-editor-btn-start__icon"
+                >
+                  <path d="M4 2v12l9-6z" />
+                </svg>
+                Start
+              </button>
+
+              <button
+                type="button"
+                className={
+                  "script-editor-btn-stop" +
+                  (!data.is_on ? " script-editor-btn--disabled" : "")
+                }
+                onClick={this.handleStop}
+                disabled={!data.is_on}
+                title="Stop MCU"
+              >
+                {/* codicon debug-stop */}
+                <svg
+                  viewBox="0 0 16 16"
+                  width="14"
+                  height="14"
+                  className="script-editor-btn-stop__icon"
+                >
+                  <path d="M4 4h8v8H4z" />
+                </svg>
+                Stop
+              </button>
+
+              <div className="script-editor-toolbar__spacer" />
+
+              <div
+                className={
+                  "script-editor-status" +
+                  (data.is_on
+                    ? " script-editor-status--on"
+                    : " script-editor-status--off")
+                }
+              >
+                <span className="script-editor-status__dot" />
+                {data.is_on ? "Running" : "Stopped"}
+              </div>
             </div>
 
             {/* ---- Editor ---- */}

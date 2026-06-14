@@ -115,3 +115,81 @@
 .script-editor-output-content__line {
   white-space: pre-wrap;
 }
+
+.script-editor-toolbar__separator {
+  width: 1px;
+  height: 18px;
+  margin: 0 6px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.script-editor-toolbar__spacer {
+  flex: 1 1 auto;
+}
+
+.script-editor-btn-start,
+.script-editor-btn-stop {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 10px;
+  cursor: pointer;
+  color: #cccccc;
+  border: none;
+  border-radius: 3px;
+  background-color: rgb(30, 30, 30);
+  outline: none;
+  line-height: 20px;
+
+  &:hover:not(.script-editor-btn--disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &:active:not(.script-editor-btn--disabled) {
+    background-color: rgba(255, 255, 255, 0.18);
+  }
+
+  &.script-editor-btn--disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.script-editor-btn-start__icon {
+  fill: #4ec94e;
+}
+
+.script-editor-btn-stop__icon {
+  fill: #f48771;
+}
+
+.script-editor-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #cccccc;
+  user-select: none;
+}
+
+.script-editor-status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.script-editor-status--on .script-editor-status__dot {
+  background: #4ec94e;
+  box-shadow: 0 0 4px rgba(78, 201, 78, 0.5);
+}
+
+.script-editor-status--off .script-editor-status__dot {
+  background: #666666;
+}
+
+.script-editor-status--on {
+  color: #4ec94e;
+}

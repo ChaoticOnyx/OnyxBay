@@ -242,6 +242,7 @@
 		"compile_errors" = list(),
 		"runtime_errors" = list(),
 		"messages" = __messages,
+		"is_on" = is_on(),
 	)
 
 	if(QDELETED(__script))
@@ -325,6 +326,14 @@
 		return
 	
 	switch(action)
+		if("start")
+			power_on(usr)
+
+			return TRUE
+		if("stop")
+			power_off(usr)
+
+			return TRUE
 		if("compile")
 			if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
 				to_chat(usr, SPAN_WARNING("Some indescribable force is preventing the board from programming."))
