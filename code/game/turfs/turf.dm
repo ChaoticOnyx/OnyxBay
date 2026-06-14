@@ -385,8 +385,16 @@ var/const/enterloopsanity = 100
 
 /// Used for astar pathfinding
 /turf/proc/__get_astar_node_mask()
-	. = density ? NODE_DENSE_BIT : 0
-	. |= NODE_TURF_BIT
+	. = NODE_TURF_BIT
+	if(density)
+		. |= NODE_DENSE_BIT
+		return
+	for(var/obj/O in src)
+		if(istype(O, /obj/machinery/door)) // Doors are dense when closed but bots can open them
+			continue
+		if(O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER))
+			. |= NODE_DENSE_BIT
+			return
 
 /turf/proc/__get_astar_node()
 	return list(

@@ -93,11 +93,15 @@
 	. = ..()
 	if(AM?.opacity)
 		RecalculateOpacity()
+	if(AM?.density && isobj(AM))
+		update_astar_node()
 
 /turf/Exited(atom/movable/AM, atom/newloc)
 	. = ..()
 	if(AM?.opacity)
 		RecalculateOpacity()
+	if(AM?.density && isobj(AM))
+		update_astar_node()
 
 /turf/proc/get_corners()
 	if(opaque_counter)
