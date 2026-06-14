@@ -151,7 +151,7 @@ var/list/global/organ_rel_size = list(
 // Emulates targetting a specific body part, and miss chances
 // May return null if missed
 // miss_chance_mod may be negative.
-/proc/get_zone_with_miss_chance(zone, mob/target, miss_chance_mod = 0, ranged_attack=0)
+/proc/get_zone_with_miss_chance(zone, mob/target, miss_chance_mod = 0, ranged_attack=0, no_miss=FALSE)
 	zone = check_zone(zone)
 
 	if(!ranged_attack)
@@ -167,11 +167,14 @@ var/list/global/organ_rel_size = list(
 				return zone
 
 	var/miss_chance = 10
+	if(no_miss)
+		return zone
 	if (zone in base_miss_chance)
 		miss_chance = base_miss_chance[zone]
 	miss_chance = max(miss_chance + miss_chance_mod, 0)
 	if(prob(miss_chance))
-		if(prob(0))
+		// If miss_chance exceeds 100, the excess becomes the chance to miss entirely (capped at 80%)
+		if(prob(min(miss_chance - 100, 80)))
 			return null
 		return pick(base_miss_chance)
 	return zone

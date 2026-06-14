@@ -16,11 +16,11 @@
 /obj/item/projectile/bullet/pellet/fragment/rubber
 	name = "rubber pellet"
 	check_armour = "melee"
-	damage = 3
-	agony = 20
+	damage = 10
+	damage_type = PAIN
 	embed = 0
 	sharp = 0
-	poisedamage = 8.0
+	poisedamage = 0
 
 /obj/item/grenade/frag
 	name = "fragmentation grenade"
@@ -65,14 +65,13 @@
 
 		//Make sure to hit any mobs in the source turf
 		for(var/mob/living/M in T)
-			//lying on a frag grenade while the grenade is on the ground causes you to absorb most of the shrapnel.
-			//you will most likely be dead, but others nearby will be spared the fragments that hit you instead.
+			//lying on a frag grenade while the grenade is on the ground causes you to absorb most of the shrapnel
 			if(M.lying && isturf(src.loc))
 				P.attack_mob(M, 0, 5)
 			else if(!M.lying && src.loc != get_turf(src)) //if it's not on the turf, it must be in the mob!
-				P.attack_mob(M, 0, 25) //you're holding a grenade, dude!
+				P.attack_mob(M, 0, 125) //you're holding a grenade, dude! ~25% true miss
 			else
-				P.attack_mob(M, 0, 100) //otherwise, allow a decent amount of fragments to pass
+				P.attack_mob(M, 0, 170) //standing on the grenade, most fragments fly past. ~70% true miss
 
 
 
