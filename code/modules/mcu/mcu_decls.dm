@@ -71,6 +71,22 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 			FALSE,
 			"Returns a random float in \[lower, upper).",
 		),
+		new /datum/script_func_decl(
+			"CALL",
+			nameof(/obj/item/device/mcu.proc/__call_function),
+			list(
+				list("name" = "address", "type" = Z_SCRIPT_TYPING_ADDRESS),
+			),
+			FALSE,
+			"Pushes the return address to the call stack and jumps to the target address.",
+		),
+		new /datum/script_func_decl(
+			"RETURN",
+			nameof(/obj/item/device/mcu.proc/__return_function),
+			list(),
+			FALSE,
+			"Pops the return address from the call stack and resumes execution."
+		),
 	)
 
 	files = list(

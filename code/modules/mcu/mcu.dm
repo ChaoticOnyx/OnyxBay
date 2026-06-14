@@ -43,6 +43,7 @@
 #define MCU_STATE_ON 1
 #define MCU_MAX_MESSAGES 25
 #define MCU_GC_COLLECT_INTERVAL (5 SECONDS)
+#define MCU_CALLSTACK_DEPTH 16
 
 /obj/item/device/mcu
 	name = "generic MCU"
@@ -60,6 +61,7 @@
 	var/__last_compile = 0
 	var/__last_gc_collect = 0
 	var/__used_memory = 0
+	var/list/__callstack = list()
 	var/list/__messages = list()
 
 	var/ram_size = 65536 // 64 KB
@@ -1282,6 +1284,27 @@
 
 	return Z_SCRIPT_FUNCTION_OK
 
+/obj/item/device/mcu/proc/__call_function()
+	if(length(__callstack) >= MCU_CALLSTACK_DEPTH)
+		return Z_SCRIPT_FUNCTION_ERROR
+
+	__callstack.Add(__script.get_ip())
+	__script.set_ip(args[1])
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__return_function()
+	if(length(__callstack) == 0)
+		return Z_SCRIPT_FUNCTION_ERROR
+
+	var/len = length(__callstack)
+	var/ip = __callstack[len]
+	__callstack.Cut(len)
+
+	__script.set_ip(ip)
+
+	return Z_SCRIPT_FUNCTION_OK
+
 /obj/item/device/mcu/proc/__get_temperature_function()
 	__script.set_var(args[1], CONV_KELVIN_CELSIUS(temperature), Z_SCRIPT_VAR_CAST_INT)
 
@@ -1708,3 +1731,4 @@
 #undef MCU_STATE_ON
 #undef MCU_MAX_MESSAGES
 #undef MCU_GC_COLLECT_INTERVAL
+#undef MCU_CALLSTACK_DEPTH
