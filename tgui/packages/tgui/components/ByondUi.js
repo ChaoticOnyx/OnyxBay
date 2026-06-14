@@ -5,12 +5,12 @@
  */
 
 import { shallowDiffers } from "common/react";
-import { debounce } from "common/timer";
 import { Component, createRef } from "inferno";
 import { createLogger } from "../logging";
 import { computeBoxProps } from "./Box";
 
 const logger = createLogger("ByondUi");
+const PRIME_OFFSCREEN_POS = "-10000,-10000";
 
 // Stack of currently allocated BYOND UI element ids.
 const byondUiStack = [];
@@ -60,10 +60,13 @@ const getBoundingBox = (element) => {
   const pixelRatio = window.devicePixelRatio ?? 1;
   const rect = element.getBoundingClientRect();
   return {
-    pos: [rect.left * pixelRatio, rect.top * pixelRatio],
+    pos: [
+      Math.round(rect.left * pixelRatio),
+      Math.round(rect.top * pixelRatio),
+    ],
     size: [
-      (rect.right - rect.left) * pixelRatio,
-      (rect.bottom - rect.top) * pixelRatio,
+      Math.max(1, Math.round((rect.right - rect.left) * pixelRatio)),
+      Math.max(1, Math.round((rect.bottom - rect.top) * pixelRatio)),
     ],
   };
 };
@@ -73,9 +76,11 @@ export class ByondUi extends Component {
     super(props);
     this.containerRef = createRef();
     this.byondUiElement = createByondUiElement(props.params?.id);
-    this.handleResize = debounce(() => {
-      this.forceUpdate();
-    }, 100);
+    this.resizeObserver = null;
+    this.renderFrame = null;
+    this.lastRenderParams = null;
+    this.visibilityPrimeStage = 0;
+    this.handleResize = this.handleResize.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -89,29 +94,119 @@ export class ByondUi extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.handleResize);
-    this.componentDidUpdate();
-    this.handleResize();
+    if (window.ResizeObserver && this.containerRef.current) {
+      this.resizeObserver = new window.ResizeObserver(() => {
+        this.handleResize();
+      });
+      this.resizeObserver.observe(this.containerRef.current);
+    }
+    if (this.props.eagerMount) {
+      this.updateByondUi();
+      return;
+    }
+    this.scheduleRender();
   }
 
-  componentDidUpdate() {
-    const { params = {} } = this.props;
-    const box = getBoundingBox(this.containerRef.current);
-    logger.debug("bounding box", box);
-    this.byondUiElement.render({
-      parent: Byond.windowId,
-      ...params,
-      pos: box.pos[0] + "," + box.pos[1],
-      size: box.size[0] + "x" + box.size[1],
-    });
+  componentDidUpdate(prevProps) {
+    if (prevProps?.params?.id !== this.props?.params?.id) {
+      this.visibilityPrimeStage = 0;
+      this.lastRenderParams = null;
+    }
+    this.scheduleRender();
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+    if (this.renderFrame !== null) {
+      cancelAnimationFrame(this.renderFrame);
+      this.renderFrame = null;
+    }
+    this.visibilityPrimeStage = 0;
+    this.lastRenderParams = null;
     this.byondUiElement.unmount();
   }
 
+  handleResize() {
+    this.scheduleRender();
+  }
+
+  scheduleRender() {
+    if (this.renderFrame !== null) {
+      return;
+    }
+    this.renderFrame = requestAnimationFrame(() => {
+      this.renderFrame = null;
+      this.updateByondUi();
+    });
+  }
+
+  updateByondUi() {
+    const element = this.containerRef.current;
+    if (!element || !element.isConnected) {
+      return;
+    }
+
+    const box = getBoundingBox(element);
+    logger.debug("bounding box", box);
+
+    const {
+      params = {},
+      deferFirstVisiblePaint = false,
+      parked = false,
+    } = this.props;
+    const renderParams = {
+      parent: Byond.windowId,
+      ...params,
+      pos: box.pos[0] + "," + box.pos[1],
+      size: box.size[0] + "x" + box.size[1],
+    };
+
+    if (parked) {
+      renderParams.pos = PRIME_OFFSCREEN_POS;
+      renderParams.size = "1x1";
+      renderParams["is-visible"] = "false";
+      this.visibilityPrimeStage = 2;
+    }
+
+    const shouldPrimeVisibility =
+      !parked && deferFirstVisiblePaint && this.visibilityPrimeStage < 2;
+
+    if (shouldPrimeVisibility) {
+      renderParams["is-visible"] = "false";
+      if (this.visibilityPrimeStage === 0) {
+        renderParams.pos = PRIME_OFFSCREEN_POS;
+        renderParams.size = "1x1";
+      }
+    }
+
+    if (
+      this.lastRenderParams &&
+      !shallowDiffers(this.lastRenderParams, renderParams)
+    ) {
+      if (shouldPrimeVisibility) {
+        this.visibilityPrimeStage += 1;
+        this.scheduleRender();
+      }
+      return;
+    }
+
+    this.lastRenderParams = renderParams;
+    this.byondUiElement.render(renderParams);
+
+    if (shouldPrimeVisibility) {
+      this.visibilityPrimeStage += 1;
+      this.scheduleRender();
+      return;
+    }
+  }
+
   render() {
-    const { params, ...rest } = this.props;
+    const { params, deferFirstVisiblePaint, eagerMount, parked, ...rest } =
+      this.props;
     return (
       <div ref={this.containerRef} {...computeBoxProps(rest)}>
         {/* Filler */}

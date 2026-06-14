@@ -60,6 +60,7 @@
 @include meta.load-css("./interfaces/AirAlarm.scss");
 @include meta.load-css("./interfaces/CharacterSetup.scss");
 @include meta.load-css("./interfaces/WordProcessor.scss");
+@include meta.load-css("./interfaces/CameraConsole.scss");
 
 // Layouts
 @include meta.load-css("./layouts/Layout.scss");
