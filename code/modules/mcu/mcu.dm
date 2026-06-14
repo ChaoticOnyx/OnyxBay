@@ -63,6 +63,7 @@
 	var/__used_memory = 0
 	var/list/__callstack = list()
 	var/list/__messages = list()
+	var/__interrupts_enabled = TRUE
 
 	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
@@ -780,6 +781,7 @@
 	__state = MCU_STATE_ON
 	__messages = list()
 	__wait_ds = 0
+	__interrupts_enabled = TRUE
 	SSmcu.total_running += 1
 
 	if(activator)
@@ -1284,14 +1286,21 @@
 
 	return Z_SCRIPT_FUNCTION_OK
 
-/obj/item/device/mcu/proc/__call_function()
+/obj/item/device/mcu/proc/push_callstack()
 	if(length(__callstack) >= MCU_CALLSTACK_DEPTH)
-		return Z_SCRIPT_FUNCTION_ERROR
+		return FALSE
 
 	__callstack.Add(__script.get_ip())
+
+	return TRUE
+
+/obj/item/device/mcu/proc/__call_function()
+	if(push_callstack())
+		return Z_SCRIPT_FUNCTION_OK
+
 	__script.set_ip(args[1])
 
-	return Z_SCRIPT_FUNCTION_OK
+	return Z_SCRIPT_FUNCTION_ERROR
 
 /obj/item/device/mcu/proc/__return_function()
 	if(length(__callstack) == 0)
@@ -1328,6 +1337,11 @@
 
 /obj/item/device/mcu/proc/__is_external_power_function()
 	__script.set_var(args[1], __chassis != null, Z_SCRIPT_VAR_CAST_INT)
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__set_interrupts_function()
+	__interrupts_enabled = args[1] != 0
 
 	return Z_SCRIPT_FUNCTION_OK
 

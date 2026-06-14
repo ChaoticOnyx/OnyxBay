@@ -91,6 +91,16 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 
 	files = list(
 		new /datum/script_file(
+			"nt/std.b26h",
+			"A collection of basic things.",
+			list(),
+			list(),
+			list(
+				new /datum/script_define("TRUE", TRUE),
+				new /datum/script_define("FALSE", FALSE),
+			),
+		),
+		new /datum/script_file(
 			"nt/meta.b26h",
 			"A collection of meta information about the world.",
 			list(),
@@ -173,6 +183,15 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 					),
 					FALSE,
 					"Sets the provided variable with whether the board is connected to an external power source.",
+				),
+				new /datum/script_func_decl(
+					"MCU_SetInterrupts",
+					nameof(/obj/item/device/mcu.proc/__set_interrupts_function),
+					list(
+						list("name" = "state", "type" = Z_SCRIPT_TYPING_INT),
+					),
+					FALSE,
+					"Enables or disables any interrupts.",
 				),
 			),
 			list(),
@@ -410,15 +429,6 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 					),
 					TRUE,
 					"Sets the callback which will be called on a pulse.",
-				),
-				new /datum/script_func_decl(
-					"Signaler_Return",
-					nameof(/obj/item/mcu_module/signaler.proc/__return_function),
-					list(
-						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
-					),
-					TRUE,
-					"Returns from the pulse callback.",
 				),
 			),
 			list(),

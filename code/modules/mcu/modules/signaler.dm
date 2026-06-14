@@ -7,7 +7,6 @@
 	var/datum/frequency/__radio_connection = null
 	var/__code = 30
 	var/__callback_ip = null
-	var/__old_ip = null
 
 /obj/item/mcu_module/signaler/Destroy()
 	if(__radio_connection != null)
@@ -24,7 +23,12 @@
 
 	var/obj/item/device/mcu/M = __host.resolve()
 
-	__old_ip = M.__script.get_ip()
+	if(!M.__interrupts_enabled)
+		return
+
+	if(!M.push_callstack())
+		return
+
 	M.__script.set_ip(__callback_ip)
 
 /obj/item/mcu_module/signaler/think()
@@ -77,16 +81,5 @@
 
 /obj/item/mcu_module/signaler/proc/__set_pulse_callback_function()
 	__callback_ip = args[1]
-
-	return Z_SCRIPT_FUNCTION_OK
-
-/obj/item/mcu_module/signaler/proc/__return_function()
-	if(__old_ip == null)
-		return Z_SCRIPT_FUNCTION_ERROR
-
-	var/obj/item/device/mcu/M = __host.resolve()
-
-	M.__script.set_ip(__old_ip)
-	__old_ip = null
 
 	return Z_SCRIPT_FUNCTION_OK
