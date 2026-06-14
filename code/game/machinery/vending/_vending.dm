@@ -701,6 +701,8 @@
 
 	for(var/mob/O in hearers(src, null))
 		O.show_message("<span class='game say'><span class='name'>\The [src]</span> beeps, \"[message]\"</span>", 2)
+		if(O.client && O.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
+			O.create_chat_message(src, message)
 	return
 
 /obj/machinery/vending/powered()
