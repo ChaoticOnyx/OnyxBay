@@ -113,6 +113,14 @@
 	containername = "\improper Collector crate"
 	access = access_engine_equip
 
+/decl/hierarchy/supply_pack/engineering/sm_resonance_tap
+	name = "Resonance Tap crate"
+	contains = list(/obj/machinery/power/sm_resonance_tap = 2)
+	cost = 10
+	containertype = /obj/structure/closet/crate/secure/large
+	containername = "\improper Resonance Tap crate"
+	access = access_engine_equip
+
 /decl/hierarchy/supply_pack/engineering/PA
 	name = "Particle Accelerator crate"
 	contains = list(/obj/structure/particle_accelerator/fuel_chamber,

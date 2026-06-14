@@ -2758,6 +2758,7 @@
 #include "code\modules\power\sensors\sensor_monitoring.dm"
 #include "code\modules\power\singularity\act.dm"
 #include "code\modules\power\singularity\collector.dm"
+#include "code\modules\power\sm_tap.dm"
 #include "code\modules\power\singularity\containment_field.dm"
 #include "code\modules\power\singularity\emitter.dm"
 #include "code\modules\power\singularity\field_generator.dm"
