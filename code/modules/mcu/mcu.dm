@@ -64,6 +64,7 @@
 	var/list/__callstack = list()
 	var/list/__messages = list()
 	var/__interrupts_enabled = TRUE
+	var/__start_time_ms = 0
 
 	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
@@ -782,6 +783,7 @@
 	__messages = list()
 	__wait_ds = 0
 	__interrupts_enabled = TRUE
+	__start_time_ms = world.time
 	SSmcu.total_running += 1
 
 	if(activator)
@@ -1319,6 +1321,15 @@
 
 	if(yield_after_return)
 		return Z_SCRIPT_FUNCTION_YIELD
+
+	return Z_SCRIPT_FUNCTION_OK
+
+/obj/item/device/mcu/proc/__yield_function()
+	return Z_SCRIPT_FUNCTION_YIELD
+
+/obj/item/device/mcu/proc/__time_get_elapsed_function()
+	var/elapsed_ms = (world.time - __start_time_ms) * 100
+	__script.set_var(args[1], floor(elapsed_ms), Z_SCRIPT_VAR_CAST_INT)
 
 	return Z_SCRIPT_FUNCTION_OK
 

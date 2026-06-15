@@ -87,6 +87,13 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 			FALSE,
 			"Pops the return address from the call stack and resumes execution."
 		),
+		new /datum/script_func_decl(
+			"YIELD",
+			nameof(/obj/item/device/mcu.proc/__yield_function),
+			list(),
+			FALSE,
+			"Pauses the execution."
+		),
 	)
 
 	files = list(
@@ -134,6 +141,23 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 				new /datum/script_define("RADIO_MED_I_FREQ", "[MED_I_FREQ]"),
 				new /datum/script_define("RADIO_SEC_I_FREQ", "[SEC_I_FREQ]"),
 			),
+		),
+		new /datum/script_file(
+			"nt/time.b26h",
+			"A collection of API for working with time.",
+			list(
+				new /datum/script_func_decl(
+					"Time_GetElapsedMs",
+					nameof(/obj/item/device/mcu.proc/__time_get_elapsed_function),
+					list(
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_SYMBOL),
+					),
+					FALSE,
+					"Sets the provided variable with the time elapsed from the start of the programm in ms.",
+				),
+			),
+			list(),
+			list(),
 		),
 		new /datum/script_file(
 			"nt/mcu.b26h",
