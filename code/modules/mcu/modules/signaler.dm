@@ -26,7 +26,7 @@
 	if(!M.__interrupts_enabled)
 		return
 
-	if(!M.push_callstack())
+	if(!M.push_callstack(TRUE))
 		return
 
 	M.__script.set_ip(__callback_ip)

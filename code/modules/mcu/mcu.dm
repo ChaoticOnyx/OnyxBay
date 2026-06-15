@@ -1286,11 +1286,14 @@
 
 	return Z_SCRIPT_FUNCTION_OK
 
-/obj/item/device/mcu/proc/push_callstack()
+/obj/item/device/mcu/proc/push_callstack(yield_after_return = FALSE)
 	if(length(__callstack) >= MCU_CALLSTACK_DEPTH)
 		return FALSE
 
-	__callstack.Add(__script.get_ip())
+	__callstack.Add(list(list(
+		__script.get_ip(),
+		yield_after_return,
+	)))
 
 	return TRUE
 
@@ -1307,10 +1310,15 @@
 		return Z_SCRIPT_FUNCTION_ERROR
 
 	var/len = length(__callstack)
-	var/ip = __callstack[len]
-	__callstack.Cut(len)
+	var/list/stack = __callstack[len]
+	var/ip = stack[1]
+	var/yield_after_return = stack[2]
 
+	__callstack.Cut(len)
 	__script.set_ip(ip)
+
+	if(yield_after_return)
+		return Z_SCRIPT_FUNCTION_YIELD
 
 	return Z_SCRIPT_FUNCTION_OK
 
