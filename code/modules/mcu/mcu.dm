@@ -1300,12 +1300,12 @@
 	return TRUE
 
 /obj/item/device/mcu/proc/__call_function()
-	if(push_callstack())
-		return Z_SCRIPT_FUNCTION_OK
+	if(!push_callstack())
+		return Z_SCRIPT_FUNCTION_ERROR
 
 	__script.set_ip(args[1])
 
-	return Z_SCRIPT_FUNCTION_ERROR
+	return Z_SCRIPT_FUNCTION_OK
 
 /obj/item/device/mcu/proc/__return_function()
 	if(length(__callstack) == 0)
