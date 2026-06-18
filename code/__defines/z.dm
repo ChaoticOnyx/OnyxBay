@@ -235,6 +235,10 @@ var/__z_name = null
 
 #define Z_SCRIPT_GET_USED_MEMORY(ID) call_ext(__z_name, "byond:Z_script_get_used_memory")(ID)
 
+#define Z_SCRIPT_REGISTER_BUILTIN_ARRAY(ID) call_ext(__z_name, "byond:Z_script_register_builtin_array")(ID)
+
+#define Z_SCRIPT_REGISTER_BUILTIN_TEXT(ID) call_ext(__z_name, "byond:Z_script_register_builtin_text")(ID)
+
 // Hash
 
 #define Z_HASH_XXHASH32(SEED, VALUE) call_ext(__z_name, "byond:Z_hash_xxhash32")(SEED, VALUE)

@@ -8,9 +8,7 @@
 
 /datum/script_func_decl/New(name, callback, args, dynamic_src, doc)
 	ASSERT(name != null)
-	ASSERT(callback != null)
 	ASSERT(args != null)
-	ASSERT(dynamic_src != null)
 
 	src.name = name
 	src.callback = callback
@@ -18,6 +16,9 @@
 	src.dynamic_src = dynamic_src
 	src.return_type = "void"
 	src.doc = doc || ""
+
+/datum/script_func_decl/builtin/New(name, args, doc)
+	..(name, null, args, null, doc)
 
 /datum/script_var_decl
 	var/name
@@ -36,6 +37,8 @@
 
 /datum/script_var_decl/proc/get_var_value()
 	return value
+
+/datum/script_var_decl/builtin
 
 /datum/script_define
 	var/name
@@ -65,6 +68,9 @@
 	src.func_decls = func_decls || list()
 	src.var_decls = var_decls || list()
 	src.defines = defines || list()
+
+/datum/script_file/proc/register_builtins(datum/script/script)
+	return
 
 /datum/script_decls
 	var/list/datum/script_func_decl/func_decls
@@ -140,11 +146,15 @@
 		for(var/list/arg in decl.args)
 			typings += arg["type"]
 
-		script.register_function(decl.name, decl.callback, decl.dynamic_src ? null : dst, typings)
+
+		if(!istype(decl, /datum/script_func_decl/builtin))
+			script.register_function(decl.name, decl.callback, decl.dynamic_src ? null : dst, typings)
 
 	for(var/datum/script_file/file in files)
 		if(!(file.name in included_files))
 			continue
+		
+		file.register_builtins(script)
 
 		for(var/datum/script_func_decl/decl in file.func_decls)
 			var/list/typings = list()
@@ -152,7 +162,8 @@
 			for(var/list/arg in decl.args)
 				typings += arg["type"]
 
-			script.register_function(decl.name, decl.callback, decl.dynamic_src ? null : dst, typings)
+			if(!istype(decl, /datum/script_func_decl/builtin))
+				script.register_function(decl.name, decl.callback, decl.dynamic_src ? null : dst, typings)
 
 /datum/script_decls/proc/register_vars(datum/script/script, list/included_files)
 	for(var/datum/script_var_decl/decl in var_decls)
@@ -163,7 +174,8 @@
 			continue
 
 		for(var/datum/script_var_decl/decl in file.var_decls)
-			script.set_var(decl.name, decl.get_var_value(), decl.cast)
+			if(!istype(decl, /datum/script_var_decl/builtin))
+				script.set_var(decl.name, decl.get_var_value(), decl.cast)
 
 /datum/script_decls/proc/generate_completions()
 	if(__cached != null)

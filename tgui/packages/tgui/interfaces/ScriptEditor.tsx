@@ -704,7 +704,7 @@ class Editor extends Component<EditorProps, EditorState> {
     this.registerBASIC26Language();
 
     const savedCode =
-      localStorage.getItem(STORAGE_KEY) || 'PRINT "Hello, world!"';
+      localStorage.getItem(STORAGE_KEY) || 'PRINTF "Hello, world!"';
 
     this.editor = monaco.editor.create(container, {
       value: savedCode,

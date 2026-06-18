@@ -8,25 +8,22 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 
 	return hashed_value
 
+/datum/script_file/array/register_builtins(datum/script/script)
+	Z_SCRIPT_REGISTER_BUILTIN_ARRAY(script.id)
+
+/datum/script_file/text/register_builtins(datum/script/script)
+	Z_SCRIPT_REGISTER_BUILTIN_TEXT(script.id)
+
 /datum/script_decls/mcu/New()
 	. = ..()
 
 	func_decls = list(
 		new /datum/script_func_decl(
-			"PRINT",
-			nameof(/obj/item/device/mcu.proc/__print_function),
-			list(
-				list("name" = "values", "type" = Z_SCRIPT_TYPING_VARARGS | Z_SCRIPT_TYPING_ANY_PRIMITIVE),
-			),
-			FALSE,
-			"Prints passed arguments to the debug console.",
-		),
-		new /datum/script_func_decl(
 			"PRINTF",
 			nameof(/obj/item/device/mcu.proc/__printf_function),
 			list(
 				list("name" = "format", "type" = Z_SCRIPT_TYPING_STRING),
-				list("name" = "values", "type" = Z_SCRIPT_TYPING_VARARGS | Z_SCRIPT_TYPING_ANY_PRIMITIVE),
+				list("name" = "values", "type" = Z_SCRIPT_TYPING_VARARGS | Z_SCRIPT_TYPING_ANY),
 			),
 			FALSE,
 			"Prints formatted message to the debug console.",
@@ -106,6 +103,136 @@ GLOBAL_DATUM_INIT(script_mcu_decls, /datum/script_decls/mcu, new)
 				new /datum/script_define("TRUE", TRUE),
 				new /datum/script_define("FALSE", FALSE),
 			),
+		),
+		new /datum/script_file/array(
+			"nt/array.b26h",
+			"An array object.",
+			list(
+				new /datum/script_func_decl/builtin(
+					"Array_Create",
+					list(
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_SYMBOL),
+					),
+					"Creates a new array instance.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Push",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "value", "type" = Z_SCRIPT_TYPING_VARARGS | Z_SCRIPT_TYPING_ANY),
+					),
+					"Pushes a value to the array.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Pop",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_NULL | Z_SCRIPT_TYPING_ADDRESS),
+					),
+					"Returns the last element of the array.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_At",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "idx", "type" = Z_SCRIPT_TYPING_INT),
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_ADDRESS),
+					),
+					"Returns an element at the index.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Set",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "idx", "type" = Z_SCRIPT_TYPING_INT),
+						list("name" = "value", "type" = Z_SCRIPT_TYPING_ANY),
+					),
+					"Modifies a value at the specified index.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Len",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_ADDRESS),
+					),
+					"Returns the length of the array.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Remove",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "idx", "type" = Z_SCRIPT_TYPING_INT),
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_NULL | Z_SCRIPT_TYPING_ADDRESS),
+					),
+					"Removes the element at the index.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Insert",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "idx", "type" = Z_SCRIPT_TYPING_INT),
+						list("name" = "value", "type" = Z_SCRIPT_TYPING_ANY),
+					),
+					"Insert a value at the index.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Array_Clear",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+					),
+					"Clears the array.",
+				),
+			),
+			list(),
+			list(),
+		),
+		new /datum/script_file/text(
+			"nt/text.b26h",
+			"A text object.",
+			list(
+				new /datum/script_func_decl/builtin(
+					"Text_Create",
+					list(
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_SYMBOL),
+					),
+					"Creates a text instance.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Text_Append",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "values", "type" = Z_SCRIPT_TYPING_VARARGS | Z_SCRIPT_TYPING_ANY),
+					),
+					"Converts to a text and appends the result to the text instance.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Text_StartsWith",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "value", "type" = Z_SCRIPT_TYPING_STRING | Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_SYMBOL),
+					),
+					"Tests whether the text starts with a string or not.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Text_EndsWith",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "value", "type" = Z_SCRIPT_TYPING_STRING | Z_SCRIPT_TYPING_OBJECT),
+						list("name" = "out", "type" = Z_SCRIPT_TYPING_SYMBOL),
+					),
+					"Tests whether the text ends with a string or not.",
+				),
+				new /datum/script_func_decl/builtin(
+					"Text_Clear",
+					list(
+						list("name" = "this", "type" = Z_SCRIPT_TYPING_OBJECT),
+					),
+					"Clears the text instance.",
+				),
+			),
+			list(),
+			list(),
 		),
 		new /datum/script_file(
 			"nt/meta.b26h",
