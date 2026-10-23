@@ -373,6 +373,11 @@ var/list/hash_to_gear = list()
 				. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
 			. += "<br>"
 
+		if(selected_gear.author_ckey)
+			. += "<br>"
+			. += "<b>Author: [selected_gear.author_ckey]</b>"
+			. += "<br>"
+
 		// Tweaks
 		if(selected_gear.gear_tweaks.len)
 			. += "<br><b>Options:</b><br>"
@@ -501,6 +506,8 @@ var/list/hash_to_gear = list()
 
 		if(transaction)
 			if(SSdonations.give_item(user.client, G.type, transaction))
+				if(G.author_ckey)
+					SSdonations.reward_gear_author(user.client, G)
 				pref.trying_on_gear = null
 				pref.trying_on_tweaks.Cut()
 				pref.loadout_is_busy = FALSE
@@ -703,6 +710,7 @@ var/list/hash_to_gear = list()
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
 	var/price              //Price of item, opyxes
+	var/author_ckey        //Ckey of the item's author, receives opyx reward on purchase
 	var/discount           //Discount to a price
 	var/patron_tier        //Patron tier restriction
 	var/slot               //Slot to equip to.

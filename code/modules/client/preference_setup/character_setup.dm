@@ -1543,6 +1543,8 @@
 			var/transaction = SSdonations.create_transaction(owner.client, -adjusted_price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
 			if(transaction)
 				if(SSdonations.give_item(owner.client, G.type, transaction))
+					if(G.author_ckey)
+						SSdonations.reward_gear_author(owner.client, G)
 					update_static_data(owner)
 					return TRUE
 				else
@@ -2151,6 +2153,7 @@
 		"price" = owned ? 0 : (G.price || 0),
 		"discount" = owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
+		"author" = G.author_ckey,
 		"description" = G.description || "",
 		"allowed" = gear_allowed_to_see(G, user),
 		"canEquip" = G.is_allowed_to_equip(user)
@@ -2221,6 +2224,7 @@
 		"price" = detail_owned ? 0 : (G.price || 0),
 		"discount" = detail_owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
+		"author" = G.author_ckey,
 		"canEquip" = G.is_allowed_to_equip(user),
 		"equipped" = islist(pref.gear_list[pref.gear_slot]) && (G.display_name in pref.gear_list[pref.gear_slot])
 	)

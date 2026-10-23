@@ -155,6 +155,99 @@ SUBSYSTEM_DEF(donations)
 	return text2num(transaction_id)
 
 
+/datum/controller/subsystem/donations/proc/create_transaction_by_ckey(target_ckey, change, type, comment)
+	if(!establish_don_db_connection())
+		return FALSE
+	target_ckey = ckey(target_ckey)
+	ASSERT(target_ckey)
+	ASSERT(isnum(change))
+
+	sql_query("INSERT IGNORE INTO players (ckey) VALUES ($ckey)", dbcon_don, list(ckey = target_ckey))
+	sql_query({"
+		INSERT INTO
+			points_transactions_types (type)
+		SELECT
+			$type
+		FROM
+			DUAL
+		WHERE NOT EXISTS (
+			SELECT
+				1
+			FROM
+				points_transactions_types
+			WHERE
+				type = $type
+		)
+	"}, dbcon_don, list(type = type))
+
+	if(change < 0)
+		var/DBQuery/balance_query = sql_query({"
+			SELECT
+				COALESCE(SUM(`change`), 0)
+			FROM
+				points_transactions
+			JOIN
+				players ON players.id = points_transactions.player
+			WHERE
+				ckey = $ckey
+		"}, dbcon_don, list(ckey = target_ckey))
+		var/current_opyxes = 0
+		if(balance_query.NextRow())
+			current_opyxes = text2num(balance_query.item[1])
+		if(current_opyxes + change < 0)
+			return FALSE
+
+	sql_query({"
+		INSERT INTO
+			points_transactions
+		VALUES (
+			NULL,
+			(SELECT id FROM players WHERE ckey = $ckey),
+			(SELECT id FROM points_transactions_types WHERE type = $type LIMIT 0,1),
+			NOW(),
+			$change,
+			$comment)
+	"}, dbcon_don, list(ckey = target_ckey, type = type, change = change, comment = comment))
+
+	var/transaction_id
+	var/DBQuery/query = sql_query({"
+		SELECT
+			id
+		FROM
+			points_transactions
+		WHERE
+			player = (SELECT id FROM players WHERE ckey = $ckey)
+			AND
+			comment = $comment
+		ORDER BY
+			id
+			DESC
+		LIMIT 0,1
+	"}, dbcon_don, list(ckey = target_ckey, comment = comment))
+
+	if(query.NextRow())
+		transaction_id = query.item[1]
+
+	for(var/client/C in GLOB.clients)
+		if(C.ckey == target_ckey)
+			update_donator(C)
+			break
+
+	return text2num(transaction_id)
+
+
+/datum/controller/subsystem/donations/proc/reward_gear_author(client/buyer, datum/gear/G)
+	ASSERT(buyer)
+	ASSERT(istype(G))
+	if(!G.author_ckey)
+		return FALSE
+	var/author_ckey = ckey(G.author_ckey)
+	if(!author_ckey)
+		return FALSE
+	var/reward_comment = "Donation store reward for [G.type] by [buyer.ckey]"
+	return create_transaction_by_ckey(author_ckey, DONATIONS_AUTHOR_OPYX_REWARD, DONATIONS_TRANSACTION_TYPE_REWARD, reward_comment)
+
+
 /datum/controller/subsystem/donations/proc/remove_transaction(client/player, id)
 	if(!establish_don_db_connection())
 		return FALSE

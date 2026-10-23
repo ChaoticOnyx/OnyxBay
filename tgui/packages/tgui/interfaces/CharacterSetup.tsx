@@ -262,6 +262,7 @@ interface GearItem {
   price: number;
   discount: number;
   patronTier: string | null;
+  author?: string | null;
   description: string;
   allowed: boolean;
   canEquip: boolean;
@@ -293,6 +294,7 @@ interface SelectedGearDetail {
   price: number;
   discount: number;
   patronTier: string | null;
+  author?: string | null;
   canEquip: boolean;
   equipped: boolean;
 }
@@ -3188,6 +3190,13 @@ const LoadoutItemDetail = (props: {
       {detail.description && (
         <Box color="label" fontSize="11px" italic mb={1}>
           {detail.description}
+        </Box>
+      )}
+
+      {/* Author info */}
+      {detail.author && (
+        <Box color="label" fontSize="11px" mb={0.5}>
+          Author: {detail.author}
         </Box>
       )}
 
