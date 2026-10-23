@@ -193,6 +193,12 @@
 /atom/proc/set_density(new_density)
 	if(density != new_density)
 		density = !!new_density
+		if(isturf(src))
+			var/turf/T = src
+			T.update_astar_node()
+		else if(isobj(src) && isturf(loc) && !istype(src, /obj/machinery/door) && !(atom_flags & ATOM_FLAG_CHECKS_BORDER))
+			var/turf/T = loc
+			T.update_astar_node()
 
 /atom/proc/bullet_act(obj/item/projectile/P, def_zone)
 	P.on_hit(src, 0, def_zone)

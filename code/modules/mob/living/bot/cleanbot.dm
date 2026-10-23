@@ -71,11 +71,10 @@
 		if(istype(loc, /turf/simulated))
 			var/turf/simulated/f = loc
 			f.dirt = 0
-		if(!D)
-			return
-		qdel(D)
 		if(D == target)
 			target = null
+		if(!QDELETED(D))
+			qdel(D)
 	busy = 0
 	update_icons()
 

@@ -222,8 +222,8 @@
 	if(!user)
 		return FALSE
 
-	if(luck_check_type)
-		var/user_luck = user.client?.get_luck_for_type(luck_check_type)
+	if(luck_check_type && user.client)
+		var/user_luck = user.client.get_luck_for_type(luck_check_type)
 		if(user_luck != 100 && !prob(user_luck))
 			target?.show_splash_text(user, "You fail!", SPAN_DANGER("You fail, miserably!"))
 			return

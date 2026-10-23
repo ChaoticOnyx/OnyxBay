@@ -38,17 +38,23 @@
 
 		var/generate_path = FALSE // set to TRUE when we either have no path, or we failed a step
 		if(length(controller.movement_path))
-			var/list/pos = controller.movement_path[controller.movement_path.len - 1]
+			var/list/pos = controller.movement_path[controller.movement_path.len]
 			var/turf/next_step = locate(pos["x"], pos["y"], pos["z"])
-
-			movable_pawn.Move(next_step)
-
-			// this check if we're on exactly the next tile may be overly brittle for dense pawns who may get bumped slightly
-			// to the side while moving but could maybe still follow their path without needing a whole new path
 			if(get_turf(movable_pawn) == next_step)
-				controller.movement_path.Cut(controller.movement_path.len - 1, controller.movement_path.len)
-			else
-				generate_path = TRUE
+				controller.movement_path.len--
+				if(length(controller.movement_path))
+					pos = controller.movement_path[controller.movement_path.len]
+					next_step = locate(pos["x"], pos["y"], pos["z"])
+
+			if(length(controller.movement_path))
+				movable_pawn.Move(next_step)
+
+				// this check if we're on exactly the next tile may be overly brittle for dense pawns who may get bumped slightly
+				// to the side while moving but could maybe still follow their path without needing a whole new path
+				if(get_turf(movable_pawn) == next_step)
+					controller.movement_path.len--
+				else
+					generate_path = TRUE
 		else
 			generate_path = TRUE
 

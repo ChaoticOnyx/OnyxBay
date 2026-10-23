@@ -245,6 +245,15 @@ var/const/enterloopsanity = 100
 				var/turf/old_turf = OldLoc
 				old_turf.update_turf_height()
 			update_turf_height()
+		if(O.density && !istype(O, /obj/machinery/door) && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER))
+			update_astar_node()
+
+/turf/Exited(atom/movable/AM, atom/newloc)
+	. = ..()
+	if(isobj(AM))
+		var/obj/O = AM
+		if(O.density && !istype(O, /obj/machinery/door) && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER))
+			update_astar_node()
 
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
@@ -386,6 +395,11 @@ var/const/enterloopsanity = 100
 /// Used for astar pathfinding
 /turf/proc/__get_astar_node_mask()
 	. = density ? NODE_DENSE_BIT : 0
+	if(!.)
+		for(var/obj/O in src)
+			if(O.density && !istype(O, /obj/machinery/door) && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER))
+				. = NODE_DENSE_BIT
+				break
 	. |= NODE_TURF_BIT
 
 /turf/proc/__get_astar_node()
@@ -396,6 +410,7 @@ var/const/enterloopsanity = 100
 	)
 
 /turf/proc/update_astar_node()
+	rustg_remove_node_astar(json_encode(list("x" = x, "y" = y, "z" = z)))
 	var/result = rustg_update_nodes_astar(json_encode(list(__get_astar_node())))
 
 	if(result != "1")

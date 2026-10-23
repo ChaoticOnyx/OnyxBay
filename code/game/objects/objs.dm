@@ -24,9 +24,12 @@
 
 /obj/Initialize()
 	. = ..()
-	if(turf_height_offset && isturf(loc))
+	if(isturf(loc))
 		var/turf/T = loc
-		T.update_turf_height()
+		if(turf_height_offset)
+			T.update_turf_height()
+		if(density && !istype(src, /obj/machinery/door) && !(atom_flags & ATOM_FLAG_CHECKS_BORDER))
+			T.update_astar_node()
 
 /obj/Destroy()
 	CAN_BE_REDEFINED(TRUE)

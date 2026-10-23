@@ -38,6 +38,7 @@
 	. = "Improves floors: <a href='?src=\ref[src];command=improve'>[improvefloors ? "Yes" : "No"]</a>"
 	. += "<br>Finds tiles: <a href='?src=\ref[src];command=tiles'>[eattiles ? "Yes" : "No"]</a>"
 	. += "<br>Make singles pieces of metal into tiles when empty: <a href='?src=\ref[src];command=make'>[maketiles ? "Yes" : "No"]</a>"
+	. += "<br>Patrol station: <a href='?src=\ref[src];command=patrol'>[will_patrol ? "Yes" : "No"]</a>"
 
 /mob/living/bot/floorbot/GetInteractMaintenance()
 	. = "Disassembly mode: "
@@ -59,6 +60,9 @@
 				eattiles = !eattiles
 			if("make")
 				maketiles = !maketiles
+			if("patrol")
+				will_patrol = !will_patrol
+				patrol_path = list()
 
 	if(CanAccessMaintenance(user))
 		switch(command)
@@ -143,6 +147,7 @@
 				F.ReplaceWithLattice()
 				addTiles(1)
 		target = null
+		busy = 0
 		update_icons()
 	else if(istype(A, /turf/simulated/floor))
 		var/turf/simulated/floor/F = A
@@ -165,6 +170,7 @@
 					F.set_flooring(get_flooring_data(floor_build_type))
 					addTiles(-1)
 			target = null
+			busy = 0
 			update_icons()
 	else if(istype(A, /obj/item/stack/tile/floor) && amount < maxAmount)
 		var/obj/item/stack/tile/floor/T = A
@@ -177,6 +183,7 @@
 				T.use(eaten)
 				addTiles(eaten)
 		target = null
+		busy = 0
 		update_icons()
 	else if(istype(A, /obj/item/stack/material) && amount + 4 <= maxAmount)
 		var/obj/item/stack/material/M = A
@@ -188,6 +195,9 @@
 				if(M)
 					M.use(1)
 					addTiles(4)
+			target = null
+			busy = 0
+			update_icons()
 
 /mob/living/bot/floorbot/explode()
 	turn_off()

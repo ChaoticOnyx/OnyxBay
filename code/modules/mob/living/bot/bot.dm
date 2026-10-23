@@ -283,7 +283,7 @@
 	if(!target || !target.loc)
 		return
 	if(get_dist(src, target) > min_target_dist)
-		if(!target_path.len || get_turf(target) != target_path[target_path.len])
+		if(!target_path.len || get_dist(target_path[target_path.len], target) > min_target_dist)
 			calcTargetPath()
 		if(makeStep(target_path))
 			frustration = 0
@@ -292,9 +292,15 @@
 	return
 
 /mob/living/bot/proc/handleFrustrated(targ)
-	obstacle = targ ? target_path[1] : patrol_path[1]
+	if(targ)
+		if(LAZYLEN(target_path))
+			obstacle = target_path[1]
+	else if(LAZYLEN(patrol_path))
+		var/list/pos = patrol_path[patrol_path.len]
+		obstacle = locate(pos["x"], pos["y"], pos["z"])
 	target_path = list()
 	patrol_path = list()
+	frustration = 0
 	return
 
 /mob/living/bot/proc/lookForTargets()
@@ -313,11 +319,19 @@
 	if(!LAZYLEN(patrol_path))
 		return
 
-	var/list/pos = patrol_path[patrol_path.len - 1 > 1 ? patrol_path.len - 1 : 1]
+	var/list/pos = patrol_path[patrol_path.len]
 	var/turf/next_step = locate(pos["x"], pos["y"], pos["z"])
-	step_towards(src, next_step)
 	if(get_turf(src) == next_step)
-		patrol_path.Cut(patrol_path.len - 1, patrol_path.len)
+		patrol_path.len--
+		if(!patrol_path.len)
+			return
+		pos = patrol_path[patrol_path.len]
+		next_step = locate(pos["x"], pos["y"], pos["z"])
+
+	if(step_towards(src, next_step))
+		if(get_turf(src) == next_step)
+			patrol_path.len--
+		frustration = 0
 	else
 		frustration++
 
@@ -367,7 +381,7 @@
 	return
 
 /mob/living/bot/proc/calcTargetPath()
-	target_path = AStar(get_turf(loc), get_turf(target), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, max_target_dist, id = botcard, exclude = obstacle)
+	target_path = AStar(get_turf(loc), get_turf(target), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, max_target_dist, min_target_dist = min_target_dist, id = botcard, exclude = obstacle)
 	if(!target_path)
 		if(target && target.loc)
 			ignore_list |= target

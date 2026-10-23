@@ -157,6 +157,7 @@
 	. += "<br><br>Reagent source: <a href='?src=\ref[src];command=use_beaker'>[use_beaker ? "Loaded Beaker (When available)" : "Internal Synthesizer"]</a>"
 	. += "<br>Treatment report is [declare_treatment ? "on" : "off"]. <a href='?src=\ref[src];command=declaretreatment'>Toggle</a>"
 	. += "<br>The speaker switch is [vocal ? "on" : "off"]. <a href='?src=\ref[src];command=togglevoice'>Toggle</a>"
+	. += "<br>Patrol station: <a href='?src=\ref[src];command=patrol'>[will_patrol ? "Yes" : "No"]</a>"
 
 /mob/living/bot/medbot/GetInteractMaintenance()
 	. = "Injection mode: "
@@ -208,6 +209,10 @@
 			if("toggle_tox")
 				if(!locked || issilicon(user))
 					should_treat_tox = !should_treat_tox
+			if("patrol")
+				if(!locked || issilicon(user))
+					will_patrol = !will_patrol
+					patrol_path = list()
 
 	if(CanAccessMaintenance(user))
 		switch(command)

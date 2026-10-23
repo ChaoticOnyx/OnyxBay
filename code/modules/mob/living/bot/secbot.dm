@@ -170,6 +170,7 @@
 				check_arrest = !check_arrest
 			if("patrol")
 				will_patrol = !will_patrol
+				patrol_path = list()
 			if("declarearrests")
 				declare_arrests = !declare_arrests
 
