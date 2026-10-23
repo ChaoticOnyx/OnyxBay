@@ -3076,7 +3076,12 @@ const LoadoutItemList = (props: {
                             : undefined
                   }
                 >
-                  {item.name}
+                  <Box>{item.name}</Box>
+                  {item.author && (
+                    <Box color="label" fontSize="11px">
+                      Author: {item.author}
+                    </Box>
+                  )}
                 </Table.Cell>
                 <Table.Cell collapsing color="label">
                   {item.cost > 0 ? `${item.cost}LP` : ""}

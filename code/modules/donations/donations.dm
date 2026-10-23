@@ -2,6 +2,7 @@ SUBSYSTEM_DEF(donations)
 	name = "Donations"
 	init_order = SS_INIT_DONATIONS
 	flags = SS_NO_FIRE
+	var/list/pending_author_rewards = list()
 
 /datum/controller/subsystem/donations/Initialize(timeofday)
 	if(!config.external.sql_enabled)
@@ -155,6 +156,16 @@ SUBSYSTEM_DEF(donations)
 	return text2num(transaction_id)
 
 
+/datum/controller/subsystem/donations/proc/execute_don_query(sql_text)
+	if(!establish_don_db_connection())
+		return null
+	var/DBQuery/query = dbcon_don.NewQuery(sql_text)
+	if(!query.Execute())
+		log_debug("\[Donations DB] Query failed: '[sql_text]', error: '[query.ErrorMsg()]'")
+		return null
+	return query
+
+
 /datum/controller/subsystem/donations/proc/create_transaction_by_ckey(target_ckey, change, type, comment)
 	if(!establish_don_db_connection())
 		return FALSE
@@ -162,12 +173,17 @@ SUBSYSTEM_DEF(donations)
 	ASSERT(target_ckey)
 	ASSERT(isnum(change))
 
-	sql_query("INSERT IGNORE INTO players (ckey) VALUES ($ckey)", dbcon_don, list(ckey = target_ckey))
-	sql_query({"
+	var/quoted_ckey = dbcon_don.Quote("[target_ckey]")
+	var/quoted_type = dbcon_don.Quote("[type]")
+	var/quoted_comment = dbcon_don.Quote("[comment]")
+
+	if(!execute_don_query("INSERT IGNORE INTO players (ckey) VALUES ([quoted_ckey])"))
+		return FALSE
+	if(!execute_don_query({"
 		INSERT INTO
 			points_transactions_types (type)
 		SELECT
-			$type
+			[quoted_type]
 		FROM
 			DUAL
 		WHERE NOT EXISTS (
@@ -176,12 +192,33 @@ SUBSYSTEM_DEF(donations)
 			FROM
 				points_transactions_types
 			WHERE
-				type = $type
+				type = [quoted_type]
 		)
-	"}, dbcon_don, list(type = type))
+	"}))
+		return FALSE
+
+	if(type == DONATIONS_TRANSACTION_TYPE_REWARD && comment)
+		var/DBQuery/existing_query = execute_don_query({"
+			SELECT
+				id
+			FROM
+				points_transactions
+			WHERE
+				player = (SELECT id FROM players WHERE ckey = [quoted_ckey])
+				AND
+				comment = [quoted_comment]
+			ORDER BY
+				id
+				DESC
+			LIMIT 0,1
+		"})
+		if(!existing_query)
+			return FALSE
+		if(existing_query.NextRow())
+			return text2num(existing_query.item[1])
 
 	if(change < 0)
-		var/DBQuery/balance_query = sql_query({"
+		var/DBQuery/balance_query = execute_don_query({"
 			SELECT
 				COALESCE(SUM(`change`), 0)
 			FROM
@@ -189,41 +226,46 @@ SUBSYSTEM_DEF(donations)
 			JOIN
 				players ON players.id = points_transactions.player
 			WHERE
-				ckey = $ckey
-		"}, dbcon_don, list(ckey = target_ckey))
+				ckey = [quoted_ckey]
+		"})
+		if(!balance_query)
+			return FALSE
 		var/current_opyxes = 0
 		if(balance_query.NextRow())
 			current_opyxes = text2num(balance_query.item[1])
 		if(current_opyxes + change < 0)
 			return FALSE
 
-	sql_query({"
+	if(!execute_don_query({"
 		INSERT INTO
 			points_transactions
 		VALUES (
 			NULL,
-			(SELECT id FROM players WHERE ckey = $ckey),
-			(SELECT id FROM points_transactions_types WHERE type = $type LIMIT 0,1),
+			(SELECT id FROM players WHERE ckey = [quoted_ckey]),
+			(SELECT id FROM points_transactions_types WHERE type = [quoted_type] LIMIT 0,1),
 			NOW(),
-			$change,
-			$comment)
-	"}, dbcon_don, list(ckey = target_ckey, type = type, change = change, comment = comment))
+			[change],
+			[quoted_comment])
+	"}))
+		return FALSE
 
 	var/transaction_id
-	var/DBQuery/query = sql_query({"
+	var/DBQuery/query = execute_don_query({"
 		SELECT
 			id
 		FROM
 			points_transactions
 		WHERE
-			player = (SELECT id FROM players WHERE ckey = $ckey)
+			player = (SELECT id FROM players WHERE ckey = [quoted_ckey])
 			AND
-			comment = $comment
+			comment = [quoted_comment]
 		ORDER BY
 			id
 			DESC
 		LIMIT 0,1
-	"}, dbcon_don, list(ckey = target_ckey, comment = comment))
+	"})
+	if(!query)
+		return FALSE
 
 	if(query.NextRow())
 		transaction_id = query.item[1]
@@ -236,16 +278,45 @@ SUBSYSTEM_DEF(donations)
 	return text2num(transaction_id)
 
 
-/datum/controller/subsystem/donations/proc/reward_gear_author(client/buyer, datum/gear/G)
+/datum/controller/subsystem/donations/think()
+	retry_pending_author_rewards()
+
+
+/datum/controller/subsystem/donations/proc/retry_pending_author_rewards()
+	if(!length(pending_author_rewards))
+		return
+	var/list/remaining = list()
+	for(var/list/reward_data in pending_author_rewards)
+		var/author_ckey = reward_data["author_ckey"]
+		var/reward_comment = reward_data["comment"]
+		if(!create_transaction_by_ckey(author_ckey, DONATIONS_AUTHOR_OPYX_REWARD, DONATIONS_TRANSACTION_TYPE_REWARD, reward_comment))
+			remaining += list(reward_data)
+	pending_author_rewards = remaining
+	if(length(pending_author_rewards))
+		set_next_think(world.time + 1 MINUTE)
+
+
+/datum/controller/subsystem/donations/proc/reward_gear_author(client/buyer, datum/gear/G, purchase_transaction_id = null)
 	ASSERT(buyer)
 	ASSERT(istype(G))
 	if(!G.author_ckey)
 		return FALSE
 	var/author_ckey = ckey(G.author_ckey)
-	if(!author_ckey)
+	var/buyer_ckey = ckey(buyer.ckey)
+	if(!author_ckey || author_ckey == buyer_ckey)
 		return FALSE
-	var/reward_comment = "Donation store reward for [G.type] by [buyer.ckey]"
-	return create_transaction_by_ckey(author_ckey, DONATIONS_AUTHOR_OPYX_REWARD, DONATIONS_TRANSACTION_TYPE_REWARD, reward_comment)
+	var/tx_suffix = purchase_transaction_id ? " (tx #[purchase_transaction_id])" : ""
+	var/reward_comment = "Donation store reward for [G.type] by [buyer_ckey][tx_suffix]"
+	var/reward_tx = create_transaction_by_ckey(author_ckey, DONATIONS_AUTHOR_OPYX_REWARD, DONATIONS_TRANSACTION_TYPE_REWARD, reward_comment)
+	if(!reward_tx)
+		pending_author_rewards += list(list(
+			"author_ckey" = author_ckey,
+			"comment" = reward_comment,
+			"purchase_transaction_id" = purchase_transaction_id
+		))
+		set_next_think(world.time + 1 MINUTE)
+		return FALSE
+	return reward_tx
 
 
 /datum/controller/subsystem/donations/proc/remove_transaction(client/player, id)

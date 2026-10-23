@@ -1543,8 +1543,8 @@
 			var/transaction = SSdonations.create_transaction(owner.client, -adjusted_price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
 			if(transaction)
 				if(SSdonations.give_item(owner.client, G.type, transaction))
-					if(G.author_ckey)
-						SSdonations.reward_gear_author(owner.client, G)
+					if(G.author_ckey && !SSdonations.reward_gear_author(owner.client, G, transaction))
+						log_debug("\[Donations DB] Deferred or skipped author reward for [G.type] (purchase tx #[transaction]).")
 					update_static_data(owner)
 					return TRUE
 				else

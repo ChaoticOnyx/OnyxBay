@@ -506,8 +506,8 @@ var/list/hash_to_gear = list()
 
 		if(transaction)
 			if(SSdonations.give_item(user.client, G.type, transaction))
-				if(G.author_ckey)
-					SSdonations.reward_gear_author(user.client, G)
+				if(G.author_ckey && !SSdonations.reward_gear_author(user.client, G, transaction))
+					log_debug("\[Donations DB] Deferred or skipped author reward for [G.type] (purchase tx #[transaction]).")
 				pref.trying_on_gear = null
 				pref.trying_on_tweaks.Cut()
 				pref.loadout_is_busy = FALSE
