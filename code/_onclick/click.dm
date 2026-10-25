@@ -75,7 +75,7 @@
 
 	if(!rightclicked)
 		if(modifiers["shift"] && modifiers["ctrl"])
-			CtrlShiftClickOn(A)
+			CtrlShiftClickOn(A, params)
 			return 1
 		if(modifiers["ctrl"] && modifiers["alt"])
 			CtrlAltClickOn(A)
@@ -92,10 +92,10 @@
 			ShiftClickOn(A)
 			return 0
 		if(modifiers["alt"]) // alt and alt-gr (rightalt)
-			AltClickOn(A)
+			AltClickOn(A, params)
 			return 1
 		if(modifiers["ctrl"])
-			CtrlClickOn(A)
+			CtrlClickOn(A, params)
 			return 1
 
 	. = NormalClickOn(A, params)
@@ -151,7 +151,7 @@
 		else
 			if(ismob(A)) // No instant mob attacking
 				setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			UnarmedAttack(A, 1)
+			UnarmedAttack(A, 1, params)
 
 		trigger_aiming(TARGET_CAN_CLICK)
 		return 1
@@ -199,7 +199,7 @@
 			else
 				if(ismob(A)) // No instant mob attacking
 					setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-				UnarmedAttack(A, 1)
+				UnarmedAttack(A, 1, params)
 
 			trigger_aiming(TARGET_CAN_CLICK)
 			return
@@ -236,10 +236,10 @@
 	proximity_flag is not currently passed to attack_hand, and is instead used
 	in human click code to allow glove touches only at melee range.
 */
-/mob/proc/UnarmedAttack(atom/A, proximity_flag)
+/mob/proc/UnarmedAttack(atom/A, proximity_flag, params)
 	return
 
-/mob/living/UnarmedAttack(atom/A, proximity_flag)
+/mob/living/UnarmedAttack(atom/A, proximity_flag, params)
 
 	if(GAME_STATE < RUNLEVEL_GAME)
 		to_chat(src, "You cannot attack people before the game has started.")
@@ -319,19 +319,19 @@
 	Ctrl click
 	For most objects, pull
 */
-/mob/proc/CtrlClickOn(atom/A)
-	A.CtrlClick(src)
+/mob/proc/CtrlClickOn(atom/A, params)
+	A.CtrlClick(src, params)
 	SEND_SIGNAL(src, SIGNAL_MOB_CTRL_CLICK, src, A)
 	return
 
-/atom/proc/CtrlClick(mob/user)
+/atom/proc/CtrlClick(mob/user, params)
 	return
 
-/atom/movable/CtrlClick(mob/user)
+/atom/movable/CtrlClick(mob/user, params)
 	if(Adjacent(user))
 		return user.start_pulling(src)
 
-/obj/item/CtrlClick(mob/user)
+/obj/item/CtrlClick(mob/user, params)
 	if(ishuman(user) && Adjacent(user) && !user.incapacitated() && !user.restrained())
 		// Quickdrop from storages
 		if(istype(loc, /obj/item/storage))
@@ -348,10 +348,10 @@
 	Alt click
 	Unused except for AI
 */
-/mob/proc/AltClickOn(atom/A)
-	A.AltClick(src)
+/mob/proc/AltClickOn(atom/A, params)
+	A.AltClick(src, params)
 
-/atom/proc/AltClick(mob/user)
+/atom/proc/AltClick(mob/user, params)
 	SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
 	return
 
@@ -369,11 +369,11 @@
 	Control+Shift click
 	Unused except for AI
 */
-/mob/proc/CtrlShiftClickOn(atom/A)
-	A.CtrlShiftClick(src)
+/mob/proc/CtrlShiftClickOn(atom/A, params)
+	A.CtrlShiftClick(src, params)
 	return
 
-/atom/proc/CtrlShiftClick(mob/user)
+/atom/proc/CtrlShiftClick(mob/user, params)
 	return
 
 /*
