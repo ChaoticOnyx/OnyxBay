@@ -37,6 +37,7 @@
 		if(nutriment_amt)
 			reagents.add_reagent(/datum/reagent/nutriment, nutriment_amt, nutriment_desc)
 		recalc_max_volume()
+	get_food_tier()
 
 /obj/item/reagent_containers/food/proc/recalc_max_volume()
 	if(static_volume)

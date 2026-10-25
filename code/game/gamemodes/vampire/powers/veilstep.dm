@@ -1,5 +1,5 @@
 
-/mob/living/carbon/human/AltClickOn(atom/A)
+/mob/living/carbon/human/AltClickOn(atom/A, params)
 	if(mind?.vampire && istype(A , /turf/simulated/floor) && (/datum/vampire/proc/vampire_veilstep in verbs))
 		mind.vampire.vampire_veilstep(A)
 	..()

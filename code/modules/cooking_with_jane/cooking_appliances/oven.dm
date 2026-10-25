@@ -16,6 +16,7 @@
 	var/switches = 0
 	var/opened = FALSE
 	var/cooking_timestamp = 0 //Timestamp of when cooking initialized so we know if the prep was disturbed at any point.
+	var/last_cook_tick = 0
 	var/items = null
 
 	var/reference_time = 0 //The exact moment when we call the process routine, just to account for lag.
@@ -123,6 +124,7 @@
 			items = used_item
 			if(switches == 1)
 				cooking_timestamp = world.time
+				last_cook_tick = world.time
 	else
 		handle_open(user)
 	update_icon()
@@ -291,6 +293,7 @@
 		playsound(src, 'sound/items/lighter1.ogg', 100, 1, 0)
 		switches = 1
 		cooking_timestamp = world.time
+		last_cook_tick = world.time
 		cook_checkin()
 		if(timer != 0)
 			timer_act(user)
@@ -304,10 +307,8 @@
 		return
 
 	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items
-	if(set_timer)
-		reference_time = timer
-	else
-		reference_time = world.time - cooking_timestamp
+	reference_time = world.time - last_cook_tick
+	last_cook_tick = world.time
 
 
 	#ifdef CWJ_DEBUG

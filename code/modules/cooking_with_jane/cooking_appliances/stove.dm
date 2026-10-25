@@ -16,6 +16,7 @@
 	var/list/timerstamp = list(0, 0, 0, 0)
 	var/list/switches = list(0, 0, 0, 0)
 	var/list/cooking_timestamp = list(0, 0, 0, 0) //Timestamp of when cooking initialized so we know if the prep was disturbed at any point.
+	var/list/last_cook_tick = list(0, 0, 0, 0)
 	var/list/items[4]
 
 	var/reference_time = 0 //The exact moment when we call the process routine, just to account for lag.
@@ -149,6 +150,7 @@
 		items[input] = used_item
 		if(switches[input] == 1)
 			cooking_timestamp[input] = world.time
+			last_cook_tick[input] = world.time
 	update_icon()
 
 /obj/machinery/cooking_with_jane/stove/attack_hand(mob/user as mob, params)
@@ -267,6 +269,7 @@
 	else
 		switches[input] = 1
 		cooking_timestamp[input] = world.time
+		last_cook_tick[input] = world.time
 		cook_checkin(input)
 		if(timer[input] != 0)
 			timer_act(user, input)
@@ -280,10 +283,8 @@
 		return
 
 	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items[input]
-	if(set_timer)
-		reference_time = timer[input]
-	else
-		reference_time = world.time - cooking_timestamp[input]
+	reference_time = world.time - last_cook_tick[input]
+	last_cook_tick[input] = world.time
 
 
 	#ifdef CWJ_DEBUG

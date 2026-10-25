@@ -436,11 +436,11 @@ Food quality is calculated based on the steps taken.
 	last_created_step.desc = new_description
 
 /datum/cooking_with_jane/recipe/proc/set_step_max_quality(quality)
-	last_created_step.flags |= CWJ_BASE_QUALITY_ENABLED
+	last_created_step.flags |= CWJ_MAX_QUALITY_ENABLED
 	last_created_step.max_quality_award = quality
 
 /datum/cooking_with_jane/recipe/proc/set_step_base_quality(quality)
-	last_created_step.flags |= CWJ_MAX_QUALITY_ENABLED
+	last_created_step.flags |= CWJ_BASE_QUALITY_ENABLED
 	last_created_step.base_quality_award = quality
 
 /datum/cooking_with_jane/recipe/proc/set_step_custom_result_desc(new_description)
@@ -520,9 +520,9 @@ Food quality is calculated based on the steps taken.
 			GLOB.cwj_optional_step_exclusion_dictionary["[exclusive_option.unique_id]"] = list()
 	//populate the exclusive option list
 	for (var/datum/cooking_with_jane/recipe_step/exclusive_option in active_exclusive_option_list)
-		for (var/datum/cooking_with_jane/recipe_step/excluder in active_exclusive_option_list["[exclusive_option]"])
+		for (var/datum/cooking_with_jane/recipe_step/excluder in active_exclusive_option_list[exclusive_option])
 			if (exclusive_option.unique_id != excluder.unique_id)
-				GLOB.cwj_optional_step_exclusion_dictionary["[exclusive_option.unique_id]"] = excluder.unique_id
+				GLOB.cwj_optional_step_exclusion_dictionary["[exclusive_option.unique_id]"] |= excluder.unique_id
 
 	active_exclusive_option_list = null
 
@@ -609,7 +609,7 @@ Food quality is calculated based on the steps taken.
 	if(exclusive_option_mode)
 		active_exclusive_option_list[step] = list()
 		for (var/datum/cooking_with_jane/recipe_step/ex_step in active_exclusive_option_list)
-			if(ex_step == step.unique_id || step.in_option_chain(ex_step))
+			if(ex_step == step || step.in_option_chain(ex_step))
 				continue
 			active_exclusive_option_list[ex_step] += step
 	return step
@@ -620,6 +620,7 @@ Food quality is calculated based on the steps taken.
 	var/datum/cooking_with_jane/recipe_tracker/parent = pointer.parent_ref.resolve()
 	var/obj/item/container = parent.holder_ref.resolve()
 	if(container)
+		var/reagent_quality = calculate_reagent_quality(pointer)
 		//Build up a list of reagents that went into this.
 		var/datum/reagents/slurry = new /datum/reagents(1000000, GLOB.temp_reagents_holder)
 
@@ -700,15 +701,13 @@ Food quality is calculated based on the steps taken.
 			QDEL_LIST(container.contents)
 			container.contents = list()
 
-			var/reagent_quality = calculate_reagent_quality(pointer)
-
-
 			//Produce Item descriptions based on the steps taken
 			var/cooking_description_modifier = ""
 			for(var/id in pointer.steps_taken)
 				if(pointer.steps_taken[id] != "skip")
 					cooking_description_modifier += "[pointer.steps_taken[id]]\n"
 
+			var/per_item = slurry.total_volume / max(1, product_count)
 			for(var/i = 0; i < product_count; i++)
 				var/obj/item/new_item = new product_type(container)
 				#ifdef CWJ_DEBUG
@@ -721,11 +720,11 @@ Food quality is calculated based on the steps taken.
 					#endif
 					new_item.reagents.clear_reagents()
 				#ifdef CWJ_DEBUG
-				log_debug("/recipe/proc/create_product: Transferring slurry of [slurry.total_volume] to [new_item] of total volume [new_item.reagents.total_volume]")
+				log_debug("/recipe/proc/create_product: Transferring slurry of [per_item] to [new_item] of total volume [new_item.reagents.total_volume]")
 				#endif
 				if(new_item.reagents)
-					new_item.reagents.maximum_volume = max(new_item.reagents.maximum_volume, new_item.reagents.total_volume + slurry.total_volume + 10)
-					slurry.trans_to_holder(new_item.reagents, slurry.total_volume, copy = 1)
+					new_item.reagents.maximum_volume = max(new_item.reagents.maximum_volume, new_item.reagents.total_volume + per_item + 10)
+					slurry.trans_to_holder(new_item.reagents, per_item)
 
 				new_item?:food_quality = pointer.tracked_quality + reagent_quality
 				new_item?:cooking_description_modifier = cooking_description_modifier
@@ -744,7 +743,7 @@ Food quality is calculated based on the steps taken.
 
 		if(reagent_id) //Make a reagent
 			//quality handling
-			var/total_quality = pointer.tracked_quality + calculate_reagent_quality(pointer)
+			var/total_quality = pointer.tracked_quality + reagent_quality
 
 			//Create our Reagent
 			var/rpath = resolve_cwj_reagent_path(reagent_id)

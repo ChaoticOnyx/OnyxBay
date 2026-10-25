@@ -24,7 +24,7 @@
 		base_potency = seed.get_trait(TRAIT_POTENCY)
 	else
 		CRASH("/datum/cooking_with_jane/recipe_step/add_produce/New: Seed [produce] not found. Exiting.")
-	..(base_quality_award, our_recipe)
+	..(our_recipe)
 
 /datum/cooking_with_jane/recipe_step/add_produce/check_conditions_met(obj/added_item, datum/cooking_with_jane/recipe_tracker/tracker)
 	#ifdef CWJ_DEBUG

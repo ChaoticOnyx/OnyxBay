@@ -66,17 +66,17 @@
 
 	var/datum/cooking_with_jane/recipe_step/target_step = src.previous_step
 	//traverse backwards on the chain.
-	while(target_step && !(target_step & CWJ_IS_OPTION_CHAIN))
+	while(target_step && (target_step.flags & CWJ_IS_OPTION_CHAIN))
 		if(step.unique_id == target_step.unique_id)
 			return TRUE
 		target_step = target_step.previous_step
 
 	//Traverse forwards on the chain.
 	target_step = src.next_step
-	while(target_step && !(target_step & CWJ_IS_OPTION_CHAIN))
+	while(target_step && (target_step.flags & CWJ_IS_OPTION_CHAIN))
 		if(step.unique_id == target_step.unique_id)
 			return TRUE
-		target_step = src.next_step
+		target_step = target_step.next_step
 
 	//We didn't find anything. Return False.
 	return FALSE

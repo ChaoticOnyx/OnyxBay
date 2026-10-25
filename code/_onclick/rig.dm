@@ -4,19 +4,19 @@
 			return
 	..()
 
-/mob/living/AltClickOn(atom/A)
+/mob/living/AltClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/powersuit_activation) == GLOB.PREF_ALT_CLICK)
 		if(PowersuitClickOn(A))
 			return
 	..()
 
-/mob/living/CtrlClickOn(atom/A)
+/mob/living/CtrlClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/powersuit_activation) == GLOB.PREF_CTRL_CLICK)
 		if(PowersuitClickOn(A))
 			return
 	..()
 
-/mob/living/CtrlShiftClickOn(atom/A)
+/mob/living/CtrlShiftClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/powersuit_activation) == GLOB.PREF_CTRL_SHIFT_CLICK)
 		if(PowersuitClickOn(A))
 			return

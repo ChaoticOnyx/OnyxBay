@@ -6,21 +6,18 @@
 	var/bite_descriptor
 	var/cooked = FALSE
 
-/obj/item/reagent_containers/food/Initialize(mapload, spawn_empty = FALSE)
-	. = ..()
-	get_food_tier()
-
 /obj/item/reagent_containers/food/proc/get_food_tier()
-	if(food_quality < -9)
+	var/quality = round(food_quality)
+	if(quality < -9)
 		food_tier = CWJ_QUALITY_GARBAGE
 		food_descriptor = "It looks gross. Someone cooked this poorly."
 		bite_descriptor = " Eating this makes you regret every decision that led you to this moment."
-	else if(food_quality >= 100)
+	else if(quality >= 100)
 		food_tier = CWJ_QUALITY_ELDRITCH
 		food_descriptor = "What cruel twist of fate it must be, for this unparalleled artistic masterpiece can only be truly appreciated through its destruction. Does this dish's transient form belie the true nature of all things? You see the totality of existence reflected through \the [src]."
 		bite_descriptor = " It's like reliving the happiest moments of your life, nothing is better than this!"
 	else
-		switch(food_quality)
+		switch(quality)
 			if(-9 to 0)
 				food_tier = CWJ_QUALITY_GROSS
 				food_descriptor = "It looks like an unappetizing meal."
@@ -437,10 +434,3 @@
 	reagent_state = LIQUID
 	color = "#4d2600"
 	taste_description = "vanilla"
-
-/datum/reagent/nutriment/cinnamonpowder
-	name = "Cinnamon Powder"
-	description = "A fragrant brown spice ground from tree bark."
-	reagent_state = SOLID
-	color = "#804000"
-	taste_description = "cinnamon"

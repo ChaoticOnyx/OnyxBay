@@ -382,21 +382,21 @@ var/global/list/protected_objects = list(
 
 	..()
 
-/mob/living/simple_animal/hostile/mimic/AltClickOn(atom/A)
+/mob/living/simple_animal/hostile/mimic/AltClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_ALT_CLICK)
 		if(is_target_valid_for_mimicry(A))
 			mimicry(A)
 
 	..()
 
-/mob/living/simple_animal/hostile/mimic/CtrlClickOn(atom/A)
+/mob/living/simple_animal/hostile/mimic/CtrlClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_CLICK)
 		if(is_target_valid_for_mimicry(A))
 			mimicry(A)
 
 	..()
 
-/mob/living/simple_animal/hostile/mimic/CtrlShiftClickOn(atom/A)
+/mob/living/simple_animal/hostile/mimic/CtrlShiftClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_SHIFT_CLICK)
 		if(is_target_valid_for_mimicry(A))
 			mimicry(A)

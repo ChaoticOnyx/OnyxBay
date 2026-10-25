@@ -408,7 +408,7 @@
 /datum/cooking_with_jane/recipe/meatbread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/meatbread
-	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
+	recipe_guide = "Put 2 dough, 2 meat and 2 cheese wedges in an oven dish, bake for 30 seconds on medium."
 	step_builder = list(
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
@@ -422,7 +422,7 @@
 /datum/cooking_with_jane/recipe/xenomeatbread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/xenomeatbread
-	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
+	recipe_guide = "Put 2 dough, 2 xeno meat and 2 cheese wedges in an oven dish, bake for 30 seconds on medium."
 	step_builder = list(
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
@@ -436,7 +436,7 @@
 /datum/cooking_with_jane/recipe/tofubread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/tofubread
-	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
+	recipe_guide = "Put 2 dough, 2 tofu and 2 cheese wedges in an oven dish, bake for 30 seconds on medium."
 	step_builder = list(
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
@@ -450,7 +450,7 @@
 /datum/cooking_with_jane/recipe/creamcheesebread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/creamcheesebread
-	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
+	recipe_guide = "Put 2 dough and 2 cheese wedges in an oven dish, bake for 30 seconds on medium."
 	step_builder = list(
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough),
@@ -1340,7 +1340,7 @@
 
 /datum/cooking_with_jane/recipe/hotchili
 	cooking_container = POT
-	product_type = /obj/item/reagent_containers/food/coldchili
+	product_type = /obj/item/reagent_containers/food/hotchili
 	step_builder = list(
 		list(CWJ_ADD_REAGENT, "water", 10),
 		list(CWJ_ADD_REAGENT_OPTIONAL, "sodiumchloride", 1, base=1),

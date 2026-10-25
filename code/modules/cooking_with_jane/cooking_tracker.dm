@@ -208,7 +208,7 @@
 				var/choice = input(user, "There's two things you complete at this juncture!", "Choose One:") in completed_list
 				completion_lockout = FALSE
 				if(choice)
-					chosen_pointer = completed_list[choice]
+					chosen_pointer = choice
 
 	//Call a proc that follows one of the steps in question, so we have all the nice to_chat calls.
 	var/datum/cooking_with_jane/recipe_step/sample_step = valid_steps[1]

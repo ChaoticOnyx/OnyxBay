@@ -14,7 +14,8 @@
 		var/datum/reagent/R = rpath
 		SetName("dollop of [initial(R.name)]")
 		desc = "A fresh serving of just [initial(R.name)] and nothing but [initial(R.name)]."
-		startswith = list(rpath = new_amount)
+		startswith = list()
+		startswith[rpath] = new_amount
 	. = ..(mapload, FALSE)
 	update_icon()
 

@@ -161,7 +161,12 @@ GLOBAL_LIST_EMPTY(cwj_optional_step_exclusion_dictionary)
 	var/list/recipe_paths = typesof(/datum/cooking_with_jane/recipe)
 	recipe_paths -= /datum/cooking_with_jane/recipe
 	for (var/path in recipe_paths)
-		var/datum/cooking_with_jane/recipe/example_recipe = new path()
+		var/datum/cooking_with_jane/recipe/example_recipe
+		try
+			example_recipe = new path()
+		catch(var/exception/e)
+			log_debug("CWJ: failed to build recipe [path]: [e]")
+			continue
 		if(!GLOB.cwj_recipe_dictionary[example_recipe.cooking_container])
 			GLOB.cwj_recipe_dictionary[example_recipe.cooking_container] = list()
 		GLOB.cwj_recipe_dictionary[example_recipe.cooking_container]["[example_recipe.unique_id]"] = example_recipe

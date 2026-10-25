@@ -1,6 +1,6 @@
 //A cooking step that involves using an item on the food.
 /datum/cooking_with_jane/recipe_step/use_tool
-	class=CWJ_USE_ITEM
+	class=CWJ_USE_TOOL
 	var/tool_type
 	var/tool_quality
 	var/inherited_quality_modifier = 1

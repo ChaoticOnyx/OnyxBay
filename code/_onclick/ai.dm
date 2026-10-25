@@ -31,7 +31,7 @@
 		CtrlAltClickOn(A)
 		return
 	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
+		CtrlShiftClickOn(A, params)
 		return
 	if(modifiers["middle"])
 		if(modifiers["shift"])
@@ -43,10 +43,10 @@
 		ShiftClickOn(A)
 		return
 	if(modifiers["alt"]) // alt and alt-gr (rightalt)
-		AltClickOn(A)
+		AltClickOn(A, params)
 		return
 	if(modifiers["ctrl"])
-		CtrlClickOn(A)
+		CtrlClickOn(A, params)
 		return
 
 	face_atom(A) // change direction to face what you clicked on
@@ -107,13 +107,13 @@
 		return
 	..()
 
-/mob/living/silicon/ai/CtrlClickOn(atom/A)
-	if(!control_disabled && A.AICtrlClick(src))
+/mob/living/silicon/ai/CtrlClickOn(atom/A, params)
+	if(!control_disabled && A.AICtrlClick(src, params))
 		return
 	..()
 
-/mob/living/silicon/ai/AltClickOn(atom/A)
-	if(!control_disabled && A.AIAltClick(src))
+/mob/living/silicon/ai/AltClickOn(atom/A, params)
+	if(!control_disabled && A.AIAltClick(src, params))
 		return
 	..()
 
@@ -144,7 +144,7 @@
 		Topic(src, list("command"="electrify_permanently", "activate" = "0"))
 	return 1
 
-/atom/proc/AICtrlShiftClick()
+/atom/proc/AICtrlShiftClick(atom/A, params)
 	return
 
 /atom/proc/AIShiftClick()
@@ -163,7 +163,7 @@
 		Topic(src, list("command"="open", "activate" = "0"))
 	return 1
 
-/atom/proc/AICtrlClick()
+/atom/proc/AICtrlClick(atom/A, params)
 	return
 
 /obj/machinery/door/airlock/AICtrlClick() // Bolts doors
@@ -203,8 +203,8 @@
 
 	return TRUE
 
-/atom/proc/AIAltClick(atom/A)
-	return AltClick(A)
+/atom/proc/AIAltClick(atom/A, params)
+	return AltClick(A, params)
 
 /obj/machinery/turret_control_panel/AIAltClick() //toggles lethal on turrets
 	if(usr.incapacitated())

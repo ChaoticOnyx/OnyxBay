@@ -24,19 +24,19 @@
 			return
 	..()
 
-/mob/living/carbon/human/AltClickOn(atom/A)
+/mob/living/carbon/human/AltClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_ALT_CLICK)
 		if(use_human_ability(A))
 			return
 	..()
 
-/mob/living/carbon/human/CtrlClickOn(atom/A)
+/mob/living/carbon/human/CtrlClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_CLICK)
 		if(use_human_ability(A))
 			return
 	..()
 
-/mob/living/carbon/human/CtrlShiftClickOn(atom/A)
+/mob/living/carbon/human/CtrlShiftClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_SHIFT_CLICK)
 		if(use_human_ability(A))
 			return

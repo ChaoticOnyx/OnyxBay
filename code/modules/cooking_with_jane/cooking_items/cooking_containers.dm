@@ -219,6 +219,7 @@
 /obj/item/reagent_containers/cooking_with_jane/cooking_container/proc/clear_cooking_data()
 	stove_data = list("High"=0 , "Medium" = 0, "Low"=0)
 	grill_data = list("High"=0 , "Medium" = 0, "Low"=0)
+	oven_data = list("High"=0 , "Medium" = 0, "Low"=0)
 
 /obj/item/reagent_containers/cooking_with_jane/cooking_container/proc/label(number, CT = null)
 	//This returns something like "Fryer basket 1 - empty"
